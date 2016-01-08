@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height_default"
+    android:orientation="horizontal">
+
+    <com.github.programmerr47.vkgroups.view.SquareImageView
+        android:id="@+id/community_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_big"
+        android:src="@drawable/ic_menu_manage"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_primary"
+            android:textSize="18sp"
+            android:text="Test group name"
+            app:fontName="Roboto-Medium.ttf"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/community_icon"/>
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_secondary"
+            android:textSize="16sp"
+            android:text="Test group type"/>
+
+    </LinearLayout>
+
+</LinearLayout>

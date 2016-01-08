@@ -1,6 +1,7 @@
 package com.github.programmerr47.vkgroups;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.vk.sdk.VKSdk;
 
@@ -10,10 +11,17 @@ import com.vk.sdk.VKSdk;
  */
 public class VKGroupApplication extends Application {
 
+    private static Context appContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        VKSdk.initialize(getApplicationContext());
+        appContext = getApplicationContext();
+        VKSdk.initialize(appContext);
+    }
+
+    public static Context getAppContext() {
+        return appContext;
     }
 }
