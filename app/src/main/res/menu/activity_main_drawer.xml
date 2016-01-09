@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_communities"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import"/>
+            android:icon="@drawable/ic_account_grey600_36dp"
+            android:title="@string/drawer_my_communities"/>
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery"/>
+            android:icon="@drawable/ic_account_multiple_grey600_36dp"
+            android:title="@string/drawer_friends_communities"/>
+    </group>
+
+    <group
+        android:id="@+id/group_events"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
+            android:icon="@drawable/ic_account_grey600_36dp"
+            android:title="@string/drawer_my_events"/>
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:icon="@drawable/ic_account_multiple_grey600_36dp"
+            android:title="@string/drawer_friends_events"/>
     </group>
 
     <item android:title="Communicate">

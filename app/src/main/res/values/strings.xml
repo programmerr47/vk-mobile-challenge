@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="drawer_my_communities">My groups</string>
+    <string name="drawer_friends_communities">Friends groups</string>
+    <string name="drawer_my_events">My events</string>
+    <string name="drawer_friends_events">Friends events</string>
 </resources>
