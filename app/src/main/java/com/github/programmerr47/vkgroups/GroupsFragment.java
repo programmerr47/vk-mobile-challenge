@@ -23,11 +23,16 @@ import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext
  */
 public class GroupsFragment extends Fragment {
 
+    private static final int COMMUNITIES = 0;
+    private static final int EVENTS = 1;
+
     private RecyclerView communityList;
     private Spinner spinner;
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
     private FloatingActionButton createCommunityButton;
+
+    private int currentListType = COMMUNITIES;
 
     public static GroupsFragment createInstance() {
         return new GroupsFragment();
@@ -64,6 +69,10 @@ public class GroupsFragment extends Fragment {
 
         prepareSpinner();
         prepareCreateCommunityButton();
+    }
+
+    private void syncCommunities() {
+
     }
 
     private void prepareSpinner(){
