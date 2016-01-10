@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!VKSdk.isLoggedIn()) {
+        if (VKSdk.isLoggedIn()) {
+            init();
+        } else {
             VKSdk.login(this);
         }
 //        VKRequest request = VKApi.wall().get(VKParameters.from(VKApiConst.OFFSET, 2, VKApiConst.COUNT, 1));
@@ -65,61 +67,6 @@ public class MainActivity extends AppCompatActivity
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout,/* toolbar,*/ R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        FragmentManager fm = getSupportFragmentManager();
-        groupsFragment = GroupsFragment.createInstance();
-
-        pager = (ViewPager) findViewById(R.id.main_pager);
-        pager.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        pager.setPageTransformer(false, new VkPagerTransformer());
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            private boolean isScrolledToPage;
-
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (i > 0) {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
-
-                isScrolledToPage = true;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-                if (i == ViewPager.SCROLL_STATE_IDLE) {
-                    if (pager.getCurrentItem() < pagerAdapter.getCount() - 1) {
-                        pagerAdapter.removeLast();
-                    } else {
-                        if (isScrolledToPage) {
-                            int currentItemPos = pager.getCurrentItem();
-//                            pagerAdapter.getFragmentList().get(currentItemPos).onPageOpened();
-                        } else {
-                            isScrolledToPage = false;
-                        }
-                    }
-                }
-            }
-        });
-        slowDownPager();
-
-        pagerAdapter = new VkPagerAdapter(fm, groupsFragment);
-        pager.setAdapter(pagerAdapter);
     }
 
     @Override
@@ -184,15 +131,78 @@ public class MainActivity extends AppCompatActivity
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                int t = 5;
+                init();
             }
             @Override
             public void onError(VKError error) {
-                int t = 5;
+                if (error.errorCode == VKError.VK_CANCELED) {
+                    finish();
+                } else {
+                    //TODO
+                    throw new IllegalStateException("Have now behaviour for error: " + error);
+                }
             }
         })) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void init() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout,/* toolbar,*/ R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager fm = getSupportFragmentManager();
+        groupsFragment = GroupsFragment.createInstance();
+
+        pager = (ViewPager) findViewById(R.id.main_pager);
+        pager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        pager.setPageTransformer(false, new VkPagerTransformer());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            private boolean isScrolledToPage;
+
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i > 0) {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                } else {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+
+                isScrolledToPage = true;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                if (i == ViewPager.SCROLL_STATE_IDLE) {
+                    if (pager.getCurrentItem() < pagerAdapter.getCount() - 1) {
+                        pagerAdapter.removeLast();
+                    } else {
+                        if (isScrolledToPage) {
+                            int currentItemPos = pager.getCurrentItem();
+//                            pagerAdapter.getFragmentList().get(currentItemPos).onPageOpened();
+                        } else {
+                            isScrolledToPage = false;
+                        }
+                    }
+                }
+            }
+        });
+        slowDownPager();
+
+        pagerAdapter = new VkPagerAdapter(fm, groupsFragment);
+        pager.setAdapter(pagerAdapter);
     }
 
     private void slowDownPager() {
