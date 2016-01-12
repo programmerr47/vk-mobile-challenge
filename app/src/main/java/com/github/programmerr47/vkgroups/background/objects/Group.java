@@ -53,7 +53,7 @@ public class Group {
     private String status;
     private String contacts;
     private String links;
-    private WallPost fixedPost;
+    private Post fixedPost;
     private boolean verified;
     private String site;
     private Album mainAlbum;
