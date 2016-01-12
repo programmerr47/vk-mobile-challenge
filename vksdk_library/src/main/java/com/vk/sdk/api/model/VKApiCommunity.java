@@ -24,6 +24,10 @@ package com.vk.sdk.api.model;
 import android.os.Parcel;
 import android.text.TextUtils;
 
+import com.vk.sdk.api.model.special.VkAdminLevel;
+import com.vk.sdk.api.model.special.VkClosedType;
+import com.vk.sdk.api.model.special.VkGroupType;
+
 import org.json.JSONObject;
 
 
@@ -33,9 +37,6 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable, Identifiable {
 
-    private final static String TYPE_GROUP = "group";
-    private final static String TYPE_PAGE = "page";
-    private final static String TYPE_EVENT = "event";
     final static String PHOTO_50 = "http://vk.com/images/community_50.gif";
     final static String PHOTO_100 = "http://vk.com/images/community_100.gif";
 
@@ -53,7 +54,7 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
      * Whether the community is closed
      * @see com.vk.sdk.api.model.VKApiCommunity.Status
      */
-    public int is_closed;
+    public VkClosedType is_closed;
 
     /**
      * Whether a user is the community manager
@@ -64,7 +65,7 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
      * Rights of the user
      * @see com.vk.sdk.api.model.VKApiCommunity.AdminLevel
      */
-    public int admin_level;
+    public VkAdminLevel admin_level;
 
     /**
      * Whether a user is a community member
@@ -73,9 +74,9 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
 
     /**
      * Community type
-     * @see com.vk.sdk.api.model.VKApiCommunity.Type
+     * @see com.vk.sdk.api.model.special.VkGroupType
      */
-    public int type;
+    public VkGroupType type;
 
     /**
      * URL of the 50px-wide community logo.
@@ -108,9 +109,9 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
         super.parse(from);
         name = from.optString("name");
         screen_name = from.optString("screen_name", String.format("club%d", Math.abs(id)));
-        is_closed = from.optInt("is_closed");
+        is_closed = VkClosedType.fromId(from.optInt("is_closed"));
         is_admin = ParseUtils.parseBoolean(from, "is_admin");
-        admin_level = from.optInt("admin_level");
+        admin_level = VkAdminLevel.fromId(from.optInt("admin_level"));
         is_member = ParseUtils.parseBoolean(from, "is_member");
 
         photo_50 = from.optString("photo_50", PHOTO_50);
@@ -127,14 +128,7 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
         }
         photo.sort();
 
-        String type = from.optString("type", "group");
-        if(TYPE_GROUP.equals(type)) {
-            this.type = Type.GROUP;
-        } else if(TYPE_PAGE.equals(type)) {
-            this.type = Type.PAGE;
-        } else if(TYPE_EVENT.equals(type)) {
-            this.type = Type.EVENT;
-        }
+        type = VkGroupType.fromName(from.optString("type", "group"));
         return this;
     }
 
@@ -145,11 +139,11 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
         super(in);
         this.name = in.readString();
         this.screen_name = in.readString();
-        this.is_closed = in.readInt();
+        this.is_closed = VkClosedType.fromId(in.readInt());
         this.is_admin = in.readByte() != 0;
-        this.admin_level = in.readInt();
+        this.admin_level = VkAdminLevel.fromId(in.readInt());
         this.is_member = in.readByte() != 0;
-        this.type = in.readInt();
+        this.type = VkGroupType.fromId(in.readInt());
         this.photo_50 = in.readString();
         this.photo_100 = in.readString();
         this.photo_200 = in.readString();
@@ -178,11 +172,11 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
         super.writeToParcel(dest, flags);
         dest.writeString(this.name);
         dest.writeString(this.screen_name);
-        dest.writeInt(this.is_closed);
+        dest.writeInt(this.is_closed.getId());
         dest.writeByte(is_admin ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.admin_level);
+        dest.writeInt(this.admin_level.getId());
         dest.writeByte(is_member ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.type);
+        dest.writeInt(this.type.getId());
         dest.writeString(this.photo_50);
         dest.writeString(this.photo_100);
         dest.writeString(this.photo_200);
@@ -217,15 +211,5 @@ public class VKApiCommunity extends VKApiOwner implements android.os.Parcelable,
         public final static int OPEN = 0;
         public final static int CLOSED = 1;
         public final static int PRIVATE = 2;
-    }
-
-    /**
-     * Types of communities.
-     */
-    public static class Type {
-        private Type() {}
-        public final static int GROUP = 0;
-        public final static int PAGE = 1;
-        public final static int EVENT = 2;
     }
 }

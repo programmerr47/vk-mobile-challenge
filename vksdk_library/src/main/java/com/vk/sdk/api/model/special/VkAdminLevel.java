@@ -1,10 +1,10 @@
-package com.github.programmerr47.vkgroups.background.objects.special;
+package com.vk.sdk.api.model.special;
 
 /**
  * @author Michael Spitsin
  * @since 2016-01-10
  */
-public enum AdminLevel {
+public enum VkAdminLevel {
     NO(0),
     MODERATOR(1),
     EDITOR(2),
@@ -12,7 +12,7 @@ public enum AdminLevel {
 
     private int id;
 
-    AdminLevel(int id) {
+    VkAdminLevel(int id) {
         this.id = id;
     }
 
@@ -20,8 +20,8 @@ public enum AdminLevel {
         return id;
     }
 
-    public static AdminLevel fromId(int id) {
-        for (AdminLevel type : AdminLevel.values()) {
+    public static VkAdminLevel fromId(int id) {
+        for (VkAdminLevel type : VkAdminLevel.values()) {
             if (type.id == id) {
                 return type;
             }

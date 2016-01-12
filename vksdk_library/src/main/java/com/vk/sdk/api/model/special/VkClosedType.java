@@ -1,17 +1,17 @@
-package com.github.programmerr47.vkgroups.background.objects.special;
+package com.vk.sdk.api.model.special;
 
 /**
  * @author Michael Spitsin
  * @since 2016-01-10
  */
-public enum ClosedType {
+public enum VkClosedType {
     OPEN(0),
     CLOSED(1),
     PRIVATE(2);
 
     private int id;
 
-    ClosedType(int id) {
+    VkClosedType(int id) {
         this.id = id;
     }
 
@@ -19,8 +19,8 @@ public enum ClosedType {
         return id;
     }
 
-    public static ClosedType fromId(int id) {
-        for (ClosedType type : ClosedType.values()) {
+    public static VkClosedType fromId(int id) {
+        for (VkClosedType type : VkClosedType.values()) {
             if (type.id == id) {
                 return type;
             }

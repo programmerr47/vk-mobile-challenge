@@ -1,13 +1,13 @@
 package com.github.programmerr47.vkgroups.background.objects;
 
-import com.github.programmerr47.vkgroups.background.objects.special.AdminLevel;
+import com.vk.sdk.api.model.special.VkAdminLevel;
 import com.github.programmerr47.vkgroups.background.objects.special.BanInfo;
 import com.github.programmerr47.vkgroups.background.objects.special.City;
-import com.github.programmerr47.vkgroups.background.objects.special.ClosedType;
+import com.vk.sdk.api.model.special.VkClosedType;
 import com.github.programmerr47.vkgroups.background.objects.special.Counters;
 import com.github.programmerr47.vkgroups.background.objects.special.Country;
 import com.github.programmerr47.vkgroups.background.objects.special.DeactivatedType;
-import com.github.programmerr47.vkgroups.background.objects.special.GroupType;
+import com.vk.sdk.api.model.special.VkGroupType;
 import com.github.programmerr47.vkgroups.background.objects.special.MainSectionType;
 import com.github.programmerr47.vkgroups.background.objects.special.Market;
 import com.github.programmerr47.vkgroups.background.objects.special.MemberStatus;
@@ -25,12 +25,12 @@ public class Group {
     private long id;
     private String name;
     private String screenName;
-    private ClosedType isClosed;
+    private VkClosedType isClosed;
     private DeactivatedType deactivated;
-    private AdminLevel adminLevel;
+    private VkAdminLevel adminLevel;
     private MemberStatus memberStatus;
     private int invitedBy;
-    private GroupType type;
+    private VkGroupType type;
     private boolean hasPhoto;
     private String photo50Uri;
     private String photo100Uri;
