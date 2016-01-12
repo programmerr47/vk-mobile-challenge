@@ -12,8 +12,10 @@ import com.github.programmerr47.vkgroups.background.objects.special.MainSectionT
 import com.github.programmerr47.vkgroups.background.objects.special.Market;
 import com.github.programmerr47.vkgroups.background.objects.special.MemberStatus;
 import com.github.programmerr47.vkgroups.background.objects.special.Place;
+import com.vk.sdk.api.model.VKApiCommunityFull;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Michael Spitsin
@@ -51,8 +53,8 @@ public class Group {
     private boolean canCreateTopic;
     private String activity;
     private String status;
-    private String contacts;
-    private String links;
+    private List<VKApiCommunityFull.Contact> contacts;
+    private List<Group> links;
     private Post fixedPost;
     private boolean verified;
     private String site;
