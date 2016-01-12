@@ -1,10 +1,18 @@
 package com.github.programmerr47.vkgroups.background.db.entries;
 
+import android.provider.BaseColumns;
+
+import java.util.concurrent.TimeoutException;
+
+import static com.github.programmerr47.vkgroups.background.db.entries.VkContract.COMMA_SEP;
+import static com.github.programmerr47.vkgroups.background.db.entries.VkContract.INTEGER_TYPE;
+import static com.github.programmerr47.vkgroups.background.db.entries.VkContract.TEXT_TYPE;
+
 /**
  * @author Michael Spitsin
  * @since 2016-01-10
  */
-public class GroupEntry {
+public class GroupEntry implements BaseColumns {
 
     public static final String TABLE_NAME = "group";
 
@@ -52,6 +60,54 @@ public class GroupEntry {
     public static final String IS_FAVOURITE = "is_favourite";
     public static final String IS_HIDDEN_FROM_FEED = "is_hidden_from_feed";
     public static final String MAIN_SECTION = "main_section";
+
+    static final String SQL_CREATE_QUERY =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    _ID + INTEGER_TYPE + " PRIMARY KEY" + COMMA_SEP +
+                    GROUP_ID + INTEGER_TYPE + COMMA_SEP +
+                    NAME + TEXT_TYPE + COMMA_SEP +
+                    SCREEN_NAME + TEXT_TYPE + COMMA_SEP +
+                    IS_CLOSED + INTEGER_TYPE + COMMA_SEP +
+                    DEACTIVATED + TEXT_TYPE + COMMA_SEP +
+                    ADMIN_LEVEL + TEXT_TYPE + COMMA_SEP +
+                    MEMBER_STATUS + INTEGER_TYPE + COMMA_SEP +
+                    INVITED_BY + INTEGER_TYPE + COMMA_SEP +
+                    GROUP_TYPE + TEXT_TYPE + COMMA_SEP +
+                    HAS_PHOTO + INTEGER_TYPE + COMMA_SEP +
+                    PHOTO_50_URI + TEXT_TYPE + COMMA_SEP +
+                    PHOTO_100_URI + TEXT_TYPE + COMMA_SEP +
+                    PHOTO_MAX_URI + TEXT_TYPE + COMMA_SEP +
+                    BAN_END_DATE + INTEGER_TYPE + COMMA_SEP +
+                    BAN_COMMENT + TEXT_TYPE + COMMA_SEP +
+                    CITY_ID + INTEGER_TYPE + COMMA_SEP +
+                    COUNTRY_ID + INTEGER_TYPE + COMMA_SEP +
+                    PLACE_ID + INTEGER_TYPE + COMMA_SEP +
+                    DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                    WIKI_PAGE + TEXT_TYPE + COMMA_SEP +
+                    MEMBER_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    PHOTO_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    VIDEO_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    ALBUM_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    AUDIO_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    TOPIC_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    DOC_COUNT + INTEGER_TYPE + COMMA_SEP +
+                    START_DATE + INTEGER_TYPE + COMMA_SEP +
+                    FINISH_DATE + INTEGER_TYPE + COMMA_SEP +
+                    PUBLIC_START_DATE + INTEGER_TYPE + COMMA_SEP +
+                    CAN_POST + INTEGER_TYPE + COMMA_SEP +
+                    CAN_SEE_ALL_POSTS + INTEGER_TYPE + COMMA_SEP +
+                    CAN_UPLOAD_VIDEO + INTEGER_TYPE + COMMA_SEP +
+                    CAN_UPLOAD_DOC + INTEGER_TYPE + COMMA_SEP +
+                    CAN_CREATE_TOPIC + INTEGER_TYPE + COMMA_SEP +
+                    ACTIVITY + TEXT_TYPE + COMMA_SEP +
+                    STATUS + TEXT_TYPE + COMMA_SEP +
+                    FIXED_POST_ID + INTEGER_TYPE + COMMA_SEP +
+                    VERIFIED + INTEGER_TYPE + COMMA_SEP +
+                    SITE + TEXT_TYPE + COMMA_SEP +
+                    MAIN_ALBUM_ID + INTEGER_TYPE + COMMA_SEP +
+                    IS_FAVOURITE + INTEGER_TYPE + COMMA_SEP +
+                    IS_HIDDEN_FROM_FEED + INTEGER_TYPE + COMMA_SEP +
+                    MAIN_SECTION + INTEGER_TYPE + ")";
 
     private GroupEntry() {}
 }
