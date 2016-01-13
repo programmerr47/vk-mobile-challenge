@@ -86,6 +86,12 @@ public class GroupDbParser {
     }
 
     public ContentValues toContentValues(VKApiCommunityFull group) {
-        return null;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GroupEntry.GROUP_ID, group.id);
+        contentValues.put(GroupEntry.NAME, group.name);
+        contentValues.put(GroupEntry.PHOTO_50_URI, group.photo_50);
+        contentValues.put(GroupEntry.PHOTO_100_URI, group.photo_100);
+        contentValues.put(GroupEntry.PHOTO_MAX_URI, group.photo_200);
+        return contentValues;
     }
 }

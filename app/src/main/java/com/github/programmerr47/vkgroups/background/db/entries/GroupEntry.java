@@ -14,7 +14,7 @@ import static com.github.programmerr47.vkgroups.background.db.entries.VkContract
  */
 public class GroupEntry implements BaseColumns {
 
-    public static final String TABLE_NAME = "group";
+    public static final String TABLE_NAME = "groupTable";
 
     public static final String GROUP_ID = "group_id";
     public static final String NAME = "name";

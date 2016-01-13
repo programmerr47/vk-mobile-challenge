@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.github.programmerr47.vkgroups.background.db.GroupDao;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiCommunityArray;
+import com.vk.sdk.api.model.VKApiCommunityFull;
 
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 
@@ -61,6 +64,13 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onComplete(VKResponse response) {
                 super.onComplete(response);
+                VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
+                GroupDao groupDao = new GroupDao();
+                for (VKApiCommunityFull group : communityArray) {
+                    groupDao.saveGroup(group);
+                }
+
+
             }
 
             @Override
