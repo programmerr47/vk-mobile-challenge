@@ -12,3 +12,4 @@
     android:singleLine="true"
     app:fontName="Roboto-Regular.ttf"
     style="?android:attr/spinnerDropDownItemStyle"/>
+    <!--android:layout_marginLeft="@dimen/margin_small"-->

@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <com.github.programmerr47.vkgroups.view.SquareImageView
-        android:id="@+id/community_icon"
+        android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/margin_big"
@@ -20,16 +20,16 @@
         android:layout_gravity="center">
 
         <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_primary"
             android:textSize="18sp"
             android:text="Test group name"
-            app:fontName="Roboto-Medium.ttf"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/community_icon"/>
+            app:fontName="Roboto-Medium.ttf"/>
 
         <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_secondary"
