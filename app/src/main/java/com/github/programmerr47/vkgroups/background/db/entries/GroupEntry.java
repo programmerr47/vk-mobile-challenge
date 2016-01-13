@@ -61,7 +61,7 @@ public class GroupEntry implements BaseColumns {
     public static final String IS_HIDDEN_FROM_FEED = "is_hidden_from_feed";
     public static final String MAIN_SECTION = "main_section";
 
-    static final String SQL_CREATE_QUERY =
+    public static final String SQL_CREATE_QUERY =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     _ID + INTEGER_TYPE + " PRIMARY KEY" + COMMA_SEP +
                     GROUP_ID + INTEGER_TYPE + COMMA_SEP +
