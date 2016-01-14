@@ -1,5 +1,7 @@
 package com.github.programmerr47.vkgroups.adapter.item;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.CommunityItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.HolderProducer;
 import com.vk.sdk.api.model.VKApiCommunityFull;
+
+import java.net.URL;
 
 /**
  * @author Michael Spitsin
@@ -36,7 +40,7 @@ public class CommunityItem implements AdapterItem {
     }
 
     private void bindView(CommunityItemHolder viewHolder, int position) {
-        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
+//        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
         viewHolder.getTitleView().setText(community.name);
         viewHolder.getTypeView().setText(community.type.getName());
     }

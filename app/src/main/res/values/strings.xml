@@ -8,8 +8,10 @@
 
     <string name="drawer_search_communities">Search groups</string>
     <string name="drawer_invites">Invites</string>
+    <string name="drawer_groups">Groups</string>
     <string name="drawer_my_communities">My groups</string>
     <string name="drawer_friends_communities">Friends groups</string>
+    <string name="drawer_events">Events</string>
     <string name="drawer_my_events">My events</string>
     <string name="drawer_friends_events">Friends events</string>
     <string name="drawer_recommendations">Recommendations</string>

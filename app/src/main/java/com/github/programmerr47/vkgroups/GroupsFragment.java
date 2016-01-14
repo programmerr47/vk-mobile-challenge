@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,7 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.github.programmerr47.vkgroups.adapter.GroupAdapter;
+import com.github.programmerr47.vkgroups.adapter.item.CommunityItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
+import com.github.programmerr47.vkgroups.collections.RecyclerItems;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -25,22 +29,27 @@ import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
+import java.util.ArrayList;
+
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 
 /**
  * @author Michael Spitsin
  * @since 2016-01-09
  */
-public class GroupsFragment extends Fragment {
+public class GroupsFragment extends Fragment implements View.OnClickListener {
 
     private static final int COMMUNITIES = 0;
     private static final int EVENTS = 1;
 
-    private RecyclerView communityList;
+    private RecyclerView communityListView;
     private Spinner spinner;
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
     private FloatingActionButton createCommunityButton;
+
+    private GroupAdapter groupAdapter;
+    private RecyclerItems<CommunityItem> groupItems;
 
     private int currentListType = COMMUNITIES;
 
@@ -56,10 +65,14 @@ public class GroupsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        groupItems = new RecyclerItems<>(new ArrayList<CommunityItem>());
+
         VKRequest vkRequest = VKApi.groups().get(VKParameters
                 .from(
                         VKApiConst.EXTENDED, 1,
-                        VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info"));
+                        VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info",
+                        VKApiConst.FILTER, "groups,publics"));
         vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
@@ -68,9 +81,10 @@ public class GroupsFragment extends Fragment {
                 GroupDao groupDao = new GroupDao();
                 for (VKApiCommunityFull group : communityArray) {
                     groupDao.saveGroup(group);
+                    CommunityItem item = new CommunityItem(group);
+                    groupItems.add(item);
+                    groupAdapter.notifyItemInserted(groupItems.size() - 1);
                 }
-
-
             }
 
             @Override
@@ -101,7 +115,7 @@ public class GroupsFragment extends Fragment {
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar_layout);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         spinner = (Spinner) view.findViewById(R.id.toolbar_spinner);
-        communityList = (RecyclerView) view.findViewById(R.id.community_list);
+        communityListView = (RecyclerView) view.findViewById(R.id.community_list);
         createCommunityButton = (FloatingActionButton) view.findViewById(R.id.fab);
     }
 
@@ -111,9 +125,11 @@ public class GroupsFragment extends Fragment {
 
         prepareSpinner();
         prepareCreateCommunityButton();
+        prepareItemsView();
     }
 
-    private void syncCommunities() {
+    @Override
+    public void onClick(View v) {
 
     }
 
@@ -132,5 +148,12 @@ public class GroupsFragment extends Fragment {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void prepareItemsView() {
+        groupAdapter = new GroupAdapter(groupItems, this);
+
+        communityListView.setLayoutManager(new LinearLayoutManager(getContext()));
+        communityListView.setAdapter(groupAdapter);
     }
 }

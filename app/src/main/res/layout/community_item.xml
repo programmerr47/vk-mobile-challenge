@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginRight="@dimen/margin_big"
         android:layout_gravity="center">
 
         <com.github.programmerr47.vkgroups.view.CustomFontTextView
@@ -26,6 +27,7 @@
             android:textColor="@color/text_color_primary"
             android:textSize="18sp"
             android:text="Test group name"
+            android:singleLine="true"
             app:fontName="Roboto-Medium.ttf"/>
 
         <com.github.programmerr47.vkgroups.view.CustomFontTextView

@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/ic_magnify_grey600_36dp"
-        android:title="@string/drawer_search_communities"/>
-
-    <item
-        android:id="@+id/nav_invites"
-        android:icon="@drawable/ic_account_plus_grey600_36dp"
-        android:title="@string/drawer_invites"/>
-
     <group
         android:id="@+id/group_communities"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_communitites"
-            android:icon="@drawable/ic_account_grey600_36dp"
-            android:title="@string/drawer_my_communities"/>
-        <item
-            android:id="@+id/nav_friends_communities"
-            android:icon="@drawable/ic_account_multiple_grey600_36dp"
-            android:title="@string/drawer_friends_communities"/>
-    </group>
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_magnify_grey600_36dp"
+            android:title="@string/drawer_search_communities"/>
 
-    <group
-        android:id="@+id/group_events"
-        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_events"
-            android:icon="@drawable/ic_account_grey600_36dp"
-            android:title="@string/drawer_my_events"/>
-        <item
-            android:id="@+id/nav_friends_events"
-            android:icon="@drawable/ic_account_multiple_grey600_36dp"
-            android:title="@string/drawer_friends_events"/>
-    </group>
+            android:id="@+id/nav_invites"
+            android:icon="@drawable/ic_account_plus_grey600_36dp"
+            android:title="@string/drawer_invites"/>
 
-    <item
-        android:id="@+id/nav_recommendations"
-        android:icon="@drawable/ic_thumb_up_grey600_36dp"
-        android:title="@string/drawer_recommendations"/>
+        <item
+            android:id="@+id/nav_communities"
+            android:icon="@drawable/ic_account_multiple_grey600_36dp"
+            android:title="@string/drawer_groups"/>
+
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_account_multiple_grey600_36dp"
+            android:title="@string/drawer_events"/>
+
+        <item
+            android:id="@+id/nav_recommendations"
+            android:icon="@drawable/ic_thumb_up_grey600_36dp"
+            android:title="@string/drawer_recommendations"/>
+
+    </group>
 
     <group>
         <item

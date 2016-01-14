@@ -28,6 +28,7 @@ public class VKApiConst {
     //Commons
     public static final String USER_ID = "user_id";
     public static final String USER_IDS = "user_ids";
+    public static final String FILTER = "filter";
     public static final String FIELDS = "fields";
     public static final String SORT = "sort";
     public static final String OFFSET = "offset";
