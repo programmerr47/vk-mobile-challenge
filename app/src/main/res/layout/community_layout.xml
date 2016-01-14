@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"/>
+        android:src="@android:drawable/ic_dialog_email"
+        app:layout_behavior="com.github.programmerr47.vkgroups.view.behavior.FABScrollBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
