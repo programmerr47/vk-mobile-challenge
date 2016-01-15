@@ -217,6 +217,8 @@ public class VKApiCommunityFull extends VKApiCommunity implements Parcelable {
      */
     public String site;
 
+    public String activity;
+
     /**
      * Information whether the current community has add current user to the blacklist.
      */
@@ -253,6 +255,7 @@ public class VKApiCommunityFull extends VKApiCommunity implements Parcelable {
         can_post = ParseUtils.parseBoolean(jo, CAN_POST);
         can_see_all_posts = ParseUtils.parseBoolean(jo, CAN_SEE_ALL_POSTS);
         status = jo.optString(STATUS);
+        activity = jo.optString(ACTIVITY);
 
         JSONObject status_audio = jo.optJSONObject("status_audio");
         if(status_audio != null) this.status_audio = new VKApiAudio().parse(status_audio);

@@ -42,7 +42,7 @@ public class CommunityItem implements AdapterItem {
     private void bindView(CommunityItemHolder viewHolder, int position) {
 //        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
         viewHolder.getTitleView().setText(community.name);
-        viewHolder.getTypeView().setText(community.type.getName());
+        viewHolder.getTypeView().setText(community.activity);
     }
 
     @Override

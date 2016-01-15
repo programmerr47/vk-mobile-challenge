@@ -92,6 +92,7 @@ public class GroupDbParser {
         contentValues.put(GroupEntry.PHOTO_50_URI, group.photo_50);
         contentValues.put(GroupEntry.PHOTO_100_URI, group.photo_100);
         contentValues.put(GroupEntry.PHOTO_MAX_URI, group.photo_200);
+        contentValues.put(GroupEntry.ACTIVITY, group.activity);
         return contentValues;
     }
 }
