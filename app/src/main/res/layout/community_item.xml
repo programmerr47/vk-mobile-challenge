@@ -10,34 +10,46 @@
         android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_big"
+        android:layout_margin="@dimen/margin_medium"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_menu_manage"/>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginRight="@dimen/margin_big"
-        android:layout_gravity="center">
+        android:layout_height="match_parent">
 
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_color_primary"
-            android:textSize="18sp"
-            android:text="Test group name"
-            android:singleLine="true"
-            app:fontName="Roboto-Medium.ttf"/>
+            android:orientation="vertical"
+            android:paddingRight="@dimen/margin_big"
+            android:layout_gravity="center">
 
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/text_color_secondary"
-            android:textSize="16sp"
-            android:text="Test group type"/>
+            <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_primary"
+                android:textSize="18sp"
+                android:text="Test group name"
+                android:singleLine="true"
+                app:fontName="Roboto-Medium.ttf"/>
 
-    </LinearLayout>
+            <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color_secondary"
+                android:textSize="16sp"
+                android:text="Test group type"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:background="#228a8a8a"/>
+    </FrameLayout>
 
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.github.programmerr47.vkgroups;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Build;
 
 /**
  * @author Michael Spitsin
@@ -21,5 +22,13 @@ public class AndroidUtils {
         styledAttributes.recycle();
 
         return toolbarHeight;
+    }
+
+    public static boolean hasJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public static boolean hasKitKat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 }
