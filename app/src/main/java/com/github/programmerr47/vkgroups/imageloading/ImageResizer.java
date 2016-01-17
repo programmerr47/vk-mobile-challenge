@@ -35,8 +35,8 @@ public class ImageResizer extends ImageWorker {
     /**
      * Initialize providing a single target image size;
      */
-    public ImageResizer(Context context, ImageCache.ImageCacheParams params) {
-        super(context, params);
+    public ImageResizer(Context context) {
+        super(context);
     }
 
     /**

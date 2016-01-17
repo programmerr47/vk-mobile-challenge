@@ -43,4 +43,10 @@ public class VKResponse {
      * Model parsed from response
      */
     public Object parsedModel;
+
+    public static VKResponse emptyResponse(VKRequest vkRequest) {
+        VKResponse response =  new VKResponse();
+        response.request = vkRequest;
+        return response;
+    }
 }

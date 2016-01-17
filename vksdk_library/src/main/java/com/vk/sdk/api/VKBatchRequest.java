@@ -23,9 +23,12 @@ package com.vk.sdk.api;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.vk.sdk.VKObject;
 import com.vk.sdk.api.httpClient.VKHttpClient;
+
+import java.util.List;
 
 /**
  * Used for execution bunch of methods at time, and receive results of that methods in array
@@ -40,6 +43,10 @@ public class VKBatchRequest extends VKObject {
      * Specify listener for current request
      */
     public VKBatchRequestListener requestListener;
+
+    public VKBatchRequest(List<VKRequest> requestList) {
+        this(toArray(requestList));
+    }
 
     public VKBatchRequest(VKRequest... requests) {
         mRequests = requests;
@@ -95,6 +102,115 @@ public class VKBatchRequest extends VKObject {
     }
 
     /**
+     * Start new batch execution. At this moment a batch simply sends all requests with interval
+     * <br><br>
+     * <strong>Note that</strong> this execution will not throw Error response if any of inner
+     * request throws error response. Instead of that it return just empty response
+     *
+     * @param listener {@link com.vk.sdk.api.VKBatchRequest.VKBatchRequestListener}
+     */
+    public void executeWithListenerSoft(VKBatchRequestListener listener) {
+        if (mRequests == null) {
+            provideError(new VKError(VKError.VK_REQUEST_NOT_PREPARED));
+            return;
+        }
+        this.requestListener = listener;
+        Handler intervalHandler = new Handler(Looper.myLooper());
+
+        int nextInterval = 0;
+        int counter = 0;
+        for (final VKRequest request : mRequests) {
+            counter++;
+            final int internalCounter = counter;
+            intervalHandler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    final VKRequest.VKRequestListener originalListener = request.requestListener;
+                    request.setRequestListener(new VKRequest.VKRequestListener() {
+                        @Override
+                        public void onComplete(VKResponse response) {
+                            Log.d("FUCK", internalCounter + " onComplete for: " + response.responseString);
+                            provideResponse(response);
+                        }
+
+                        @Override
+                        public void onError(VKError error) {
+                            Log.d("FUCK", internalCounter + " onComplete for: " + error + " - " + error.request.getPreparedParameters());
+                            provideResponse(VKResponse.emptyResponse(error.request));
+                        }
+
+                        @Override
+                        public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
+                            if (originalListener != null) {
+                                originalListener.onProgress(progressType, bytesLoaded, bytesTotal);
+                            }
+                        }
+                    });
+                    VKHttpClient.enqueueOperation(request.getOperation());
+                }
+            }, nextInterval);
+
+            nextInterval += 1000 / 3;
+        }
+    }
+
+    public void executeStepByStep(VKBatchRequestListener listener) {
+        if (mRequests == null) {
+            provideError(new VKError(VKError.VK_REQUEST_NOT_PREPARED));
+            return;
+        }
+
+        this.requestListener = listener;
+        Handler intervalHandler = new Handler(Looper.myLooper());
+
+        int nextInterval = 0;
+        int counter = 0;
+        for (final VKRequest request : mRequests) {
+            counter++;
+            final int internalCounter = counter;
+            intervalHandler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    final VKRequest.VKRequestListener originalListener = request.requestListener;
+                    request.setRequestListener(new VKRequest.VKRequestListener() {
+                        @Override
+                        public void onComplete(VKResponse response) {
+                            Log.d("FUCK", internalCounter + " onComplete for: " + response.responseString);
+                            if (originalListener != null) {
+                                originalListener.onComplete(response);
+                            }
+
+                            provideResponseOnlyForMainListener(response);
+                        }
+
+                        @Override
+                        public void onError(VKError error) {
+                            Log.d("FUCK", internalCounter + " onComplete for: " + error + " - " + error.request.getPreparedParameters());
+                            if (originalListener != null) {
+                                originalListener.onError(error);
+                            }
+
+                            provideResponseOnlyForMainListener(VKResponse.emptyResponse(error.request));
+                        }
+
+                        @Override
+                        public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
+                            if (originalListener != null) {
+                                originalListener.onProgress(progressType, bytesLoaded, bytesTotal);
+                            }
+                        }
+                    });
+                    VKHttpClient.enqueueOperation(request.getOperation());
+                }
+            }, nextInterval);
+
+            nextInterval += 1000 / 2;
+        }
+    }
+
+    /**
      * Cancel current batch request
      */
     public void cancel() {
@@ -122,6 +238,17 @@ public class VKBatchRequest extends VKObject {
         }
     }
 
+    protected void provideResponseOnlyForMainListener(VKResponse response) {
+        mResponses[indexOfRequest(response.request)] = response;
+        for (VKResponse resp : mResponses) {
+            if (resp == null) return;
+        }
+
+        if (requestListener != null) {
+            requestListener.onComplete(mResponses);
+        }
+    }
+
     private int indexOfRequest(VKRequest request) {
         for (int i = 0; i < mRequests.length; i++)
             if (mRequests[i].equals(request)) return i;
@@ -140,6 +267,12 @@ public class VKBatchRequest extends VKObject {
         if (requestListener != null)
             requestListener.onError(error);
         cancel();
+    }
+
+    private static VKRequest[] toArray(List<VKRequest> vkRequestList) {
+        VKRequest[] vkRequests = new VKRequest[vkRequestList.size()];
+        vkRequestList.toArray(vkRequests);
+        return vkRequests;
     }
 
     /**

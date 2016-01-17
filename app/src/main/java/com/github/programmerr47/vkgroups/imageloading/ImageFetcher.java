@@ -55,8 +55,9 @@ public class ImageFetcher extends ImageResizer {
      * Initialize providing for the processing images.
      */
     public ImageFetcher(Context context, ImageCache.ImageCacheParams params) {
-        super(context, params);
+        super(context);
         init(context);
+        addImageCache(params);
     }
 
     private void init(Context context) {

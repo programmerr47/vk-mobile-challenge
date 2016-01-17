@@ -56,9 +56,8 @@ public abstract class ImageWorker {
     private static final int MESSAGE_FLUSH = 2;
     private static final int MESSAGE_CLOSE = 3;
 
-    protected ImageWorker(Context context, ImageCache.ImageCacheParams params) {
+    protected ImageWorker(Context context) {
         mResources = context.getResources();
-        addImageCache(params);
     }
 
     /**

@@ -31,7 +31,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/community_list"/>
+    <include
+        android:id="@+id/my_community_list"
+        layout="@layout/community_list"/>
+
+    <include
+        android:id="@+id/friend_community_list"
+        layout="@layout/community_list"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

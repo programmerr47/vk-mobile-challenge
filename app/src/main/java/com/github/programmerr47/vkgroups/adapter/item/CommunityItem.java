@@ -1,6 +1,7 @@
 package com.github.programmerr47.vkgroups.adapter.item;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,16 +37,6 @@ public class CommunityItem implements AdapterItem {
         }
     }
 
-    private void bindView(CommunityItemHolder viewHolder, int position) {
-        VKGroupApplication.getImageWorker().loadImage(
-                community.photo_100,
-                viewHolder.getAvatarView(),
-                new ImageWorker.LoadBitmapParams(100, 100));
-//        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
-        viewHolder.getTitleView().setText(community.name);
-        viewHolder.getTypeView().setText(community.activity);
-    }
-
     @Override
     public HolderProducer getViewHolderProducer() {
         return new HolderProducer() {
@@ -67,5 +58,20 @@ public class CommunityItem implements AdapterItem {
                 return cachedHolder;
             }
         };
+    }
+
+    public VKApiCommunityFull getCommunity() {
+        return community;
+    }
+
+    private void bindView(CommunityItemHolder viewHolder, int position) {
+        Log.v("FUCK", "Bind item " + getCommunity());
+        VKGroupApplication.getImageWorker().loadImage(
+                community.photo_100,
+                viewHolder.getAvatarView(),
+                new ImageWorker.LoadBitmapParams(100, 100));
+//        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
+        viewHolder.getTitleView().setText(community.name);
+        viewHolder.getTypeView().setText(community.activity);
     }
 }

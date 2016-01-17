@@ -18,6 +18,7 @@ import com.github.programmerr47.vkgroups.pager.VkPagerAdapter;
 import com.github.programmerr47.vkgroups.pager.VkPagerTransformer;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.util.VKUtil;
@@ -37,11 +38,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] t = VKUtil.getCertificateFingerprint(this, this.getPackageName());
         if (VKSdk.isLoggedIn()) {
             init();
         } else {
-            VKSdk.login(this);
+            VKSdk.login(this, VKScope.GROUPS, VKScope.FRIENDS);
         }
 //        VKRequest request = VKApi.wall().get(VKParameters.from(VKApiConst.OFFSET, 2, VKApiConst.COUNT, 1));
 //        request.executeWithListener(new VKRequest.VKRequestListener() {
