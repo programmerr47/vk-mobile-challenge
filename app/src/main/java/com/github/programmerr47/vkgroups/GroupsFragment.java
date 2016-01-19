@@ -20,10 +20,11 @@ import android.widget.Toast;
 
 import com.github.programmerr47.vkgroups.adapter.GroupAdapter;
 import com.github.programmerr47.vkgroups.adapter.item.CommunityItem;
+import com.github.programmerr47.vkgroups.adapter.item.FriendsCommunityItem;
+import com.github.programmerr47.vkgroups.adapter.item.MyCommunityItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
 import com.github.programmerr47.vkgroups.background.parsers.UsersIdJsonParser;
 import com.github.programmerr47.vkgroups.collections.RecyclerItems;
-import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKBatchRequest;
@@ -31,13 +32,10 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +110,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                 GroupDao groupDao = new GroupDao();
                 for (VKApiCommunityFull group : communityArray) {
                     groupDao.saveGroup(group);
-                    CommunityItem item = new CommunityItem(group);
+                    CommunityItem item = new MyCommunityItem(group);
                     myGroupItems.add(item);
                     myGroupAdapter.notifyItemInserted(myGroupItems.size() - 1);
                 }
@@ -140,12 +138,12 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
             public void onComplete(final VKResponse response) {
                 super.onComplete(response);
 
-                final Map<Integer, CommunityItem> itemsViews = new HashMap<>();
+                final Map<Integer, FriendsCommunityItem> itemsViews = new HashMap<>();
                 final Map<Integer, VKApiCommunityFull> items = new HashMap<>();
                 final Map<Integer, Integer> counters = new HashMap<>();
 
                 List<Integer> friendIds = new UsersIdJsonParser().parse(response.json);
-                List<VKRequest> friendGroupRequests = new ArrayList<VKRequest>();
+                List<VKRequest> friendGroupRequests = new ArrayList<>();
                 for (Integer friendId : friendIds) {
                     VKRequest vkRequest = VKApi.groups().get(VKParameters
                             .from(
@@ -176,8 +174,8 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                                     if (items.containsKey(group.id)) {
                                         counters.put(group.id, counters.get(group.id) + 1);
 
-                                        CommunityItem item = itemsViews.get(group.id);
-                                        item.getCommunity().activity = String.valueOf(counters.get(group.id));
+                                        FriendsCommunityItem item = itemsViews.get(group.id);
+                                        item.addFriend();
 
                                         int position = friendGroupItems.indexOf(item) - 1;
                                         while (position >= 0 &&
@@ -198,9 +196,8 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                                     } else {
                                         items.put(group.id, group);
                                         counters.put(group.id, 1);
-                                        group.activity = "1";
 
-                                        CommunityItem item = new CommunityItem(group);
+                                        FriendsCommunityItem item = new FriendsCommunityItem(group);
                                         itemsViews.put(group.id, item);
 
                                         friendGroupItems.add(item);

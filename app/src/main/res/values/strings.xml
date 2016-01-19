@@ -6,15 +6,23 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- Drawer items -->
     <string name="drawer_search_communities">Search groups</string>
     <string name="drawer_invites">Invites</string>
     <string name="drawer_groups">Groups</string>
-    <string name="drawer_my_communities">My groups</string>
-    <string name="drawer_friends_communities">Friends groups</string>
     <string name="drawer_events">Events</string>
     <string name="drawer_my_events">My events</string>
     <string name="drawer_friends_events">Friends events</string>
     <string name="drawer_recommendations">Recommendations</string>
     <string name="drawer_share">Share</string>
     <string name="drawer_send">Send feedback</string>
+
+    <!-- Groups page -->
+    <string name="page_my_communities">My groups</string>
+    <string name="page_friends_communities">Friends groups</string>
+    <plurals name="friends">
+        <item quantity="one">%1$d friend</item>
+        <item quantity="other">%1$d friends</item>
+    </plurals>
+
 </resources>

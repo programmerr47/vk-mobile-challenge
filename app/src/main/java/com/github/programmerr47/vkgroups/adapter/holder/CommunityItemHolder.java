@@ -13,14 +13,14 @@ public class CommunityItemHolder extends RecyclerView.ViewHolder {
 
     private ImageView avatarView;
     private TextView titleView;
-    private TextView typeView;
+    private TextView subInfoView;
 
     public CommunityItemHolder(View itemView,ResourceParams params) {
         super(itemView);
 
         avatarView = (ImageView) itemView.findViewById(params.avatarId);
         titleView = (TextView) itemView.findViewById(params.titleId);
-        typeView = (TextView) itemView.findViewById(params.typeId);
+        subInfoView = (TextView) itemView.findViewById(params.subInfoId);
     }
 
     public ImageView getAvatarView() {
@@ -31,13 +31,13 @@ public class CommunityItemHolder extends RecyclerView.ViewHolder {
         return titleView;
     }
 
-    public TextView getTypeView() {
-        return typeView;
+    public TextView getSubInfoView() {
+        return subInfoView;
     }
 
     public static class ResourceParams {
         public int avatarId;
         public int titleId;
-        public int typeId;
+        public int subInfoId;
     }
 }

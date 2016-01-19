@@ -17,9 +17,9 @@ import com.vk.sdk.api.model.VKApiCommunityFull;
  * @author Michael Spitsin
  * @since 2016-01-13
  */
-public class CommunityItem implements AdapterItem {
+public abstract class CommunityItem implements AdapterItem {
 
-    private VKApiCommunityFull community;
+    protected VKApiCommunityFull community;
 
     private CommunityItemHolder cachedHolder;
 
@@ -52,7 +52,7 @@ public class CommunityItem implements AdapterItem {
                 CommunityItemHolder.ResourceParams params = new CommunityItemHolder.ResourceParams();
                 params.avatarId = R.id.icon;
                 params.titleId = R.id.title;
-                params.typeId = R.id.type;
+                params.subInfoId = R.id.type;
 
                 cachedHolder = new CommunityItemHolder(view, params);
                 return cachedHolder;
@@ -64,14 +64,15 @@ public class CommunityItem implements AdapterItem {
         return community;
     }
 
+    protected abstract String getTextForSubInfoView();
+
     private void bindView(CommunityItemHolder viewHolder, int position) {
-        Log.v("FUCK", "Bind item " + getCommunity());
         VKGroupApplication.getImageWorker().loadImage(
                 community.photo_100,
                 viewHolder.getAvatarView(),
                 new ImageWorker.LoadBitmapParams(100, 100));
-//        viewHolder.getAvatarView().setImageURI(Uri.parse(community.photo_50));
+
         viewHolder.getTitleView().setText(community.name);
-        viewHolder.getTypeView().setText(community.activity);
+        viewHolder.getSubInfoView().setText(getTextForSubInfoView());
     }
 }
