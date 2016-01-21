@@ -25,7 +25,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.ImageView;
 
 import com.github.programmerr47.vkgroups.BuildConfig;
@@ -85,7 +88,8 @@ public abstract class ImageWorker {
 
         if (value != null) {
             // Bitmap found in memory cache
-            imageView.setImageDrawable(value);
+            Drawable finalDrawable = postProcessDrawable(value, params);
+            imageView.setImageDrawable(finalDrawable);
         } else if (cancelPotentialWork(data, imageView)) {
             //BEGIN_INCLUDE(execute_background_task)
             final BitmapWorkerTask task = new BitmapWorkerTask(data, imageView);
@@ -227,7 +231,7 @@ public abstract class ImageWorker {
     /**
      * The actual AsyncTask that will asynchronously process the image.
      */
-    private class BitmapWorkerTask extends AsyncTask<LoadBitmapParams, Void, BitmapDrawable> {
+    private class BitmapWorkerTask extends AsyncTask<LoadBitmapParams, Void, Pair<BitmapDrawable, LoadBitmapParams>> {
         private Object mData;
         private final WeakReference<ImageView> imageViewReference;
 
@@ -240,7 +244,7 @@ public abstract class ImageWorker {
          * Background processing.
          */
         @Override
-        protected BitmapDrawable doInBackground(LoadBitmapParams... params) {
+        protected Pair<BitmapDrawable, LoadBitmapParams> doInBackground(LoadBitmapParams... params) {
             //BEGIN_INCLUDE(load_bitmap_in_background)
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "doInBackground - starting work");
@@ -295,7 +299,7 @@ public abstract class ImageWorker {
                 Log.d(TAG, "doInBackground - finished work");
             }
 
-            return drawable;
+            return new Pair<>(drawable, loadBitmapParams);
             //END_INCLUDE(load_bitmap_in_background)
         }
 
@@ -303,9 +307,12 @@ public abstract class ImageWorker {
          * Once the image is processed, associates it to the imageView
          */
         @Override
-        protected void onPostExecute(BitmapDrawable value) {
+        protected void onPostExecute(Pair<BitmapDrawable, LoadBitmapParams> result) {
             //BEGIN_INCLUDE(complete_background_work)
             // if cancel was called on this task or the "exit early" flag is set then we're done
+            BitmapDrawable value = result.first;
+            LoadBitmapParams params = result.second;
+
             if (isCancelled() || mExitTasksEarly) {
                 value = null;
             }
@@ -315,14 +322,14 @@ public abstract class ImageWorker {
                 if (BuildConfig.DEBUG) {
                     Log.d(TAG, "onPostExecute - setting bitmap");
                 }
-                setImageDrawable(imageView, value);
+                setImageDrawable(imageView, value, params);
             }
             //END_INCLUDE(complete_background_work)
         }
 
         @Override
-        protected void onCancelled(BitmapDrawable value) {
-            super.onCancelled(value);
+        protected void onCancelled(Pair<BitmapDrawable, LoadBitmapParams> result) {
+            super.onCancelled(result);
             synchronized (mPauseWorkLock) {
                 mPauseWorkLock.notifyAll();
             }
@@ -367,13 +374,15 @@ public abstract class ImageWorker {
      * Called when the processing is complete and the final drawable should be 
      * set on the ImageView.
      */
-    private void setImageDrawable(ImageView imageView, Drawable drawable) {
+    private void setImageDrawable(ImageView imageView, BitmapDrawable drawable, LoadBitmapParams loadingParams) {
+        Drawable finalDrawable = postProcessDrawable(drawable, loadingParams);
+
         if (mFadeInBitmap) {
             // Transition drawable with a transparent drawable and the final drawable
             final TransitionDrawable td =
                     new TransitionDrawable(new Drawable[] {
                             new ColorDrawable(imageView.getResources().getColor(android.R.color.transparent)),
-                            drawable
+                            finalDrawable
                     });
             // Set background to loading bitmap
             imageView.setBackgroundDrawable(
@@ -382,7 +391,18 @@ public abstract class ImageWorker {
             imageView.setImageDrawable(td);
             td.startTransition(FADE_IN_TIME);
         } else {
-            imageView.setImageDrawable(drawable);
+            imageView.setImageDrawable(finalDrawable);
+        }
+    }
+
+    private Drawable postProcessDrawable(BitmapDrawable drawable, LoadBitmapParams loadingParams) {
+        if (loadingParams.isRound) {
+            Bitmap sourceBitmap = drawable.getBitmap();
+            RoundedBitmapDrawable roundDrawable =  RoundedBitmapDrawableFactory.create(mResources, sourceBitmap);
+            roundDrawable.setCircular(true);
+            return roundDrawable;
+        } else {
+            return drawable;
         }
     }
 
@@ -472,6 +492,7 @@ public abstract class ImageWorker {
     public static final class LoadBitmapParams {
         public int imageWidth;
         public int imageHeight;
+        public boolean isRound = true;
 
         public LoadBitmapParams(int imageWidth, int imageHeight) {
             this.imageWidth = imageWidth;
