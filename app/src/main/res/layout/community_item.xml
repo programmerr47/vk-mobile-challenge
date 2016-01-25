@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingRight="@dimen/margin_big"
+            android:paddingEnd="@dimen/margin_big"
             android:layout_gravity="center">
 
             <com.github.programmerr47.vkgroups.view.CustomFontTextView
@@ -42,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_secondary"
                 android:textSize="16sp"
-                android:text="Test group type"/>
+                android:text="Test group type"
+                app:fontName="Roboto-Regular.ttf"/>
 
         </LinearLayout>
 

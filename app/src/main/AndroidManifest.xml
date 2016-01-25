@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".TestDetailActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name="com.vk.sdk.VKServiceActivity" android:label="ServiceActivity" android:theme="@style/VK.Transparent" />
     </application>
 

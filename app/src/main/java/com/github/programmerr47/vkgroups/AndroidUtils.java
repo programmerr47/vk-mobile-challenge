@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 
@@ -34,6 +36,10 @@ public class AndroidUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
+    public static boolean hasJellyBeanMr1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
+
     public static boolean hasKitKat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
@@ -47,6 +53,28 @@ public class AndroidUtils {
 
         public String plural(Context context, int id, int quantity, Object... formatArgs) {
             return context.getResources().getQuantityString(id, quantity, formatArgs);
+        }
+
+        public int dimenI(int id) {
+            return (int) dimen(id);
+        }
+
+        public float dimen(int id) {
+            return dimen(getAppContext(), id);
+        }
+
+        public float dimen(Context context, int id) {
+            return context.getResources().getDimension(id);
+        }
+
+        @ColorInt
+        public int color(@ColorRes int id) {
+            return color(getAppContext(), id);
+        }
+
+        @ColorInt
+        public int color(Context context, @ColorRes int id) {
+            return context.getResources().getColor(id);
         }
     }
 }

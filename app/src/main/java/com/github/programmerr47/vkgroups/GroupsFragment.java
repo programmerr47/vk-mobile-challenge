@@ -1,5 +1,6 @@
 package com.github.programmerr47.vkgroups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -108,7 +109,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                 super.onComplete(response);
                 VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
                 GroupDao groupDao = new GroupDao();
-                for (VKApiCommunityFull group : communityArray) {
+                for (final VKApiCommunityFull group : communityArray) {
                     groupDao.saveGroup(group);
                     CommunityItem item = new MyCommunityItem(group);
                     myGroupItems.add(item);
@@ -308,7 +309,16 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void prepareItemsViews() {
-        myGroupAdapter = new GroupAdapter(myGroupItems, this);
+        myGroupAdapter = new GroupAdapter(myGroupItems, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = myCommunityListView.getChildAdapterPosition(v);
+
+                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
+                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
+                startActivity(intent);
+            }
+        });
 
         myCommunityListView.setLayoutManager(new LinearLayoutManager(getContext()));
         myCommunityListView.setAdapter(myGroupAdapter);

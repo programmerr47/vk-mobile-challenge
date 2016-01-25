@@ -498,5 +498,11 @@ public abstract class ImageWorker {
             this.imageWidth = imageWidth;
             this.imageHeight = imageHeight;
         }
+
+        public LoadBitmapParams(int imageWidth, int imageHeight, boolean isRound) {
+            this.imageWidth = imageWidth;
+            this.imageHeight = imageHeight;
+            this.isRound = isRound;
+        }
     }
 }
