@@ -30,13 +30,10 @@ public class AbstractMultiTypeRecyclerAdapter<Item extends AdapterItem> extends 
 
     @Override
     public final RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        long time = System.nanoTime();
         Map<Integer, HolderProducer> typeProducers = mItems.getTypesMap();
         HolderProducer producer = typeProducers.get(viewType);
-//        Log.v("FUCK", "onCreate . Time = " + ((System.nanoTime() - time) / 1000.0));
         RecyclerView.ViewHolder result = producer.produce(parent);
         onPostCreateViewHolder(result);
-//        Log.v("FUCK", "onCreate " + result.getClass().getSimpleName() + ". Time = " + ((System.nanoTime() - time) / 1000.0));
         return result;
     }
 

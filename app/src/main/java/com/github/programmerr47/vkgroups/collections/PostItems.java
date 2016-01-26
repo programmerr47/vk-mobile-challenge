@@ -196,8 +196,8 @@ public class PostItems implements List<PostItem> {
 
     public int getItemType(int position) {
         PostItem item = get(position);
-        String className = item.getClass().getName();
-        return mTypeNames.indexOf(className);
+        String itemId = item.getItemId();
+        return mTypeNames.indexOf(itemId);
     }
 
     private List<String> getAllDifferentIdsFromPostItems(Collection<PostItem> collection) {

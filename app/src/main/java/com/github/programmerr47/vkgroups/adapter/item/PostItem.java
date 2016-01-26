@@ -24,6 +24,10 @@ public final class PostItem {
     private Map<String, VKApiUser> postUsers;
     private Map<String, VKApiCommunity> postCommunity;
 
+    public PostItem(VKApiPost vkApiPost) {
+        this.post = vkApiPost;
+    }
+
     public void bindView(PostItemHolder viewHolder, int position) {
 
     }
@@ -47,8 +51,8 @@ public final class PostItem {
                 params.repostIconId = R.id.share_post_image;
                 params.commentIconId = R.id.comment_image;
                 params.likeCountId = R.id.like_count;
-                params.repostIconId = R.id.share_post_count;
-                params.commentIconId = R.id.comment_count;
+                params.repostCountId = R.id.share_post_count;
+                params.commentCountId = R.id.comment_count;
 
                 return new PostItemHolder(baseView, ownerPostContent, params);
             }

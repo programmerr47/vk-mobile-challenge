@@ -23,8 +23,9 @@ public class TestDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String image = getIntent().getStringExtra("TEST_IMAGE");
+        int id = - getIntent().getIntExtra("TEST_ID", 0);
 
-        page = new GroupDetailPage(this);
+        page = new GroupDetailPage(this, id);
         setContentView(page.getAttachedView());
         getImageWorker().loadImage(
                 image,
