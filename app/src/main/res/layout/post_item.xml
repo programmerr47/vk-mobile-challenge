@@ -1,242 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_medium"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
-        android:id="@+id/owner_container"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height_default"
-        android:orientation="horizontal">
-
-        <com.github.programmerr47.vkgroups.view.SquareImageView
-            android:id="@+id/owner_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_medium"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_manage"/>
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/owner_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_big"
-            android:layout_marginEnd="@dimen/margin_big"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/owner_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_primary"
-                android:textSize="18sp"
-                android:text="Test group name"
-                android:singleLine="true"
-                app:fontName="Roboto-Medium.ttf"/>
-
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/owner_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_secondary"
-                android:textSize="16sp"
-                android:text="09 january 2015 9:09"
-                app:fontName="Roboto-Regular.ttf"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <com.github.programmerr47.vkgroups.view.CustomFontTextView
-        android:id="@+id/post_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginStart="@dimen/margin_medium"
-        android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"
-        android:textColor="@color/text_color_primary"
-        android:textSize="16sp"
-        app:fontName="Roboto-Regular.ttf"/>
-
-    <LinearLayout
-        android:id="@+id/repost_container"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height_small"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="@dimen/list_item_height_default"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:scaleType="center"
-                android:alpha="0.7"
-                android:src="@drawable/ic_share_grey600_36dp"/>
-
-        </FrameLayout>
-
-        <com.github.programmerr47.vkgroups.view.SquareImageView
-            android:id="@+id/repost_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_manage"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_big"
-            android:layout_marginEnd="@dimen/margin_big"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/respot_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_primary"
-                android:textSize="16sp"
-                android:text="Test group name"
-                android:singleLine="true"
-                app:fontName="Roboto-Medium.ttf"/>
-
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/repost_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_secondary"
-                android:textSize="13sp"
-                android:text="09 january 2015 9:09"
-                app:fontName="Roboto-Regular.ttf"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <com.github.programmerr47.vkgroups.view.CustomFontTextView
-        android:id="@+id/repost_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"
-        android:textColor="@color/text_color_primary"
-        android:textSize="16sp"
-        app:fontName="Roboto-Regular.ttf"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_gravity="bottom"
-        android:background="#443a3a3a"/>
-
-    <FrameLayout
-        android:id="@+id/actions_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_medium">
-
-        <LinearLayout
-            android:id="@+id/comment_action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_gravity="start"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/comment_image"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:padding="@dimen/margin_small"
-                android:src="@drawable/ic_comment_outline_grey600_36dp"/>
-
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/comment_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="1245043"
-                android:textColor="@color/text_color_secondary"
-                android:textSize="12sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_height="@dimen/list_item_height_default"
             android:orientation="horizontal">
 
+            <com.github.programmerr47.vkgroups.view.SquareImageView
+                android:id="@+id/owner_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_medium"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu_manage"/>
+
             <LinearLayout
-                android:id="@+id/share_post_action"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_medium"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_gravity="start"
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_marginEnd="@dimen/margin_big"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/share_post_image"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/margin_small"
-                    android:src="@drawable/ic_share_variant_grey600_36dp"/>
-
                 <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                    android:id="@+id/share_post_count"
+                    android:id="@+id/owner_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="380045"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="18sp"
+                    android:text="Test group name"
+                    android:singleLine="true"
+                    app:fontName="Roboto-Medium.ttf"/>
+
+                <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                    android:id="@+id/owner_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/text_color_secondary"
-                    android:textSize="12sp"/>
+                    android:textSize="16sp"
+                    android:text="09 january 2015 9:09"
+                    app:fontName="Roboto-Regular.ttf"/>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/like_action"
-                android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/post_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"
+            android:textColor="@color/text_color_primary"
+            android:textSize="16sp"
+            app:fontName="Roboto-Regular.ttf"/>
+
+        <LinearLayout
+            android:id="@+id/repost_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_height_small"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="@dimen/list_item_height_default"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:scaleType="center"
+                    android:alpha="0.7"
+                    android:src="@drawable/ic_share_grey600_36dp"/>
+
+            </FrameLayout>
+
+            <com.github.programmerr47.vkgroups.view.SquareImageView
+                android:id="@+id/repost_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu_manage"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_marginEnd="@dimen/margin_big"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                    android:id="@+id/respot_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="16sp"
+                    android:text="Test group name"
+                    android:singleLine="true"
+                    app:fontName="Roboto-Medium.ttf"/>
+
+                <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                    android:id="@+id/repost_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="13sp"
+                    android:text="09 january 2015 9:09"
+                    app:fontName="Roboto-Regular.ttf"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/repost_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"
+            android:textColor="@color/text_color_primary"
+            android:textSize="16sp"
+            app:fontName="Roboto-Regular.ttf"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_gravity="bottom"
+            android:background="#443a3a3a"/>
+
+        <FrameLayout
+            android:id="@+id/actions_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_medium">
+
+            <LinearLayout
+                android:id="@+id/comment_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
                 android:layout_gravity="start"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/like_image"
+                    android:id="@+id/comment_image"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:padding="@dimen/margin_small"
-                    android:src="@drawable/ic_heart_outline_grey600_36dp"/>
+                    android:src="@drawable/ic_comment_outline_grey600_36dp"/>
 
                 <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                    android:id="@+id/like_count"
+                    android:id="@+id/comment_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -246,8 +192,73 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
 
-    </FrameLayout>
+                <LinearLayout
+                    android:id="@+id/share_post_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_gravity="start"
+                    android:orientation="vertical">
 
-</LinearLayout>
+                    <ImageView
+                        android:id="@+id/share_post_image"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/margin_small"
+                        android:src="@drawable/ic_share_variant_grey600_36dp"/>
+
+                    <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                        android:id="@+id/share_post_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="380045"
+                        android:textColor="@color/text_color_secondary"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/like_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_gravity="start"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/like_image"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/margin_small"
+                        android:src="@drawable/ic_heart_outline_grey600_36dp"/>
+
+                    <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                        android:id="@+id/like_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="1245043"
+                        android:textColor="@color/text_color_secondary"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

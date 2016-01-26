@@ -61,6 +61,7 @@ public class PostContentView extends LinearLayout {
 
         postHeaderTextContainer.addView(ownerTitleView);
         postHeaderContainer.addView(postHeaderTextContainer);
+        addView(postHeaderContainer);
     }
 
     private void setMarginEndIfPossible(LayoutParams layoutParams, int margin) {
