@@ -133,109 +133,110 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        final VKRequest vkFriendRequest = VKApi.friends().get(VKParameters.from());
-        vkFriendRequest.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(final VKResponse response) {
-                super.onComplete(response);
-
-                final Map<Integer, FriendsCommunityItem> itemsViews = new HashMap<>();
-                final Map<Integer, VKApiCommunityFull> items = new HashMap<>();
-                final Map<Integer, Integer> counters = new HashMap<>();
-
-                List<Integer> friendIds = new UsersIdJsonParser().parse(response.json);
-                List<VKRequest> friendGroupRequests = new ArrayList<>();
-                for (Integer friendId : friendIds) {
-                    VKRequest vkRequest = VKApi.groups().get(VKParameters
-                            .from(
-                                    VKApiConst.USER_ID, friendId,
-                                    VKApiConst.EXTENDED, 1,
-                                    VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info",
-                                    VKApiConst.FILTER, "groups,publics"));
-                    vkRequest.setRequestListener(new VKRequest.VKRequestListener() {
-                        @Override
-                        public void onComplete(VKResponse response) {
-                            super.onComplete(response);
-                            VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
-                            GroupDao groupDao = new GroupDao();
-
-//                            Collections.sort(communityItems, new Comparator<CommunityItem>() {
-//                                @Override
-//                                public int compare(CommunityItem lhs, CommunityItem rhs) {
-//                                    int lhsCount = Integer.parseInt(lhs.getCommunity().activity);
-//                                    int rhsCount = Integer.parseInt(rhs.getCommunity().activity);
-//                                    return lhsCount < rhsCount ? 1 : lhsCount > rhsCount ? -1 : 0 ;
+        //TODO
+//        final VKRequest vkFriendRequest = VKApi.friends().get(VKParameters.from());
+//        vkFriendRequest.executeWithListener(new VKRequest.VKRequestListener() {
+//            @Override
+//            public void onComplete(final VKResponse response) {
+//                super.onComplete(response);
+//
+//                final Map<Integer, FriendsCommunityItem> itemsViews = new HashMap<>();
+//                final Map<Integer, VKApiCommunityFull> items = new HashMap<>();
+//                final Map<Integer, Integer> counters = new HashMap<>();
+//
+//                List<Integer> friendIds = new UsersIdJsonParser().parse(response.json);
+//                List<VKRequest> friendGroupRequests = new ArrayList<>();
+//                for (Integer friendId : friendIds) {
+//                    VKRequest vkRequest = VKApi.groups().get(VKParameters
+//                            .from(
+//                                    VKApiConst.USER_ID, friendId,
+//                                    VKApiConst.EXTENDED, 1,
+//                                    VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info",
+//                                    VKApiConst.FILTER, "groups,publics"));
+//                    vkRequest.setRequestListener(new VKRequest.VKRequestListener() {
+//                        @Override
+//                        public void onComplete(VKResponse response) {
+//                            super.onComplete(response);
+//                            VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
+//                            GroupDao groupDao = new GroupDao();
+//
+////                            Collections.sort(communityItems, new Comparator<CommunityItem>() {
+////                                @Override
+////                                public int compare(CommunityItem lhs, CommunityItem rhs) {
+////                                    int lhsCount = Integer.parseInt(lhs.getCommunity().activity);
+////                                    int rhsCount = Integer.parseInt(rhs.getCommunity().activity);
+////                                    return lhsCount < rhsCount ? 1 : lhsCount > rhsCount ? -1 : 0 ;
+////                                }
+////                            });
+//
+//                            if (communityArray != null) {
+//                                for (VKApiCommunityFull group : communityArray) {
+//                                    //groupDao.saveGroup(group);
+//
+//                                    if (items.containsKey(group.id)) {
+//                                        counters.put(group.id, counters.get(group.id) + 1);
+//
+//                                        FriendsCommunityItem item = itemsViews.get(group.id);
+//                                        item.addFriend();
+//
+//                                        int position = friendGroupItems.indexOf(item) - 1;
+//                                        while (position >= 0 &&
+//                                                counters.get(friendGroupItems.get(position).getCommunity().id) < counters.get(group.id)) {
+//                                            position--;
+//                                        }
+//
+//                                        position++;
+//
+//                                        int oldPosition = friendGroupItems.indexOf(item);
+//                                        friendGroupItems.remove(item);
+//                                        friendGroupItems.add(position, item);
+//
+//                                        Log.v("FUCK", "Item moved " + item.getCommunity());
+//                                        friendGroupAdapter.notifyItemMoved(oldPosition, position);
+//                                        friendGroupAdapter.notifyItemChanged(position);
+//                                        friendCommunityListView.scrollToPosition(0);
+//                                    } else {
+//                                        items.put(group.id, group);
+//                                        counters.put(group.id, 1);
+//
+//                                        FriendsCommunityItem item = new FriendsCommunityItem(group);
+//                                        itemsViews.put(group.id, item);
+//
+//                                        friendGroupItems.add(item);
+//                                        friendGroupAdapter.notifyItemInserted(friendGroupItems.size() - 1);
+//                                    }
 //                                }
-//                            });
-
-                            if (communityArray != null) {
-                                for (VKApiCommunityFull group : communityArray) {
-                                    //groupDao.saveGroup(group);
-
-                                    if (items.containsKey(group.id)) {
-                                        counters.put(group.id, counters.get(group.id) + 1);
-
-                                        FriendsCommunityItem item = itemsViews.get(group.id);
-                                        item.addFriend();
-
-                                        int position = friendGroupItems.indexOf(item) - 1;
-                                        while (position >= 0 &&
-                                                counters.get(friendGroupItems.get(position).getCommunity().id) < counters.get(group.id)) {
-                                            position--;
-                                        }
-
-                                        position++;
-
-                                        int oldPosition = friendGroupItems.indexOf(item);
-                                        friendGroupItems.remove(item);
-                                        friendGroupItems.add(position, item);
-
-                                        Log.v("FUCK", "Item moved " + item.getCommunity());
-                                        friendGroupAdapter.notifyItemMoved(oldPosition, position);
-                                        friendGroupAdapter.notifyItemChanged(position);
-                                        friendCommunityListView.scrollToPosition(0);
-                                    } else {
-                                        items.put(group.id, group);
-                                        counters.put(group.id, 1);
-
-                                        FriendsCommunityItem item = new FriendsCommunityItem(group);
-                                        itemsViews.put(group.id, item);
-
-                                        friendGroupItems.add(item);
-                                        friendGroupAdapter.notifyItemInserted(friendGroupItems.size() - 1);
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    friendGroupRequests.add(vkRequest);
-                }
-                VKBatchRequest getAllFriendGroupRequest = new VKBatchRequest(friendGroupRequests);
-                getAllFriendGroupRequest.executeStepByStep(new VKBatchRequest.VKBatchRequestListener() {
-                    @Override
-                    public void onComplete(VKResponse[] responses) {
-                        super.onComplete(responses);
-                        Toast.makeText(getContext(), "Friends groups generating finished", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-                super.attemptFailed(request, attemptNumber, totalAttempts);
-            }
-
-            @Override
-            public void onError(VKError error) {
-                super.onError(error);
-            }
-
-            @Override
-            public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
-                super.onProgress(progressType, bytesLoaded, bytesTotal);
-            }
-        });
+//                            }
+//                        }
+//                    });
+//
+//                    friendGroupRequests.add(vkRequest);
+//                }
+//                VKBatchRequest getAllFriendGroupRequest = new VKBatchRequest(friendGroupRequests);
+//                getAllFriendGroupRequest.executeStepByStep(new VKBatchRequest.VKBatchRequestListener() {
+//                    @Override
+//                    public void onComplete(VKResponse[] responses) {
+//                        super.onComplete(responses);
+//                        Toast.makeText(getContext(), "Friends groups generating finished", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+//                super.attemptFailed(request, attemptNumber, totalAttempts);
+//            }
+//
+//            @Override
+//            public void onError(VKError error) {
+//                super.onError(error);
+//            }
+//
+//            @Override
+//            public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
+//                super.onProgress(progressType, bytesLoaded, bytesTotal);
+//            }
+//        });
     }
 
     @Nullable

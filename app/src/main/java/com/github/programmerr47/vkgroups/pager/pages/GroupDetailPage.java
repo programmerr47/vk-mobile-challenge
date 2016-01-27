@@ -16,12 +16,14 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiPost;
+import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKPostArray;
 
 import java.util.ArrayList;
-
-import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Michael Spitsin
@@ -64,9 +66,20 @@ public class GroupDetailPage {
             public void onComplete(VKResponse response) {
                 super.onComplete(response);
                 VKPostArray postArray = (VKPostArray) response.parsedModel;
+
+                Map<Integer, VKApiUser> userMap = new HashMap<>();
+                for (VKApiUser user : postArray.getUsers()) {
+                    userMap.put(user.id, user);
+                }
+
+                Map<Integer, VKApiCommunity> groupMap = new HashMap<>();
+                for (VKApiCommunity group : postArray.getCommunities()) {
+                    groupMap.put(group.id, group);
+                }
+
                 PostItems items = new PostItems(new ArrayList<PostItem>());
                 for (VKApiPost apiPost : postArray) {
-                    PostItem postItem = new PostItem(apiPost);
+                    PostItem postItem = new PostItem(apiPost, userMap, groupMap);
                     items.add(postItem);
                 }
 

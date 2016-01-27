@@ -24,7 +24,6 @@ package com.vk.sdk.api.model;
 import android.os.Parcel;
 
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.methods.VKApiUsers;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +89,14 @@ public class VKPostArray extends VKList<VKApiPost> {
         for (VKApiCommunity item : communities) {
             dest.writeParcelable(item, flags);
         }
+    }
+
+    public List<VKApiUser> getUsers() {
+        return users;
+    }
+
+    public List<VKApiCommunity> getCommunities() {
+        return communities;
     }
 
     private JSONObject getResponseBody(JSONObject from) {

@@ -64,7 +64,7 @@ public class PostContentView extends LinearLayout {
 
         LinearLayout postHeaderTextContainer = new LinearLayout(getContext());
         postHeaderTextContainer.setOrientation(VERTICAL);
-        postHeaderContainer.setLayoutParams(postHeaderTextParams);
+        postHeaderTextContainer.setLayoutParams(postHeaderTextParams);
 
         LayoutParams wrapParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
 

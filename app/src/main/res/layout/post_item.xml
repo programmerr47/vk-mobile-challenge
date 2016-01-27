@@ -13,50 +13,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/owner_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height_default"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/owner_container"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/list_item_height_default"-->
+            <!--android:orientation="horizontal">-->
 
-            <com.github.programmerr47.vkgroups.view.SquareImageView
-                android:id="@+id/owner_icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/margin_medium"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_menu_manage"/>
+            <!--<com.github.programmerr47.vkgroups.view.SquareImageView-->
+                <!--android:id="@+id/owner_icon"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_margin="@dimen/margin_medium"-->
+                <!--android:scaleType="centerCrop"/>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_big"
-                android:layout_marginEnd="@dimen/margin_big"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="@dimen/margin_big"-->
+                <!--android:layout_marginEnd="@dimen/margin_big"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:orientation="vertical">-->
 
-                <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                    android:id="@+id/owner_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_primary"
-                    android:textSize="18sp"
-                    android:text="Test group name"
-                    android:singleLine="true"
-                    app:fontName="Roboto-Medium.ttf"/>
+                <!--<com.github.programmerr47.vkgroups.view.CustomFontTextView-->
+                    <!--android:id="@+id/owner_title"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/text_color_primary"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:text="Test group name"-->
+                    <!--android:singleLine="true"-->
+                    <!--app:fontName="Roboto-Medium.ttf"/>-->
 
-                <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                    android:id="@+id/owner_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_secondary"
-                    android:textSize="16sp"
-                    android:text="09 january 2015 9:09"
-                    app:fontName="Roboto-Regular.ttf"/>
+                <!--<com.github.programmerr47.vkgroups.view.CustomFontTextView-->
+                    <!--android:id="@+id/owner_date"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/text_color_secondary"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:text="09 january 2015 9:09"-->
+                    <!--app:fontName="Roboto-Regular.ttf"/>-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <com.github.programmerr47.vkgroups.view.CustomFontTextView
             android:id="@+id/post_text"

@@ -1,17 +1,17 @@
 package com.github.programmerr47.vkgroups.adapter.item;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.VKGroupApplication;
 import com.github.programmerr47.vkgroups.adapter.holder.CommunityItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.HolderProducer;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.vk.sdk.api.model.VKApiCommunityFull;
+
+import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 
 /**
  * @author Michael Spitsin
@@ -67,7 +67,7 @@ public abstract class CommunityItem implements AdapterItem {
     protected abstract String getTextForSubInfoView();
 
     private void bindView(CommunityItemHolder viewHolder, int position) {
-        VKGroupApplication.getImageWorker().loadImage(
+        getImageWorker().loadImage(
                 community.photo_100,
                 viewHolder.getAvatarView(),
                 new ImageWorker.LoadBitmapParams(100, 100));

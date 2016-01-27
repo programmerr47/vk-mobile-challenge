@@ -8,12 +8,15 @@ import android.widget.LinearLayout;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
+import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.github.programmerr47.vkgroups.view.PostContentView;
 import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 
 import java.util.Map;
+
+import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 
 /**
  * @author Michael Spitsin
@@ -22,11 +25,13 @@ import java.util.Map;
 public final class PostItem {
 
     private VKApiPost post;
-    private Map<String, VKApiUser> postUsers;
-    private Map<String, VKApiCommunity> postCommunity;
+    private Map<Integer, VKApiUser> userMap;
+    private Map<Integer, VKApiCommunity> groupMap;
 
-    public PostItem(VKApiPost vkApiPost) {
+    public PostItem(VKApiPost vkApiPost, Map<Integer, VKApiUser> userMap, Map<Integer, VKApiCommunity> groupMap) {
         this.post = vkApiPost;
+        this.userMap = userMap;
+        this.groupMap = groupMap;
     }
 
     public void bindView(PostItemHolder viewHolder, int position) {
@@ -62,7 +67,22 @@ public final class PostItem {
             }
         }
 
-        viewHolder.getOwnerContentView().getOwnerTitleView().setText(String.valueOf(post.from_id));
+        if (post.from_id > 0) {
+            VKApiUser user = userMap.get(post.from_id);
+            viewHolder.getOwnerContentView().getOwnerTitleView().setText(String.format("%s %s", user.last_name, user.first_name));
+            getImageWorker().loadImage(
+                    user.photo_100,
+                    viewHolder.getOwnerContentView().getOwnerImageView(),
+                    new ImageWorker.LoadBitmapParams(100, 100));
+        } else {
+            VKApiCommunity group = groupMap.get(-post.from_id);
+            viewHolder.getOwnerContentView().getOwnerTitleView().setText(group.name);
+            getImageWorker().loadImage(
+                    group.photo_100,
+                    viewHolder.getOwnerContentView().getOwnerImageView(),
+                    new ImageWorker.LoadBitmapParams(100, 100));
+        }
+
         viewHolder.getOwnerContentView().getOwnerPostDateView().setText(String.valueOf(post.date));
     }
 
@@ -79,7 +99,9 @@ public final class PostItem {
 
                 LinearLayout postSections = (LinearLayout) baseView.getChildAt(0);
 
-                PostContentView ownerPostContent = new PostContentView(baseView.getContext());
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                PostContentView ownerPostContent = new PostContentView(postSections.getContext());
+                ownerPostContent.setLayoutParams(layoutParams);
                 postSections.addView(ownerPostContent, 0);
 
                 PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
