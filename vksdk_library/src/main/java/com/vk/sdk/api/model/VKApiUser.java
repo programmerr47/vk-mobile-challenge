@@ -20,11 +20,9 @@
 //
 
 /**
- * User.java
- * vk-android-sdk
- *
- * Created by Babichev Vitaly on 18.01.14.
- * Copyright (c) 2014 VK. All rights reserved.
+ * User.java vk-android-sdk
+ * <p/>
+ * Created by Babichev Vitaly on 18.01.14. Copyright (c) 2014 VK. All rights reserved.
  */
 package com.vk.sdk.api.model;
 
@@ -146,8 +144,7 @@ public class VKApiUser extends VKApiOwner implements android.os.Parcelable {
      */
     public VKPhotoSizes photo = new VKPhotoSizes();
 
-	public VKApiUser(JSONObject from) throws JSONException
-	{
+	public VKApiUser(JSONObject from) throws JSONException {
 		parse(from);
 	}
     /**
@@ -174,7 +171,7 @@ public class VKApiUser extends VKApiOwner implements android.os.Parcelable {
     }
 
 	protected String addSquarePhoto(String photoUrl, int size) {
-		if(!TextUtils.isEmpty(photoUrl)) {
+		if (!TextUtils.isEmpty(photoUrl)) {
 			photo.add(VKApiPhotoSize.create(photoUrl, size));
 		}
 		return photoUrl;
@@ -215,7 +212,7 @@ public class VKApiUser extends VKApiOwner implements android.os.Parcelable {
      */
     @Override
     public String toString() {
-        if(full_name == null) {
+        if (full_name == null) {
             full_name = first_name + ' ' + last_name;
         }
         return full_name;
@@ -239,10 +236,10 @@ public class VKApiUser extends VKApiOwner implements android.os.Parcelable {
         dest.writeParcelable(this.photo, flags);
         dest.writeString(this.full_name);
 
-	    dest.writeString(this.photo_400_orig);
-	    dest.writeString(this.photo_max);
-	    dest.writeString(this.photo_max_orig);
-	    dest.writeString(this.photo_big);
+        dest.writeString(this.photo_400_orig);
+        dest.writeString(this.photo_max);
+        dest.writeString(this.photo_max_orig);
+        dest.writeString(this.photo_big);
     }
 
     public static Creator<VKApiUser> CREATOR = new Creator<VKApiUser>() {

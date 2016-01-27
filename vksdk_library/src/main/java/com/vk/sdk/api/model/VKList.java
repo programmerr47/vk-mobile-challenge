@@ -54,7 +54,7 @@ public class VKList<T extends VKApiModel & Parcelable & Identifiable> extends VK
     /**
      * Decorated list
      */
-    private ArrayList<T> items = new ArrayList<T>();
+    private ArrayList<T> items = new ArrayList<>();
 
     /**
      * Field {@code count} which returned by server.
@@ -129,7 +129,7 @@ public class VKList<T extends VKApiModel & Parcelable & Identifiable> extends VK
                 fill(from.optJSONObject("response"), clazz);
             }
         } else {
-            fill(from, new ReflectParser<T>(clazz));
+            fill(from, new ReflectParser<>(clazz));
         }
     }
 
@@ -160,11 +160,11 @@ public class VKList<T extends VKApiModel & Parcelable & Identifiable> extends VK
      * @param creator interface implementation to parse objects.
      */
     public void fill(JSONArray from, Parser<? extends T> creator) {
-        if(from != null) {
+        if (from != null) {
             for(int i = 0; i < from.length(); i++) {
                 try {
                     T object = creator.parseObject(from.getJSONObject(i));
-                    if(object != null) {
+                    if (object != null) {
                         items.add(object);
                     }
                 } catch (Exception e) {
@@ -422,7 +422,7 @@ public class VKList<T extends VKApiModel & Parcelable & Identifiable> extends VK
      * Used when parsing the list objects as interator created from {@link org.json.JSONArray} a instances of items of the list.
      * @param <D> list item type.
      */
-    public static interface Parser<D> {
+    public interface Parser<D> {
 
         /**
          * Creates a list item of its representation return VK API from {@link org.json.JSONArray}

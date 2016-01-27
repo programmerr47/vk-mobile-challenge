@@ -63,6 +63,7 @@ public final class PostItem {
         }
 
         viewHolder.getOwnerContentView().getOwnerTitleView().setText(String.valueOf(post.from_id));
+        viewHolder.getOwnerContentView().getOwnerPostDateView().setText(String.valueOf(post.date));
     }
 
     public PostItemHolderProducer getViewHolderProducer() {
