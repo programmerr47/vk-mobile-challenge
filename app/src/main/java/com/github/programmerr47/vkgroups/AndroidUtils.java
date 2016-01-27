@@ -47,6 +47,14 @@ public class AndroidUtils {
     public enum ResourceHelper {
         INSTANCE;
 
+        public String string(int id) {
+            return string(getAppContext(), id);
+        }
+
+        public String string(Context context, int id) {
+            return context.getResources().getString(id);
+        }
+
         public String plural(int id, int quantity, Object... formatArgs) {
             return plural(getAppContext(), id, quantity, formatArgs);
         }

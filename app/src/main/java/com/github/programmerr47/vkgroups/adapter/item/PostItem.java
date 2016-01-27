@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.github.programmerr47.vkgroups.DateFormatter;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
@@ -75,7 +76,7 @@ public final class PostItem {
                     viewHolder.getOwnerContentView().getOwnerImageView(),
                     new ImageWorker.LoadBitmapParams(100, 100));
         } else {
-            VKApiCommunity group = groupMap.get(-post.from_id);
+            VKApiCommunity group = groupMap.get(Math.abs(post.from_id));
             viewHolder.getOwnerContentView().getOwnerTitleView().setText(group.name);
             getImageWorker().loadImage(
                     group.photo_100,
@@ -83,7 +84,7 @@ public final class PostItem {
                     new ImageWorker.LoadBitmapParams(100, 100));
         }
 
-        viewHolder.getOwnerContentView().getOwnerPostDateView().setText(String.valueOf(post.date));
+        viewHolder.getOwnerContentView().getOwnerPostDateView().setText(DateFormatter.formatDate(post.date));
     }
 
     public PostItemHolderProducer getViewHolderProducer() {

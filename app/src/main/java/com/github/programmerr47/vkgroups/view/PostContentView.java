@@ -91,8 +91,10 @@ public class PostContentView extends LinearLayout {
 
         postHeaderTextContainer.addView(ownerTitleView);
         postHeaderTextContainer.addView(ownerPostDateView);
+
         postHeaderContainer.addView(ownerImageView);
         postHeaderContainer.addView(postHeaderTextContainer);
+
         addView(postHeaderContainer);
     }
 }

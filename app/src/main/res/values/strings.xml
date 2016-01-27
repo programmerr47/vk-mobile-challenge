@@ -25,4 +25,8 @@
         <item quantity="other">%1$d friends</item>
     </plurals>
 
+    <!-- Dates -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
 </resources>
