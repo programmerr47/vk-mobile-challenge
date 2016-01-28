@@ -19,6 +19,10 @@ public class AndroidUtils {
         return ResourceHelper.INSTANCE;
     }
 
+    public static Typeface getAssetsTypeface(Constants.Font font) {
+        return getAssetsTypeface(getAppContext(), font);
+    }
+
     public static Typeface getAssetsTypeface(Context context, Constants.Font font) {
         return Typeface.createFromAsset(context.getAssets(), Constants.ASSETS_FONTS_DIR + font.getFontName());
     }
