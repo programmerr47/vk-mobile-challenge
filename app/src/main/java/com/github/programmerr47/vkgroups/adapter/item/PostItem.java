@@ -83,24 +83,26 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             }
         }
 
+        PostContentView ownerContentView = viewHolder.getOwnerContentView();
         if (post.from_id > 0) {
             VKApiUser user = userMap.get(post.from_id);
-            viewHolder.getOwnerContentView().getOwnerTitleView().setText(String.format("%s %s", user.last_name, user.first_name));
+            ownerContentView.getOwnerTitleView().setText(String.format("%s %s", user.last_name, user.first_name));
             getImageWorker().loadImage(
                     user.photo_100,
-                    viewHolder.getOwnerContentView().getOwnerImageView(),
+                    ownerContentView.getOwnerImageView(),
                     new ImageWorker.LoadBitmapParams(100, 100));
         } else {
             VKApiCommunity group = groupMap.get(Math.abs(post.from_id));
-            viewHolder.getOwnerContentView().getOwnerTitleView().setText(group.name);
+            ownerContentView.getOwnerTitleView().setText(group.name);
             getImageWorker().loadImage(
                     group.photo_100,
-                    viewHolder.getOwnerContentView().getOwnerImageView(),
+                    ownerContentView.getOwnerImageView(),
                     new ImageWorker.LoadBitmapParams(100, 100));
         }
 
-        viewHolder.getOwnerContentView().getOwnerPostDateView().setText(DateFormatter.formatDate(post.date));
-        postDescription.appendToTextView(viewHolder.getOwnerContentView().getPostTextView());
+        ownerContentView.getOwnerPostDateView().setText(DateFormatter.formatDate(post.date));
+        postDescription.appendToDescriptionTextView(ownerContentView.getPostTextView());
+        postDescription.appendToExpandCollapseTextView(ownerContentView.getPostExpandCollapseView());
     }
 
     public PostItemHolderProducer getViewHolderProducer() {

@@ -1,22 +1,16 @@
 package com.github.programmerr47.vkgroups.view;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.ViewUtils;
-
-import java.util.Collection;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
-import static com.github.programmerr47.vkgroups.AndroidUtils.hasJellyBeanMr1;
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.Constants.Font.ROBOTO_BOLD;
 import static com.github.programmerr47.vkgroups.Constants.Font.ROBOTO_MEDIUM;
@@ -36,6 +30,7 @@ public class PostContentView extends LinearLayout {
     private ImageView repostFlagView;
 
     private CustomFontTextView postTextView;
+    private CustomFontTextView postExpandCollapseView;
 
     public PostContentView(Context context) {
         super(context);
@@ -56,6 +51,10 @@ public class PostContentView extends LinearLayout {
 
     public CustomFontTextView getPostTextView() {
         return postTextView;
+    }
+
+    public CustomFontTextView getPostExpandCollapseView() {
+        return postExpandCollapseView;
     }
 
     private void init() {
@@ -102,10 +101,21 @@ public class PostContentView extends LinearLayout {
         setCommonMargin(postTextParams, res().dimenI(R.dimen.margin_medium));
 
         postTextView = new CustomFontTextView(getContext());
-        postTextView.setFont(ROBOTO_BOLD);
+        postTextView.setFont(ROBOTO_REGULAR);
         postTextView.setLayoutParams(postTextParams);
         postTextView.setTextSize(COMPLEX_UNIT_SP, 16);
-        postTextView.setTextColor(res().color(R.color.text_color_secondary));
+        postTextView.setTextColor(res().color(R.color.text_color_primary));
+
+        LayoutParams postCollapseExpandViewParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+        setCommonMargin(postCollapseExpandViewParams, res().dimenI(R.dimen.margin_medium));
+        postCollapseExpandViewParams.gravity = Gravity.END;
+
+        postExpandCollapseView = new CustomFontTextView(getContext());
+        postExpandCollapseView.setFont(ROBOTO_BOLD);
+        postExpandCollapseView.setLayoutParams(postTextParams);
+        postExpandCollapseView.setTextSize(COMPLEX_UNIT_SP, 15);
+        postExpandCollapseView.setTextColor(res().color(R.color.colorAccent));
+        postExpandCollapseView.setAllCaps(true);
 
         postHeaderTextContainer.addView(ownerTitleView);
         postHeaderTextContainer.addView(ownerPostDateView);
@@ -115,5 +125,6 @@ public class PostContentView extends LinearLayout {
 
         addView(postHeaderContainer);
         addView(postTextView);
+        addView(postExpandCollapseView);
     }
 }
