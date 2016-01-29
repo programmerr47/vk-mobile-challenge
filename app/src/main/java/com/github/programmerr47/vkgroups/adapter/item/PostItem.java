@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.programmerr47.vkgroups.DateFormatter;
+import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
@@ -15,6 +16,8 @@ import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
@@ -23,16 +26,28 @@ import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorke
  * @author Michael Spitsin
  * @since 2016-01-24
  */
-public final class PostItem {
+public final class PostItem implements PostDescription.OnDescriptionRepresentationChangedListener {
 
     private VKApiPost post;
     private Map<Integer, VKApiUser> userMap;
     private Map<Integer, VKApiCommunity> groupMap;
 
-    public PostItem(VKApiPost vkApiPost, Map<Integer, VKApiUser> userMap, Map<Integer, VKApiCommunity> groupMap) {
+    private PostItemNotifier notifier;
+
+    private PostDescription postDescription;
+    private List<PostDescription> historyDescriptions;
+
+    public PostItem(VKApiPost vkApiPost, Map<Integer, VKApiUser> userMap, Map<Integer, VKApiCommunity> groupMap, PostItemNotifier notifier) {
         this.post = vkApiPost;
         this.userMap = userMap;
         this.groupMap = groupMap;
+        this.notifier = notifier;
+        initAllDescriptions();
+    }
+
+    @Override
+    public void onDescriptionChanged(boolean isCollapsed) {
+        notifier.notifyItemChanged(this);
     }
 
     public void bindView(PostItemHolder viewHolder, int position) {
@@ -85,6 +100,7 @@ public final class PostItem {
         }
 
         viewHolder.getOwnerContentView().getOwnerPostDateView().setText(DateFormatter.formatDate(post.date));
+        postDescription.appendToTextView(viewHolder.getOwnerContentView().getPostTextView());
     }
 
     public PostItemHolderProducer getViewHolderProducer() {
@@ -123,5 +139,18 @@ public final class PostItem {
 
     public String getItemId() {
         return "test";
+    }
+
+    private void initAllDescriptions() {
+        postDescription = createDescription(post);
+
+        historyDescriptions = new ArrayList<>();
+        for (VKApiPost historyPost : post.copy_history) {
+            historyDescriptions.add(createDescription(historyPost));
+        }
+    }
+
+    private PostDescription createDescription(VKApiPost post) {
+        return new PostDescription(post.text, this);
     }
 }

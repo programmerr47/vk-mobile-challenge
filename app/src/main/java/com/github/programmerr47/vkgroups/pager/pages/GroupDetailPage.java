@@ -78,12 +78,12 @@ public class GroupDetailPage {
                 }
 
                 PostItems items = new PostItems(new ArrayList<PostItem>());
+                PostAdapter adapter = new PostAdapter(items);
                 for (VKApiPost apiPost : postArray) {
-                    PostItem postItem = new PostItem(apiPost, userMap, groupMap);
+                    PostItem postItem = new PostItem(apiPost, userMap, groupMap, adapter);
                     items.add(postItem);
                 }
 
-                PostAdapter adapter = new PostAdapter(items);
                 postListView.setAdapter(adapter);
             }
 

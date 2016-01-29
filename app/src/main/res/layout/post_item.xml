@@ -57,19 +57,19 @@
 
         <!--</LinearLayout>-->
 
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/post_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"
-            android:textColor="@color/text_color_primary"
-            android:textSize="16sp"
-            app:fontName="Roboto-Regular.ttf"/>
+        <!--<com.github.programmerr47.vkgroups.view.CustomFontTextView-->
+            <!--android:id="@+id/post_text"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/margin_medium"-->
+            <!--android:layout_marginRight="@dimen/margin_medium"-->
+            <!--android:layout_marginEnd="@dimen/margin_medium"-->
+            <!--android:layout_marginLeft="@dimen/margin_medium"-->
+            <!--android:layout_marginStart="@dimen/margin_medium"-->
+            <!--android:text="This is simple test text of test post from vk to test this functionality, what are you talking about?"-->
+            <!--android:textColor="@color/text_color_primary"-->
+            <!--android:textSize="16sp"-->
+            <!--app:fontName="Roboto-Regular.ttf"/>-->
 
         <LinearLayout
             android:id="@+id/repost_container"

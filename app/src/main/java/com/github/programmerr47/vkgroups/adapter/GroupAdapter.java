@@ -30,7 +30,7 @@ public class GroupAdapter extends AbstractMultiTypeRecyclerAdapter<CommunityItem
     }
 
     @Override
-    public void notifyElementChanged(AdapterItem item) {
+    public void notifyItemChanged(AdapterItem item) {
         //TODO
         int itemPosition = mItems.indexOf(item);
         if (itemPosition != -1) {

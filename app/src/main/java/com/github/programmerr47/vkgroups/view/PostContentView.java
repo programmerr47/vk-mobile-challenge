@@ -10,12 +10,15 @@ import android.widget.LinearLayout;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.ViewUtils;
 
+import java.util.Collection;
+
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static com.github.programmerr47.vkgroups.AndroidUtils.hasJellyBeanMr1;
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.Constants.Font.ROBOTO_BOLD;
 import static com.github.programmerr47.vkgroups.Constants.Font.ROBOTO_MEDIUM;
 import static com.github.programmerr47.vkgroups.Constants.Font.ROBOTO_REGULAR;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
@@ -32,6 +35,8 @@ public class PostContentView extends LinearLayout {
     private CustomFontTextView ownerPostDateView;
     private ImageView repostFlagView;
 
+    private CustomFontTextView postTextView;
+
     public PostContentView(Context context) {
         super(context);
         init();
@@ -47,6 +52,10 @@ public class PostContentView extends LinearLayout {
 
     public CustomFontTextView getOwnerPostDateView() {
         return ownerPostDateView;
+    }
+
+    public CustomFontTextView getPostTextView() {
+        return postTextView;
     }
 
     private void init() {
@@ -89,6 +98,15 @@ public class PostContentView extends LinearLayout {
         ownerPostDateView.setTextColor(res().color(R.color.text_color_secondary));
         ownerPostDateView.setSingleLine();
 
+        LayoutParams postTextParams = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+        setCommonMargin(postTextParams, res().dimenI(R.dimen.margin_medium));
+
+        postTextView = new CustomFontTextView(getContext());
+        postTextView.setFont(ROBOTO_BOLD);
+        postTextView.setLayoutParams(postTextParams);
+        postTextView.setTextSize(COMPLEX_UNIT_SP, 16);
+        postTextView.setTextColor(res().color(R.color.text_color_secondary));
+
         postHeaderTextContainer.addView(ownerTitleView);
         postHeaderTextContainer.addView(ownerPostDateView);
 
@@ -96,5 +114,6 @@ public class PostContentView extends LinearLayout {
         postHeaderContainer.addView(postHeaderTextContainer);
 
         addView(postHeaderContainer);
+        addView(postTextView);
     }
 }

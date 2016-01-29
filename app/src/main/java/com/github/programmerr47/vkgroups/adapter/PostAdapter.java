@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.github.programmerr47.vkgroups.adapter.item.PostItemNotifier;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.adapter.item.PostItem;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author Michael Spitsin
  * @since 26.01.2016
  */
-public class PostAdapter extends RecyclerView.Adapter<PostItemHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostItemHolder> implements PostItemNotifier {
 
     private PostItems items;
 
@@ -95,7 +96,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostItemHolder> {
         return items.get(position);
     }
 
-    public void notifyElementChange(PostItem item) {
+    @Override
+    public void notifyItemChanged(PostItem item) {
         int position = items.indexOf(item);
         if (position != -1) {
             notifyItemChanged(position);

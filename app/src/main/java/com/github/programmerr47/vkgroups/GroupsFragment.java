@@ -97,41 +97,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
         myGroupItems = new RecyclerItems<>(new ArrayList<CommunityItem>());
         friendGroupItems = new RecyclerItems<>(new ArrayList<CommunityItem>());
 
-        //TODO move it
-        VKRequest vkRequest = VKApi.groups().get(VKParameters
-                .from(
-                        VKApiConst.EXTENDED, 1,
-                        VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info",
-                        VKApiConst.FILTER, "groups,publics"));
-        vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
-            @Override
-            public void onComplete(VKResponse response) {
-                super.onComplete(response);
-                VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
-                GroupDao groupDao = new GroupDao();
-                for (final VKApiCommunityFull group : communityArray) {
-                    groupDao.saveGroup(group);
-                    CommunityItem item = new MyCommunityItem(group);
-                    myGroupItems.add(item);
-                    myGroupAdapter.notifyItemInserted(myGroupItems.size() - 1);
-                }
-            }
-
-            @Override
-            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-                super.attemptFailed(request, attemptNumber, totalAttempts);
-            }
-
-            @Override
-            public void onError(VKError error) {
-                super.onError(error);
-            }
-
-            @Override
-            public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
-                super.onProgress(progressType, bytesLoaded, bytesTotal);
-            }
-        });
+        requestAllGroups();
 
         //TODO
 //        final VKRequest vkFriendRequest = VKApi.friends().get(VKParameters.from());
@@ -341,5 +307,51 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
         }
+    }
+
+    private void requestAllGroups() {
+        //TODO move it
+        VKRequest vkRequest = VKApi.groups().get(VKParameters
+                .from(
+                        VKApiConst.EXTENDED, 1,
+                        VKApiConst.FIELDS, "blacklisted,status_audio,city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info",
+                        VKApiConst.FILTER, "groups,publics"));
+        vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                super.onComplete(response);
+                VKApiCommunityArray communityArray = (VKApiCommunityArray) response.parsedModel;
+                GroupDao groupDao = new GroupDao();
+                for (final VKApiCommunityFull group : communityArray) {
+                    groupDao.saveGroup(group);
+                    CommunityItem item = new MyCommunityItem(group);
+                    myGroupItems.add(item);
+                    myGroupAdapter.notifyItemInserted(myGroupItems.size() - 1);
+                }
+            }
+
+            @Override
+            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+                super.attemptFailed(request, attemptNumber, totalAttempts);
+            }
+
+            @Override
+            public void onError(VKError error) {
+                super.onError(error);
+                Snackbar.make(createCommunityButton, error.toString(), Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.try_again, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                requestAllGroups();
+                            }
+                        })
+                        .show();
+            }
+
+            @Override
+            public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
+                super.onProgress(progressType, bytesLoaded, bytesTotal);
+            }
+        });
     }
 }
