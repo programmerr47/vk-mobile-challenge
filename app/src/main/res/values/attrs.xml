@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="dimension" format="enum">
+        <enum name="base_width" value="0"/>
+        <enum name="base_height" value="1"/>
+        <enum name="base_min" value="2"/>
+        <enum name="base_max" value="3"/>
+    </attr>
 
     <declare-styleable name="CustomFontTextView">
         <attr name="fontName" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="SquareImageView">
+        <attr name="dimension"/>
     </declare-styleable>
 
 </resources>

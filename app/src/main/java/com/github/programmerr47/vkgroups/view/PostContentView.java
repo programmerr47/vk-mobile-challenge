@@ -1,11 +1,14 @@
 package com.github.programmerr47.vkgroups.view;
 
 import android.content.Context;
+import android.provider.Contacts;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.github.programmerr47.vkgroups.R;
+
+import java.util.List;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -31,6 +34,8 @@ public class PostContentView extends LinearLayout {
 
     private CustomFontTextView postTextView;
     private CustomFontTextView postExpandCollapseView;
+    private List<ImageView> photos;
+//    private PostPhotosView postPhotosView;
 
     public PostContentView(Context context) {
         super(context);
@@ -55,6 +60,19 @@ public class PostContentView extends LinearLayout {
 
     public CustomFontTextView getPostExpandCollapseView() {
         return postExpandCollapseView;
+    }
+
+//    public PostPhotosView getPostPhotosView() {
+//        return postPhotosView;
+//    }
+
+
+    public List<ImageView> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<ImageView> photos) {
+        this.photos = photos;
     }
 
     private void init() {
@@ -112,10 +130,16 @@ public class PostContentView extends LinearLayout {
 
         postExpandCollapseView = new CustomFontTextView(getContext());
         postExpandCollapseView.setFont(ROBOTO_BOLD);
-        postExpandCollapseView.setLayoutParams(postTextParams);
+        postExpandCollapseView.setLayoutParams(postCollapseExpandViewParams);
         postExpandCollapseView.setTextSize(COMPLEX_UNIT_SP, 15);
         postExpandCollapseView.setTextColor(res().color(R.color.colorAccent));
         postExpandCollapseView.setAllCaps(true);
+
+//        LayoutParams postPhotosParams = new LayoutParams(MATCH_PARENT, WRAP_CONTENT);
+//        setCommonMargin(postPhotosParams, res().dimenI(R.dimen.margin_medium));
+//
+//        postPhotosView = new PostPhotosView(getContext(), 1);
+//        postPhotosView.setLayoutParams(postPhotosParams);
 
         postHeaderTextContainer.addView(ownerTitleView);
         postHeaderTextContainer.addView(ownerPostDateView);
@@ -126,5 +150,6 @@ public class PostContentView extends LinearLayout {
         addView(postHeaderContainer);
         addView(postTextView);
         addView(postExpandCollapseView);
+//        addView(postPhotosView);
     }
 }

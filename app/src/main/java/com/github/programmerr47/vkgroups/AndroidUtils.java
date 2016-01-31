@@ -1,11 +1,13 @@
 package com.github.programmerr47.vkgroups;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.util.TypedValue;
 
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 
@@ -46,6 +48,23 @@ public class AndroidUtils {
 
     public static boolean hasKitKat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static float pxF(Context context, float dp) {
+        Resources r = context.getResources();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+    }
+
+    public static float pxF(float dp) {
+        return pxF(getAppContext(), dp);
+    }
+
+    public static int pxI(Context context, float dp) {
+        return (int)pxF(context, dp);
+    }
+
+    public static int pxI(float dp) {
+        return (int)pxF(getAppContext(), dp);
     }
 
     public enum ResourceHelper {
