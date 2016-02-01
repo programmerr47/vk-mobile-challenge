@@ -1,32 +1,32 @@
 package com.github.programmerr47.vkgroups.adapter.item;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.github.programmerr47.vkgroups.DateFormatter;
+import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.VKGroupApplication;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
-import com.github.programmerr47.vkgroups.background.objects.special.Attachment;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.github.programmerr47.vkgroups.view.PostContentView;
 import com.squareup.picasso.Picasso;
-import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.model.VKApiAudio;
 import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPhotoSize;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
-import com.vk.sdk.api.model.VKAttachments;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +34,8 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
-import static com.vk.sdk.api.model.VKAttachments.TYPE_ALBUM;
 import static com.vk.sdk.api.model.VKAttachments.TYPE_PHOTO;
 import static com.vk.sdk.api.model.VKAttachments.TYPE_POSTED_PHOTO;
-import static com.vk.sdk.api.model.VKAttachments.TYPE_VIDEO;
 
 /**
  * @author Michael Spitsin
@@ -54,6 +52,8 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private PostDescription postDescription;
     private List<VKApiPhoto> attPhotos;
     private List<VKApiAudio> attAudios;
+    private List<LayoutParams> photosParams;
+    private List<VKApiPhotoSize> photoSizes;
 
     private List<PostDescription> historyDescriptions;
 
@@ -64,6 +64,8 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         this.notifier = notifier;
         initAllDescriptions();
         initAttachments(post);
+        this.photosParams = initLayoutParams(attPhotos);
+        this.photoSizes = initPhotoSizes(attPhotos);
     }
 
     @Override
@@ -125,11 +127,19 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         postDescription.appendToDescriptionTextView(ownerContentView.getPostTextView());
         postDescription.appendToExpandCollapseTextView(ownerContentView.getPostExpandCollapseView());
 
-        for (int i = 0; i < attPhotos.size(); i++) {
-            VKApiPhoto photo = attPhotos.get(i);
-            VKApiPhotoSize photoSize = photo.src.get(photo.src.size() - 1);
+        if (attPhotos.size() > 1) {
+            for (int i = 0; i < attPhotos.size(); i++) {
+                VKApiPhoto photo = attPhotos.get(i);
+                VKApiPhotoSize photoSize = photo.src.get(photo.src.size() - 1);
 
-            Picasso.with(getAppContext()).load(photoSize.src).into(ownerContentView.getPhotos().get(i));
+                Picasso.with(getAppContext()).load(photoSize.src).into(ownerContentView.getPhotos().get(i));
+            }
+        } else if (attPhotos.size() == 1) {
+            VKApiPhotoSize photoSize = photoSizes.get(0);
+            ImageView photoView = ownerContentView.getPhotos().get(0);
+
+            photoView.setLayoutParams(photosParams.get(0));
+            Picasso.with(getAppContext()).load(photoSize.src).into(photoView);
         }
     }
 
@@ -146,23 +156,48 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
                 LinearLayout postSections = (LinearLayout) baseView.getChildAt(0);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 PostContentView ownerPostContent = new PostContentView(postSections.getContext());
                 ownerPostContent.setLayoutParams(layoutParams);
 
                 List<ImageView> photos = new ArrayList<>();
-                if (attPhotos.size() != 9) {
-                    for (VKApiPhoto attPhoto : attPhotos) {
-                        View view = layoutInflater.inflate(R.layout.attachment_photo, ownerPostContent, true);
-                        ImageView photo = (ImageView) view.findViewById(R.id.photo_1);
-                        photos.add(photo);
-                    }
-                } else {
-                    View view = layoutInflater.inflate(R.layout.attachment_photo_9, ownerPostContent, true);
-                    getPhotos(view, photos,
-                            R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                            R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                            R.id.photo_7, R.id.photo_8, R.id.photo_9);
+                View view;
+                switch (attPhotos.size()) {
+                    case 6:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_6, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5, R.id.photo_6);
+                        break;
+                    case 7:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_7, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                                R.id.photo_7);
+                        break;
+                    case 9:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_9, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                                R.id.photo_7, R.id.photo_8, R.id.photo_9);
+                        break;
+                    case 10:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_10, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                                R.id.photo_7, R.id.photo_8, R.id.photo_9,
+                                R.id.photo_10);
+                        break;
+                    default:
+                        for (VKApiPhoto attPhoto : attPhotos) {
+                            view = layoutInflater.inflate(R.layout.attachment_photo, ownerPostContent, false);
+                            ImageView photo = (ImageView) view.findViewById(R.id.photo_1);
+                            ownerPostContent.addView(view);
+                            photos.add(photo);
+                        }
                 }
 
                 for (VKApiAudio attAudio : attAudios) {
@@ -251,6 +286,29 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private void getPhotos(View sourceView, List<ImageView> targetList, int... ids) {
         for (int id : ids) {
             targetList.add((ImageView) sourceView.findViewById(id));
+        }
+    }
+
+    private List<LayoutParams> initLayoutParams(List<VKApiPhoto> photos) {
+        if (photos.size() != 1) {
+            return Collections.emptyList();
+        } else {
+            List<LayoutParams> paramsList = new ArrayList<>();
+            VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
+            Pair<Integer, Integer> dimensForPhoto = PhotoUtil.getPostPhotoDimensions(minPhotoSize);
+            paramsList.add(new LayoutParams(dimensForPhoto.first, dimensForPhoto.second));
+            return paramsList;
+        }
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizes(List<VKApiPhoto> photos) {
+        if (photos.size() != 1) {
+            return Collections.emptyList();
+        } else {
+            List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+            VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
+            photoSizeList.add(minPhotoSize);
+            return photoSizeList;
         }
     }
 }

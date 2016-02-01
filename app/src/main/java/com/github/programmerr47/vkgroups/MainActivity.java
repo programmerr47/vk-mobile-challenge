@@ -20,6 +20,7 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.util.VKUtil;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String[] t = VKUtil.getCertificateFingerprint(this, this.getPackageName());
         if (VKSdk.isLoggedIn()) {
             init();
         } else {
