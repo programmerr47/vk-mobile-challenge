@@ -30,12 +30,6 @@
             android:layout_weight="1"
             android:scaleType="centerCrop"
             app:dimension="base_width"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <com.github.programmerr47.vkgroups.view.SquareImageView
             android:id="@+id/photo_3"
@@ -55,6 +49,13 @@
             android:scaleType="centerCrop"
             app:dimension="base_width"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <com.github.programmerr47.vkgroups.view.SquareImageView
             android:id="@+id/photo_5"
             android:layout_width="match_parent"
@@ -63,13 +64,6 @@
             android:layout_weight="1"
             android:scaleType="centerCrop"
             app:dimension="base_width"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
         <com.github.programmerr47.vkgroups.view.SquareImageView
             android:id="@+id/photo_6"
@@ -91,15 +85,6 @@
 
         <com.github.programmerr47.vkgroups.view.SquareImageView
             android:id="@+id/photo_8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_small"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:dimension="base_width"/>
-
-        <com.github.programmerr47.vkgroups.view.SquareImageView
-            android:id="@+id/photo_9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_small"

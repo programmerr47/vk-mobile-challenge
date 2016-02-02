@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.github.programmerr47.vkgroups.AndroidUtils;
 import com.github.programmerr47.vkgroups.DateFormatter;
 import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
+import com.github.programmerr47.vkgroups.ViewUtils;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
@@ -32,8 +34,10 @@ import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
+import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
 import static com.vk.sdk.api.model.VKAttachments.TYPE_PHOTO;
 import static com.vk.sdk.api.model.VKAttachments.TYPE_POSTED_PHOTO;
 
@@ -163,6 +167,28 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                 List<ImageView> photos = new ArrayList<>();
                 View view;
                 switch (attPhotos.size()) {
+                    case 2:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_2, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2);
+                        break;
+                    case 3:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_3, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3);
+                        break;
+                    case 4:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_4, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4);
+                        break;
+                    case 5:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_5, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5);
+                        break;
                     case 6:
                         view = layoutInflater.inflate(R.layout.attachment_photo_6, ownerPostContent, true);
                         getPhotos(view, photos,
@@ -175,6 +201,13 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                                 R.id.photo_4, R.id.photo_5, R.id.photo_6,
                                 R.id.photo_7);
+                        break;
+                    case 8:
+                        view = layoutInflater.inflate(R.layout.attachment_photo_8, ownerPostContent, true);
+                        getPhotos(view, photos,
+                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                                R.id.photo_7, R.id.photo_8);
                         break;
                     case 9:
                         view = layoutInflater.inflate(R.layout.attachment_photo_9, ownerPostContent, true);
@@ -296,7 +329,9 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             List<LayoutParams> paramsList = new ArrayList<>();
             VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
             Pair<Integer, Integer> dimensForPhoto = PhotoUtil.getPostPhotoDimensions(minPhotoSize);
-            paramsList.add(new LayoutParams(dimensForPhoto.first, dimensForPhoto.second));
+            LayoutParams layoutParams = new LayoutParams(dimensForPhoto.first, dimensForPhoto.second);
+            setCommonMargin(layoutParams, res().dimenI(R.dimen.margin_medium));
+            paramsList.add(layoutParams);
             return paramsList;
         }
     }
