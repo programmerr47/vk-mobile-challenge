@@ -131,18 +131,14 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         postDescription.appendToDescriptionTextView(ownerContentView.getPostTextView());
         postDescription.appendToExpandCollapseTextView(ownerContentView.getPostExpandCollapseView());
 
-        if (attPhotos.size() > 1) {
-            for (int i = 0; i < attPhotos.size(); i++) {
-                VKApiPhoto photo = attPhotos.get(i);
-                VKApiPhotoSize photoSize = photo.src.get(photo.src.size() - 1);
+        for (int i = 0; i < attPhotos.size(); i++) {
+            VKApiPhotoSize photoSize = photoSizes.get(i);
+            ImageView photoView = ownerContentView.getPhotos().get(i);
 
-                Picasso.with(getAppContext()).load(photoSize.src).into(ownerContentView.getPhotos().get(i));
+            if (i < photosParams.size()) {
+                photoView.setLayoutParams(photosParams.get(i));
             }
-        } else if (attPhotos.size() == 1) {
-            VKApiPhotoSize photoSize = photoSizes.get(0);
-            ImageView photoView = ownerContentView.getPhotos().get(0);
 
-            photoView.setLayoutParams(photosParams.get(0));
             Picasso.with(getAppContext()).load(photoSize.src).into(photoView);
         }
     }
@@ -337,13 +333,114 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     private List<VKApiPhotoSize> initPhotoSizes(List<VKApiPhoto> photos) {
-        if (photos.size() != 1) {
-            return Collections.emptyList();
-        } else {
-            List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-            VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
-            photoSizeList.add(minPhotoSize);
-            return photoSizeList;
+        switch (photos.size()) {
+            case 1:
+                return initPhotoSizesForOne(photos);
+            case 2:
+                return initPhotoSizesForFixed(photos, 2);
+            case 3:
+                return initPhotoSizesForThree(photos);
+            case 4:
+                return initPhotoSizesForFixed(photos, 2);
+            case 5:
+                return initPhotoSizesForFive(photos);
+            case 6:
+                return initPhotoSizesForSix(photos);
+            case 7:
+                return initPhotoSizesForSeven(photos);
+            case 8:
+                return initPhotoSizesForFixed(photos, 4);
+            case 9:
+                return initPhotoSizesForNine(photos);
+            case 10:
+                return initPhotoSizesForTen(photos);
+            default:
+                return initPhotoSizesForFixed(photos, 4);
         }
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForOne(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
+        photoSizeList.add(minPhotoSize);
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForFixed(List<VKApiPhoto> photos, float fixed) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        for (VKApiPhoto photo : photos) {
+            photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photo.src, fixed));
+        }
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForThree(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 3 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 3));
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForFive(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 5 / 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 5 / 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 5 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 5 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 5 / 2));
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForSix(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForSeven(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 5));
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForNine(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).src, 4));
+        return photoSizeList;
+    }
+
+    private List<VKApiPhotoSize> initPhotoSizesForTen(List<VKApiPhoto> photos) {
+        List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(9).src, 4));
+        return photoSizeList;
     }
 }

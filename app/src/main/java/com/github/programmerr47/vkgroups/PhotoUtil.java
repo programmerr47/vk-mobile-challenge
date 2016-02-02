@@ -18,6 +18,10 @@ public class PhotoUtil {
     private static final float MAX_RATIO = 5.0f;
     private static final float MIN_RATIO = 0.2f;
 
+    public static Pair<Integer, Integer> getDimensionsOfSquarePostPhoto(float widthRatio) {
+        return getDimensionsOfPostPhoto(1.0f, widthRatio);
+    }
+
     public static Pair<Integer, Integer> getMaxDimensionsOfPostPhoto() {
         return getDimensionsOfPostPhoto(MAX_RATIO);
     }
@@ -27,11 +31,17 @@ public class PhotoUtil {
     }
 
     private static Pair<Integer, Integer> getDimensionsOfPostPhoto(float ratio) {
+        return getDimensionsOfPostPhoto(ratio, 1);
+    }
+
+    private static Pair<Integer, Integer> getDimensionsOfPostPhoto(float ratio, float widthRatio) {
         float marginMedium = res().dimen(R.dimen.margin_medium);
+        float marginSmall = res().dimen(R.dimen.margin_small);
         Resources applicationResources = VKGroupApplication.getAppContext().getResources();
         DisplayMetrics displayMetrics = applicationResources.getDisplayMetrics();
 
-        int resultWidth = displayMetrics.widthPixels - (int)(marginMedium * 4);
+        int resultWidth = (displayMetrics.widthPixels - (int)(marginMedium * 2) - (int)(marginSmall * 2));
+        resultWidth = (int)(resultWidth / widthRatio - marginSmall * 2);
         int resultHeight = (int)(resultWidth * ratio);
 
         return new Pair<>(resultWidth, resultHeight);
@@ -75,5 +85,9 @@ public class PhotoUtil {
 
     public static VKApiPhotoSize getMinPhotoSizeForPost(VKPhotoSizes photoSizes) {
         return getMinPhotoSize(photoSizes, getMaxDimensionsOfPostPhoto());
+    }
+
+    public static VKApiPhotoSize getMinPhotoSizeForSquareInPost(VKPhotoSizes photoSizes, float widthRatio) {
+        return getMinPhotoSize(photoSizes, getDimensionsOfSquarePostPhoto(widthRatio));
     }
 }
