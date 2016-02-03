@@ -8,12 +8,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.github.programmerr47.vkgroups.AndroidUtils;
 import com.github.programmerr47.vkgroups.DateFormatter;
 import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.ViewUtils;
+import com.github.programmerr47.vkgroups.adapter.holder.AudioAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
@@ -141,6 +140,15 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
             Picasso.with(getAppContext()).load(photoSize.src).into(photoView);
         }
+
+        for (int i = 0; i < attAudios.size(); i++) {
+            VKApiAudio audio = attAudios.get(i);
+            AudioAttachmentSubHolder audioHolder = viewHolder.getAudioAttachmentViews().get(i);
+
+            audioHolder.getArtistView().setText(audio.artist);
+            audioHolder.getTitleView().setText(audio.title);
+            audioHolder.getDurationView().setText(String.valueOf(audio.duration));
+        }
     }
 
     public PostItemHolderProducer getViewHolderProducer() {
@@ -229,8 +237,18 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                         }
                 }
 
+                List<AudioAttachmentSubHolder> audioHolders = new ArrayList<>();
+                View audioView;
                 for (VKApiAudio attAudio : attAudios) {
-                    layoutInflater.inflate(R.layout.attachment_audio, ownerPostContent, true);
+                    audioView = layoutInflater.inflate(R.layout.attachment_audio, ownerPostContent, false);
+
+                    AudioAttachmentSubHolder.ResourceParams params = new AudioAttachmentSubHolder.ResourceParams();
+                    params.artistViewId = R.id.artist;
+                    params.titleViewId = R.id.title;
+                    params.durationViewId = R.id.duration;
+
+                    ownerPostContent.addView(audioView);
+                    audioHolders.add(new AudioAttachmentSubHolder(audioView, params));
                 }
 
                 ownerPostContent.setPhotos(photos);
@@ -247,7 +265,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                 params.repostCountId = R.id.share_post_count;
                 params.commentCountId = R.id.comment_count;
 
-                return new PostItemHolder(baseView, ownerPostContent, params);
+                return new PostItemHolder(baseView, ownerPostContent, audioHolders, params);
             }
         };
     }

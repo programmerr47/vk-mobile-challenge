@@ -26,9 +26,9 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
     private TextView commentCountView;
 
     private PostContentView ownerContentView;
-    private List<PostContentView> repostContentViews;
+    private List<AudioAttachmentSubHolder> audioAttachmentViews;
 
-    public PostItemHolder(View view, PostContentView ownerContentView, ResourceParams params) {
+    public PostItemHolder(View view, PostContentView ownerContentView, List<AudioAttachmentSubHolder> audiAttachmentViews, ResourceParams params) {
         super(view);
         this.ownerContentView = ownerContentView;
 
@@ -41,6 +41,7 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         this.likeCountView = (TextView) view.findViewById(params.likeCountId);
         this.repostCountView = (TextView) view.findViewById(params.repostCountId);
         this.commentCountView = (TextView) view.findViewById(params.commentCountId);
+        this.audioAttachmentViews = audiAttachmentViews;
     }
 
     public View getLikeActionView() {
@@ -83,8 +84,8 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         return ownerContentView;
     }
 
-    public List<PostContentView> getRepostContentViews() {
-        return repostContentViews;
+    public List<AudioAttachmentSubHolder> getAudioAttachmentViews() {
+        return audioAttachmentViews;
     }
 
     public static class ResourceParams {

@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/list_item_height_small"
-    android:gravity="center">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height_small"
+    android:layout_marginLeft="@dimen/margin_small"
+    android:layout_marginStart="@dimen/margin_small"
+    android:orientation="horizontal">
 
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-        android:text="audio"/>
+    <com.github.programmerr47.vkgroups.view.SquareImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_small"
+        android:src="@drawable/ic_music_circle_grey600_36dp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textSize="15sp"
+            android:textColor="@color/text_color_primary"
+            android:text="Artist"
+            android:singleLine="true"
+            app:fontName="Roboto-Medium.ttf"/>
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textSize="14sp"
+            android:textColor="@color/text_color_secondary"
+            android:text="Title very big please check it and inclose with three dots"
+            android:singleLine="true"
+            app:fontName="Roboto-Regular.ttf"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/margin_medium"
+            android:textSize="13sp"
+            android:textColor="@color/text_color_primary"
+            android:text="1:12:43"
+            app:fontName="Roboto-Regular.ttf"/>
+
+    </FrameLayout>
 
 </LinearLayout>
