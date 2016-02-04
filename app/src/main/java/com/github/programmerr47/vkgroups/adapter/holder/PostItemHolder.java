@@ -27,8 +27,9 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
 
     private PostContentView ownerContentView;
     private List<AudioAttachmentSubHolder> audioAttachmentViews;
+    private List<WikiPageSubHolder> wikiPageAttachmentViews;
 
-    public PostItemHolder(View view, PostContentView ownerContentView, List<AudioAttachmentSubHolder> audiAttachmentViews, ResourceParams params) {
+    public PostItemHolder(View view, PostContentView ownerContentView, List<AudioAttachmentSubHolder> audiAttachmentViews, List<WikiPageSubHolder> wikiPageAttachmentViews, ResourceParams params) {
         super(view);
         this.ownerContentView = ownerContentView;
 
@@ -42,6 +43,7 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         this.repostCountView = (TextView) view.findViewById(params.repostCountId);
         this.commentCountView = (TextView) view.findViewById(params.commentCountId);
         this.audioAttachmentViews = audiAttachmentViews;
+        this.wikiPageAttachmentViews = wikiPageAttachmentViews;
     }
 
     public View getLikeActionView() {
@@ -86,6 +88,10 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
 
     public List<AudioAttachmentSubHolder> getAudioAttachmentViews() {
         return audioAttachmentViews;
+    }
+
+    public List<WikiPageSubHolder> getWikiPageAttachmentViews() {
+        return wikiPageAttachmentViews;
     }
 
     public static class ResourceParams {

@@ -14,6 +14,7 @@ import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.AudioAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
+import com.github.programmerr47.vkgroups.adapter.holder.WikiPageSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.github.programmerr47.vkgroups.view.PostContentView;
@@ -24,6 +25,7 @@ import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPhotoSize;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
+import com.vk.sdk.api.model.VKApiWikiPage;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
 import java.util.ArrayList;
@@ -53,8 +55,11 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private PostItemNotifier notifier;
 
     private PostDescription postDescription;
+
     private List<VKApiPhoto> attPhotos;
     private List<VKApiAudio> attAudios;
+    private List<VKApiWikiPage> attWikiPages;
+
     private List<LayoutParams> photosParams;
     private List<VKApiPhotoSize> photoSizes;
 
@@ -149,6 +154,14 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             audioHolder.getTitleView().setText(audio.title);
             audioHolder.getDurationView().setText(String.valueOf(audio.duration));
         }
+
+        for (int i = 0; i < attWikiPages.size(); i++) {
+            VKApiWikiPage wikiPage = attWikiPages.get(i);
+            WikiPageSubHolder wikiPageHolder = viewHolder.getWikiPageAttachmentViews().get(i);
+
+            wikiPageHolder.getNameView().setText(wikiPage.title);
+            wikiPageHolder.getTypeView().setText(res().string(R.string.wiki_page));
+        }
     }
 
     public PostItemHolderProducer getViewHolderProducer() {
@@ -237,6 +250,8 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                         }
                 }
 
+                ownerPostContent.setPhotos(photos);
+
                 List<AudioAttachmentSubHolder> audioHolders = new ArrayList<>();
                 View audioView;
                 for (VKApiAudio attAudio : attAudios) {
@@ -251,7 +266,19 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                     audioHolders.add(new AudioAttachmentSubHolder(audioView, params));
                 }
 
-                ownerPostContent.setPhotos(photos);
+                List<WikiPageSubHolder> wikiPageHolders = new ArrayList<>();
+                View wikiPageView;
+                for (VKApiWikiPage attWikiPage : attWikiPages) {
+                    wikiPageView = layoutInflater.inflate(R.layout.attachment_wiki_page, ownerPostContent, false);
+
+                    WikiPageSubHolder.ResourceParams params = new WikiPageSubHolder.ResourceParams();
+                    params.nameViewId = R.id.name;
+                    params.typeViewId = R.id.type;
+
+                    ownerPostContent.addView(wikiPageView);
+                    wikiPageHolders.add(new WikiPageSubHolder(wikiPageView, params));
+                }
+
                 postSections.addView(ownerPostContent, 0);
 
                 PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
@@ -265,13 +292,13 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                 params.repostCountId = R.id.share_post_count;
                 params.commentCountId = R.id.comment_count;
 
-                return new PostItemHolder(baseView, ownerPostContent, audioHolders, params);
+                return new PostItemHolder(baseView, ownerPostContent, audioHolders, wikiPageHolders, params);
             }
         };
     }
 
     public String getItemId() {
-        return "p:" + attPhotos.size() + ";a:" + attAudios.size();
+        return "p:" + attPhotos.size() + ";a:" + attAudios.size() + ";w:" + attWikiPages.size();
     }
 
     private void initAllDescriptions() {
@@ -290,6 +317,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private void initAttachments(VKApiPost post) {
         attPhotos = getAttachments(post, VKApiPhoto.class);
         attAudios = getAttachments(post, VKApiAudio.class);
+        attWikiPages = getAttachments(post, VKApiWikiPage.class);
     }
 
     private <T> List<T> getAttachments(VKApiPost post, Class<T> attachmentType) {

@@ -36,4 +36,7 @@
     <!-- System -->
     <string name="try_again">Try again</string>
 
+    <!-- Attachment types -->
+    <string name="wiki_page">Page</string>
+
 </resources>
