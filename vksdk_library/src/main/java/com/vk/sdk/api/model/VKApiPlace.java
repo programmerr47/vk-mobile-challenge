@@ -79,6 +79,16 @@ public class VKApiPlace extends VKApiModel implements Parcelable, Identifiable {
     public int city_id;
 
     /**
+     * Name of the country the place is located in, positive number
+     */
+    public String country;
+
+    /**
+     * Name of the city the place is located in, positive number
+     */
+    public String city;
+
+    /**
      * Location address.
      */
     public String address;
@@ -101,6 +111,20 @@ public class VKApiPlace extends VKApiModel implements Parcelable, Identifiable {
         country_id = from.optInt("country");
         city_id = from.optInt("city");
         address = from.optString("address");
+        return this;
+    }
+
+    private VKApiPlace parseFromGeoPlace(JSONObject placeFromGeo) {
+        id = placeFromGeo.optInt("id");
+        title = placeFromGeo.optString("title");
+        latitude = placeFromGeo.optDouble("latitude");
+        longitude = placeFromGeo.optDouble("longitude");
+        created = placeFromGeo.optLong("created");
+        checkins = placeFromGeo.optInt("checkins");
+        updated = placeFromGeo.optLong("updated");
+        country = placeFromGeo.optString("country");
+        city = placeFromGeo.optString("city");
+        address = placeFromGeo.optString("address");
         return this;
     }
 
@@ -165,4 +189,12 @@ public class VKApiPlace extends VKApiModel implements Parcelable, Identifiable {
             return new VKApiPlace[size];
         }
     };
+
+    public static VKApiPlace parseFromGeo(JSONObject geoObj) {
+        if (geoObj.has("place")) {
+            return new VKApiPlace().parseFromGeoPlace(geoObj.optJSONObject("place"));
+        } else {
+            return null;
+        }
+    }
 }

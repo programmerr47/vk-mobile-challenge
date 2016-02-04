@@ -180,10 +180,10 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
         attachments.fill(source.optJSONArray("attachments"));
         JSONObject geo = source.optJSONObject("geo");
         if(geo != null) {
-            this.geo = new VKApiPlace().parse(geo);
+            this.geo = VKApiPlace.parseFromGeo(geo);
         }
         signer_id = source.optInt("signer_id");
-        copy_history = new VKList<VKApiPost>(source.optJSONArray("copy_history"), VKApiPost.class);
+        copy_history = new VKList<>(source.optJSONArray("copy_history"), VKApiPost.class);
         return this;
     }
 
