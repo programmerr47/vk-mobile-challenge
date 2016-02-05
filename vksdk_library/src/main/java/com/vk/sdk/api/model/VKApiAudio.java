@@ -32,6 +32,7 @@ import android.os.Parcel;
 import android.text.TextUtils;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;
 
 /**
  * An audio object describes an audio file and contains the following fields.
@@ -139,7 +140,7 @@ public class VKApiAudio extends VKApiAttachment implements Identifiable, android
 
     @Override
     public CharSequence toAttachmentString() {
-        StringBuilder result = new StringBuilder(TYPE_AUDIO).append(owner_id).append('_').append(id);
+        StringBuilder result = new StringBuilder(AUDIO.getTypeStr()).append(owner_id).append('_').append(id);
         if(!TextUtils.isEmpty(access_key)) {
             result.append('_');
             result.append(access_key);
@@ -148,8 +149,8 @@ public class VKApiAudio extends VKApiAttachment implements Identifiable, android
     }
 
     @Override
-    public String getType() {
-        return TYPE_AUDIO;
+    public Type getType() {
+        return AUDIO;
     }
 
     @Override

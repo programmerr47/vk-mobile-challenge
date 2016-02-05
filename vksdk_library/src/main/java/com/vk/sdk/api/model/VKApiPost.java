@@ -32,6 +32,8 @@ import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.vk.sdk.api.model.VKAttachments.Type.POST;
+
 /**
  * A post object describes a wall post.
  */
@@ -227,12 +229,12 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
 
     @Override
     public CharSequence toAttachmentString() {
-        return new StringBuilder(VKAttachments.TYPE_POST).append(to_id).append('_').append(id);
+        return new StringBuilder(POST.getTypeStr()).append(to_id).append('_').append(id);
     }
 
     @Override
-    public String getType() {
-        return VKAttachments.TYPE_POST;
+    public VKAttachments.Type getType() {
+        return POST;
     }
 
     @Override

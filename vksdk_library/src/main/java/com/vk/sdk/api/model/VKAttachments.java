@@ -39,82 +39,100 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.vk.sdk.api.model.VKAttachments.Type.fromStr;
+
 /**
  * A list of attachments in {@link VKApiComment}, {@link VKApiPost}, {@link VKApiMessage}
  */
 public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> implements android.os.Parcelable {
 
-    /**
-     * Attachment is a photo.
-     * @see com.vk.sdk.api.model.VKApiPhoto
-     */
-    public static final String TYPE_PHOTO = "photo";
+    public enum Type {
 
-    /**
-     * Attachment is a video.
-     * @see com.vk.sdk.api.model.VKApiVideo
-     */
-    public static final String TYPE_VIDEO = "video";
+        /**
+         * @see com.vk.sdk.api.model.VKApiPhoto
+         */
+        PHOTO("photo"),
 
-    /**
-     * Attachment is an audio.
-     * @see com.vk.sdk.api.model.VKApiAudio
-     */
-    public static final String TYPE_AUDIO = "audio";
+        /**
+         * @see com.vk.sdk.api.model.VKApiVideo
+         */
+        VIDEO("video"),
 
-    /**
-     * Attachment is a document.
-     * @see com.vk.sdk.api.model.VKApiDocument
-     */
-    public static final String TYPE_DOC = "doc";
+        /**
+         * @see com.vk.sdk.api.model.VKApiAudio
+         */
+        AUDIO("audio"),
 
-    /**
-     * Attachment is a wall post.
-     * @see com.vk.sdk.api.model.VKApiPost
-     */
-    public static final String TYPE_POST = "wall";
+        /**
+         * @see com.vk.sdk.api.model.VKApiDocument
+         */
+        DOC("doc"),
 
-    /**
-     * Attachment is a posted photo.
-     * @see com.vk.sdk.api.model.VKApiPostedPhoto
-     */
-    public static final String TYPE_POSTED_PHOTO = "posted_photo";
+        /**
+         * @see com.vk.sdk.api.model.VKApiPost
+         */
+        POST("wall"),
 
-    /**
-     * Attachment is a link
-     * @see com.vk.sdk.api.model.VKApiLink
-     */
-    public static final String TYPE_LINK = "link";
+        /**
+         * @see com.vk.sdk.api.model.VKApiPostedPhoto
+         */
+        POSTED_PHOTO("posted_photo"),
 
-    /**
-     * Attachment is a note
-     * @see com.vk.sdk.api.model.VKApiNote
-     */
-    public static final String TYPE_NOTE = "note";
+        /**
+         * @see com.vk.sdk.api.model.VKApiLink
+         */
+        LINK("link"),
 
-    /**
-     * Attachment is an application content
-     * @see com.vk.sdk.api.model.VKApiApplicationContent
-     */
-    public static final String TYPE_APP = "app";
+        /**
+         * @see com.vk.sdk.api.model.VKApiNote
+         */
+        NOTE("note"),
 
-    /**
-     * Attachment is a poll
-     * @see com.vk.sdk.api.model.VKApiPoll
-     */
-    public static final String TYPE_POLL = "poll";
+        /**
+         * @see com.vk.sdk.api.model.VKApiPoll
+         */
+        POLL("poll"),
 
-    /**
-     * Attachment is a WikiPage
-     * @see com.vk.sdk.api.model.VKApiWikiPage
-     */
-    public static final String TYPE_WIKI_PAGE = "page";
+        /**
+         * @see com.vk.sdk.api.model.VKApiApplicationContent
+         */
+        APP("app"),
 
-    /**
-     * Attachment is a PhotoAlbum
-     * @see com.vk.sdk.api.model.VKApiPhotoAlbum
-     */
-    public static final String TYPE_ALBUM = "album";
+        /**
+         * @see com.vk.sdk.api.model.VKApiWikiPage
+         */
+        WIKI_PAGE("page"),
+
+        /**
+         * @see com.vk.sdk.api.model.VKApiPhotoAlbum
+         */
+        ALBUM("album");
+
+        private final String typeStr;
+
+        Type(String typeStr) {
+            this.typeStr = typeStr;
+        }
+
+        public String getTypeStr() {
+            return typeStr;
+        }
+
+        @Override
+        public String toString() {
+            return typeStr;
+        }
+
+        public static Type fromStr(String typeStr) {
+            for (Type type : Type.values()) {
+                if (type.typeStr.equals(typeStr)) {
+                    return type;
+                }
+            }
+
+            throw new IllegalStateException("There is no type for string: " + typeStr);
+        }
+    }
 
 
     public VKAttachments() {
@@ -154,39 +172,52 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
         }
         return VKStringJoiner.join(attachments, ",");
     }
+
     /**
      * Parser that's used for parsing photo sizes.
      */
-    private final Parser<VKApiAttachment> parser = new Parser<VKApiAttachment>() {
+    private static final Parser<VKApiAttachment> parser = new Parser<VKApiAttachment>() {
         @Override
         public VKApiAttachment parseObject(JSONObject attachment) throws Exception {
-            String type = attachment.optString("type");
-            if(TYPE_PHOTO.equals(type)) {
-                return new VKApiPhoto().parse(attachment.getJSONObject(TYPE_PHOTO));
-            } else if(TYPE_VIDEO.equals(type)) {
-                return new VKApiVideo().parse(attachment.getJSONObject(TYPE_VIDEO));
-            } else if(TYPE_AUDIO.equals(type)) {
-                return new VKApiAudio().parse(attachment.getJSONObject(TYPE_AUDIO));
-            } else if(TYPE_DOC.equals(type)) {
-                return new VKApiDocument().parse(attachment.getJSONObject(TYPE_DOC));
-            } else if(TYPE_POST.equals(type)) {
-                return new VKApiPost().parse(attachment.getJSONObject(TYPE_POST));
-            } else if(TYPE_POSTED_PHOTO.equals(type)) {
-                return new VKApiPostedPhoto().parse(attachment.getJSONObject(TYPE_POSTED_PHOTO));
-            } else if(TYPE_LINK.equals(type)) {
-                return new VKApiLink().parse(attachment.getJSONObject(TYPE_LINK));
-            } else if(TYPE_NOTE.equals(type)) {
-                return new VKApiNote().parse(attachment.getJSONObject(TYPE_NOTE));
-            } else if(TYPE_APP.equals(type)) {
-                return new VKApiApplicationContent().parse(attachment.getJSONObject(TYPE_APP));
-            } else if(TYPE_POLL.equals(type)) {
-                return new VKApiPoll().parse(attachment.getJSONObject(TYPE_POLL));
-            } else if(TYPE_WIKI_PAGE.equals(type)) {
-                return new VKApiWikiPage().parse(attachment.getJSONObject(TYPE_WIKI_PAGE));
-            } else if(TYPE_ALBUM.equals(type)) {
-                return new VKApiPhotoAlbum().parse(attachment.getJSONObject(TYPE_ALBUM));
+            Type type = fromStr(attachment.optString("type"));
+            VKApiAttachment apiAttachment = initAttachmentFromType(type);
+
+            if (apiAttachment != null) {
+                apiAttachment.parse(attachment.getJSONObject(type.getTypeStr()));
             }
-            return null;
+
+            return apiAttachment;
+        }
+
+        private VKApiAttachment initAttachmentFromType(Type type) {
+            switch (type) {
+                case ALBUM:
+                    return new VKApiPhotoAlbum();
+                case APP:
+                    return new VKApiApplicationContent();
+                case AUDIO:
+                    return new VKApiAudio();
+                case DOC:
+                    return new VKApiDocument();
+                case LINK:
+                    return new VKApiLink();
+                case NOTE:
+                    return new VKApiNote();
+                case PHOTO:
+                    return new VKApiPhoto();
+                case POLL:
+                    return new VKApiPoll();
+                case POST:
+                    return new VKApiPost();
+                case POSTED_PHOTO:
+                    return new VKApiPostedPhoto();
+                case VIDEO:
+                    return new VKApiVideo();
+                case WIKI_PAGE:
+                    return new VKApiWikiPage();
+                default:
+                    return null;
+            }
         }
     };
 
@@ -200,7 +231,7 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(size());
         for(VKApiAttachment attachment: this) {
-            dest.writeString(attachment.getType());
+            dest.writeString(attachment.getType().getTypeStr());
             dest.writeParcelable(attachment, 0);
         }
     }
@@ -208,32 +239,43 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
     public VKAttachments(Parcel parcel) {
         int size = parcel.readInt();
         for(int i = 0; i < size; i++) {
-            String type = parcel.readString();
-            if(TYPE_PHOTO.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiPhoto.class.getClassLoader()));
-            } else if(TYPE_VIDEO.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiVideo.class.getClassLoader()));
-            } else if(TYPE_AUDIO.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiAudio.class.getClassLoader()));
-            } else if(TYPE_DOC.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiDocument.class.getClassLoader()));
-            } else if(TYPE_POST.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiPost.class.getClassLoader()));
-            } else if(TYPE_POSTED_PHOTO.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiPostedPhoto.class.getClassLoader()));
-            } else if(TYPE_LINK.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiLink.class.getClassLoader()));
-            } else if(TYPE_NOTE.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiNote.class.getClassLoader()));
-            } else if(TYPE_APP.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiApplicationContent.class.getClassLoader()));
-            } else if(TYPE_POLL.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiPoll.class.getClassLoader()));
-            } else if(TYPE_WIKI_PAGE.equals(type)) {
-                add((VKApiAttachment) parcel.readParcelable(VKApiWikiPage.class.getClassLoader()));
-            } else if(TYPE_ALBUM.equals(type)) {
-                add((VKApiAttachment)  parcel.readParcelable(VKApiPhotoAlbum.class.getClassLoader()));
+            Type type = fromStr(parcel.readString());
+            Class attachmentClass = getAttachmentClassFromType(type);
+
+            if (attachmentClass != null) {
+                add((VKApiAttachment) parcel.readParcelable(attachmentClass.getClassLoader()));
             }
+        }
+    }
+
+    private Class getAttachmentClassFromType(Type type) {
+        switch (type) {
+            case ALBUM:
+                return VKApiPhotoAlbum.class;
+            case APP:
+                return VKApiApplicationContent.class;
+            case AUDIO:
+                return VKApiAudio.class;
+            case DOC:
+                return VKApiDocument.class;
+            case LINK:
+                return VKApiLink.class;
+            case NOTE:
+                return VKApiNote.class;
+            case PHOTO:
+                return VKApiPhoto.class;
+            case POLL:
+                return VKApiPoll.class;
+            case POST:
+                return VKApiPost.class;
+            case POSTED_PHOTO:
+                return VKApiPostedPhoto.class;
+            case VIDEO:
+                return VKApiVideo.class;
+            case WIKI_PAGE:
+                return VKApiWikiPage.class;
+            default:
+                return null;
         }
     }
 
@@ -261,6 +303,6 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
         /**
          * @return type of this attachment
          */
-        public abstract String getType();
+        public abstract Type getType();
     }
 }

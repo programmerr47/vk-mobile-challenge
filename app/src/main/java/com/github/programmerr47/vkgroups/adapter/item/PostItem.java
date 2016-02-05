@@ -13,6 +13,7 @@ import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.AudioAttachmentSubHolder;
+import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.WikiPageSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
@@ -26,6 +27,8 @@ import com.vk.sdk.api.model.VKApiPhotoSize;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiWikiPage;
+import com.vk.sdk.api.model.VKAttachments;
+import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
 import java.util.ArrayList;
@@ -39,8 +42,8 @@ import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
-import static com.vk.sdk.api.model.VKAttachments.TYPE_PHOTO;
-import static com.vk.sdk.api.model.VKAttachments.TYPE_POSTED_PHOTO;
+import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
+import static com.vk.sdk.api.model.VKAttachments.Type.POSTED_PHOTO;
 
 /**
  * @author Michael Spitsin
@@ -345,12 +348,12 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     private boolean isAttachmentPhoto(VKApiAttachment attachment) {
-        return isAttachmentOnOf(attachment, TYPE_PHOTO, TYPE_POSTED_PHOTO);
+        return isAttachmentOnOf(attachment, PHOTO, POSTED_PHOTO);
     }
 
-    private boolean isAttachmentOnOf(VKApiAttachment attachment, String... types) {
-        for (String type : types) {
-            if (type.equals(attachment.getType())) {
+    private boolean isAttachmentOnOf(VKApiAttachment attachment, Type... types) {
+        for (Type type : types) {
+            if (type == attachment.getType()) {
                 return true;
             }
         }
@@ -488,5 +491,15 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).src, 4));
         photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(9).src, 4));
         return photoSizeList;
+    }
+
+    private PostAttachmentSubHolder createAttachmentSubHolder(View attachmentView) {
+        PostAttachmentSubHolder.ResourceParams params = new PostAttachmentSubHolder.ResourceParams();
+        params.iconId = R.id.icon;
+        params.titleId = R.id.title;
+        params.subtitleId = R.id.subtitle;
+        params.optionalInfoId = R.id.optional_info;
+
+        return new PostAttachmentSubHolder(attachmentView, params);
     }
 }

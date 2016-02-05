@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import static com.vk.sdk.api.model.ParseUtils.parseBoolean;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.VIDEO;
 
 /**
  * A video object describes an video file.
@@ -293,7 +294,7 @@ public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcela
 
     @Override
     public CharSequence toAttachmentString() {
-        StringBuilder result = new StringBuilder(TYPE_VIDEO).append(owner_id).append('_').append(id);
+        StringBuilder result = new StringBuilder(VIDEO.getTypeStr()).append(owner_id).append('_').append(id);
         if(!TextUtils.isEmpty(access_key)) {
             result.append('_');
             result.append(access_key);
@@ -302,8 +303,8 @@ public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcela
     }
 
     @Override
-    public String getType() {
-        return TYPE_VIDEO;
+    public Type getType() {
+        return VIDEO;
     }
 
     @Override

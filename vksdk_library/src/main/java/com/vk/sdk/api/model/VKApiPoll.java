@@ -33,6 +33,7 @@ import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.POLL;
 
 /**
  * Describes poll on the wall on board.
@@ -115,12 +116,12 @@ public class VKApiPoll extends VKAttachments.VKApiAttachment implements android.
 
     @Override
     public CharSequence toAttachmentString() {
-        return null;
+        return new StringBuilder(POLL.getTypeStr()).append(owner_id).append('_').append(id);
     }
 
     @Override
-    public String getType() {
-        return TYPE_POLL;
+    public Type getType() {
+        return POLL;
     }
 
     @Override

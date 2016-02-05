@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
 
 /**
  * A document object describes a document file.
@@ -167,7 +168,7 @@ public class VKApiDocument extends VKApiAttachment implements Parcelable, Identi
 
     @Override
     public CharSequence toAttachmentString() {
-        StringBuilder result = new StringBuilder(TYPE_DOC).append(owner_id).append('_').append(id);
+        StringBuilder result = new StringBuilder(DOC.getTypeStr()).append(owner_id).append('_').append(id);
         if(!TextUtils.isEmpty(access_key)) {
             result.append('_');
             result.append(access_key);
@@ -176,8 +177,8 @@ public class VKApiDocument extends VKApiAttachment implements Parcelable, Identi
     }
 
     @Override
-    public String getType() {
-        return TYPE_DOC;
+    public Type getType() {
+        return DOC;
     }
 
     @Override

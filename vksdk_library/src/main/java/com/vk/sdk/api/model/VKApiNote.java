@@ -33,6 +33,7 @@ import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.NOTE;
 
 /**
  * A note object describes a note.
@@ -120,12 +121,12 @@ public class VKApiNote extends VKAttachments.VKApiAttachment implements Identifi
 
     @Override
     public CharSequence toAttachmentString() {
-        return new StringBuilder(TYPE_NOTE).append(user_id).append('_').append(id);
+        return new StringBuilder(NOTE.getTypeStr()).append(user_id).append('_').append(id);
     }
 
     @Override
-    public String getType() {
-        return TYPE_NOTE;
+    public Type getType() {
+        return NOTE;
     }
 
     @Override

@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
 
 /**
  * Describes a photo album
@@ -185,12 +186,12 @@ public class VKApiPhotoAlbum extends VKAttachments.VKApiAttachment implements Pa
 
     @Override
     public CharSequence toAttachmentString() {
-        return new StringBuilder(TYPE_ALBUM).append(owner_id).append('_').append(id);
+        return new StringBuilder(ALBUM.getTypeStr()).append(owner_id).append('_').append(id);
     }
 
     @Override
-    public String getType() {
-        return TYPE_ALBUM;
+    public Type getType() {
+        return ALBUM;
     }
 
     @Override

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import static com.vk.sdk.api.model.ParseUtils.parseBoolean;
 import static com.vk.sdk.api.model.ParseUtils.parseInt;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.NOTE;
 
 /**
  * Describes a photo object from VK.
@@ -228,8 +229,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
      * @param photoAttachmentString string of format photo[OWNER_ID]_[PHOTO_ID]
      */
     public VKApiPhoto(String photoAttachmentString) {
-        if (photoAttachmentString.startsWith(TYPE_PHOTO)) {
-            photoAttachmentString = photoAttachmentString.substring(TYPE_PHOTO.length());
+        if (photoAttachmentString.startsWith(NOTE.getTypeStr())) {
+            photoAttachmentString = photoAttachmentString.substring(NOTE.getTypeStr().length());
             String[] ids  = photoAttachmentString.split("_");
             this.owner_id = Integer.parseInt(ids[0]);
             this.id       = Integer.parseInt(ids[1]);
@@ -250,7 +251,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
 
     @Override
     public CharSequence toAttachmentString() {
-        StringBuilder result = new StringBuilder(TYPE_PHOTO).append(owner_id).append('_').append(id);
+        StringBuilder result = new StringBuilder(NOTE.getTypeStr()).append(owner_id).append('_').append(id);
         if(!TextUtils.isEmpty(access_key)) {
             result.append('_');
             result.append(access_key);
@@ -259,8 +260,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
     }
 
     @Override
-    public String getType() {
-        return TYPE_PHOTO;
+    public Type getType() {
+        return NOTE;
     }
 
     @Override

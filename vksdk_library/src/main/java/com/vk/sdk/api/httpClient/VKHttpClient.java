@@ -64,6 +64,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.GZIPInputStream;
 
+import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
+
 /**
  * Class provides configured http client for API request loading
  */
@@ -105,7 +107,7 @@ public class VKHttpClient {
      */
     public static VKHTTPRequest docUploadRequest(@NonNull String uploadUrl, File file) {
         VKHTTPRequest request = new VKHTTPRequest(uploadUrl);
-        request.entity = new VKMultipartEntity(new File[]{file}, VKAttachments.TYPE_DOC);
+        request.entity = new VKMultipartEntity(new File[]{file}, DOC.getTypeStr());
         return request;
     }
 

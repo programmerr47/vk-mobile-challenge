@@ -29,8 +29,11 @@
 package com.vk.sdk.api.model;
 
 import android.os.Parcel;
+
+import com.vk.sdk.api.model.VKAttachments.Type;
+
 import org.json.JSONObject;
-import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.POSTED_PHOTO;
 
 /**
  * Subclass to directly uploaded wall photo.
@@ -61,7 +64,7 @@ public class VKApiPostedPhoto extends VKApiPhoto {
     }
 
     @Override
-    public String getType() {
-        return TYPE_POSTED_PHOTO;
+    public Type getType() {
+        return POSTED_PHOTO;
     }
 }

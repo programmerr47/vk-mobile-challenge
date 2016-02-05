@@ -34,6 +34,8 @@ import java.io.OutputStream;
 import java.util.Locale;
 import java.util.Random;
 
+import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
+
 /**
  * Class used for build upload multipart data for VK servers
  */
@@ -77,7 +79,7 @@ public class VKMultipartEntity {
 
     protected String getFileDescription(File uploadFile, int i) {
         String fileName;
-        if (mType != null && mType.equals(VKAttachments.TYPE_DOC)) {
+        if (mType != null && mType.equals(DOC.getTypeStr())) {
             fileName = "file";
         } else {
             fileName = String.format(Locale.US, "file%d", i + 1);

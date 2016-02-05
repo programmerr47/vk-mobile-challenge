@@ -33,6 +33,7 @@ import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.LINK;
 
 /**
  * A link object describes a link attachment
@@ -114,8 +115,8 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     }
 
     @Override
-    public String getType() {
-        return TYPE_LINK;
+    public Type getType() {
+        return LINK;
     }
 
     @Override

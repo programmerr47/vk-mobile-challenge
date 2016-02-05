@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import org.json.JSONObject;
 
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 
 /**
  * Describes information about application in the post.
@@ -90,8 +91,8 @@ public class VKApiApplicationContent extends VKApiAttachment implements android.
     }
 
     @Override
-    public String getType() {
-        return TYPE_APP;
+    public Type getType() {
+        return APP;
     }
 
     @Override

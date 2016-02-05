@@ -33,6 +33,7 @@ import android.os.Parcel;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
+import static com.vk.sdk.api.model.VKAttachments.Type.WIKI_PAGE;
 
 /**
  * Describes a Wiki page.
@@ -164,12 +165,12 @@ public class VKApiWikiPage extends VKAttachments.VKApiAttachment implements andr
 
     @Override
     public CharSequence toAttachmentString() {
-        return new StringBuilder(TYPE_WIKI_PAGE).append(group_id).append('_').append(id);
+        return new StringBuilder(WIKI_PAGE.getTypeStr()).append(group_id).append('_').append(id);
     }
 
     @Override
-    public String getType() {
-        return TYPE_WIKI_PAGE;
+    public Type getType() {
+        return WIKI_PAGE;
     }
 
     @Override
