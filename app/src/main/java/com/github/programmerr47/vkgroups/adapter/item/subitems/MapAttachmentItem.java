@@ -4,40 +4,40 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.programmerr47.vkgroups.R;
-import com.vk.sdk.api.model.VKApiAudio;
+import com.vk.sdk.api.model.VKApiPlace;
 
 /**
  * @author Michael Spitsin
- * @since 05.02.2016
+ * @since 2016-02-07
  */
-public class AudioAttachmentItem extends AbstractAttachmentItem {
+public class MapAttachmentItem extends AbstractAttachmentItem {
 
-    private VKApiAudio apiAudio;
+    private VKApiPlace apiPlace;
 
-    public AudioAttachmentItem(VKApiAudio apiAudio) {
-        this.apiAudio = apiAudio;
+    public MapAttachmentItem(VKApiPlace apiPlace) {
+        this.apiPlace = apiPlace;
     }
 
     @Override
     protected int getIconId() {
-        return R.drawable.ic_music_note_white_36dp;
+        return R.drawable.ic_map_marker_white_36dp;
     }
 
     @NonNull
     @Override
     protected String getTitle() {
-        return apiAudio.artist;
+        return apiPlace.city + ", " + apiPlace.country;
     }
 
     @Nullable
     @Override
     protected String getSubtitle() {
-        return apiAudio.title;
+        return apiPlace.address;
     }
 
     @Nullable
     @Override
     protected String getOptionalInfo() {
-        return String.valueOf(apiAudio.duration);
+        return null;
     }
 }

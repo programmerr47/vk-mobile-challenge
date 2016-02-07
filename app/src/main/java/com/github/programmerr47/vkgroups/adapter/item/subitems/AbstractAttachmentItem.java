@@ -2,7 +2,6 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.TextView;
 
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
@@ -14,7 +13,7 @@ import static android.view.View.VISIBLE;
  * @author Michael Spitsin
  * @since 05.02.2016
  */
-public abstract class AbstractPostAttachmentItem implements PostAttachmentItem {
+public abstract class AbstractAttachmentItem implements AttachmentItem {
 
     @Override
     public void bindView(PostAttachmentSubHolder holder) {

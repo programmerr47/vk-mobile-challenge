@@ -32,6 +32,7 @@ import static com.vk.sdk.api.model.ParseUtils.parseBoolean;
 import static com.vk.sdk.api.model.ParseUtils.parseInt;
 import static com.vk.sdk.api.model.VKAttachments.*;
 import static com.vk.sdk.api.model.VKAttachments.Type.NOTE;
+import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
 
 /**
  * Describes a photo object from VK.
@@ -261,7 +262,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
 
     @Override
     public Type getType() {
-        return NOTE;
+        return PHOTO;
     }
 
     @Override

@@ -4,40 +4,42 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.programmerr47.vkgroups.R;
-import com.vk.sdk.api.model.VKApiAudio;
+import com.vk.sdk.api.model.VKApiNote;
+
+import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin
- * @since 05.02.2016
+ * @since 2016-02-07
  */
-public class AudioAttachmentItem extends AbstractAttachmentItem {
+public class NoteAttachmentItem extends AbstractAttachmentItem {
 
-    private VKApiAudio apiAudio;
+    private VKApiNote apiNote;
 
-    public AudioAttachmentItem(VKApiAudio apiAudio) {
-        this.apiAudio = apiAudio;
+    public NoteAttachmentItem(VKApiNote apiNote) {
+        this.apiNote = apiNote;
     }
 
     @Override
     protected int getIconId() {
-        return R.drawable.ic_music_note_white_36dp;
+        return R.drawable.ic_note_text_white_36dp;
     }
 
     @NonNull
     @Override
     protected String getTitle() {
-        return apiAudio.artist;
+        return apiNote.title;
     }
 
     @Nullable
     @Override
     protected String getSubtitle() {
-        return apiAudio.title;
+        return res().string(R.string.note);
     }
 
     @Nullable
     @Override
     protected String getOptionalInfo() {
-        return String.valueOf(apiAudio.duration);
+        return null;
     }
 }

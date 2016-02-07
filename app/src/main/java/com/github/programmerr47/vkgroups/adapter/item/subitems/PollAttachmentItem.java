@@ -4,40 +4,43 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.programmerr47.vkgroups.R;
-import com.vk.sdk.api.model.VKApiAudio;
+import com.vk.sdk.api.model.VKApiPoll;
+
+import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin
- * @since 05.02.2016
+ * @since 2016-02-07
  */
-public class AudioAttachmentItem extends AbstractAttachmentItem {
+public class PollAttachmentItem extends AbstractAttachmentItem {
 
-    private VKApiAudio apiAudio;
+    private VKApiPoll apiPoll;
 
-    public AudioAttachmentItem(VKApiAudio apiAudio) {
-        this.apiAudio = apiAudio;
+    public PollAttachmentItem(VKApiPoll apiPoll) {
+        this.apiPoll = apiPoll;
     }
+
 
     @Override
     protected int getIconId() {
-        return R.drawable.ic_music_note_white_36dp;
+        return R.drawable.ic_poll_white_36dp;
     }
 
     @NonNull
     @Override
     protected String getTitle() {
-        return apiAudio.artist;
+        return apiPoll.question;
     }
 
     @Nullable
     @Override
     protected String getSubtitle() {
-        return apiAudio.title;
+        return res().plural(R.plurals.poll_votes, apiPoll.votes, apiPoll.votes);
     }
 
     @Nullable
     @Override
     protected String getOptionalInfo() {
-        return String.valueOf(apiAudio.duration);
+        return null;
     }
 }

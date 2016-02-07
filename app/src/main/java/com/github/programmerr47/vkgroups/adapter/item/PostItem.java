@@ -12,22 +12,33 @@ import com.github.programmerr47.vkgroups.DateFormatter;
 import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.adapter.holder.AudioAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
-import com.github.programmerr47.vkgroups.adapter.holder.WikiPageSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.AudioAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.AttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.DocAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.LinkAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.MapAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.NoteAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.PollAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.PostAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.SimpleAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.WikiPageAttachmentItem;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.github.programmerr47.vkgroups.view.PostContentView;
 import com.squareup.picasso.Picasso;
 import com.vk.sdk.api.model.VKApiAudio;
 import com.vk.sdk.api.model.VKApiCommunity;
+import com.vk.sdk.api.model.VKApiDocument;
+import com.vk.sdk.api.model.VKApiLink;
+import com.vk.sdk.api.model.VKApiNote;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiPhotoSize;
+import com.vk.sdk.api.model.VKApiPoll;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiWikiPage;
-import com.vk.sdk.api.model.VKAttachments;
 import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
@@ -42,8 +53,15 @@ import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
+import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;
+import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
+import static com.vk.sdk.api.model.VKAttachments.Type.LINK;
+import static com.vk.sdk.api.model.VKAttachments.Type.NOTE;
 import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
+import static com.vk.sdk.api.model.VKAttachments.Type.POLL;
+import static com.vk.sdk.api.model.VKAttachments.Type.POST;
 import static com.vk.sdk.api.model.VKAttachments.Type.POSTED_PHOTO;
+import static com.vk.sdk.api.model.VKAttachments.Type.WIKI_PAGE;
 
 /**
  * @author Michael Spitsin
@@ -60,13 +78,12 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private PostDescription postDescription;
 
     private List<VKApiPhoto> attPhotos;
-    private List<VKApiAudio> attAudios;
-    private List<VKApiWikiPage> attWikiPages;
-
     private List<LayoutParams> photosParams;
     private List<VKApiPhotoSize> photoSizes;
 
     private List<PostDescription> historyDescriptions;
+
+    private List<AttachmentItem> attItems;
 
     public PostItem(VKApiPost vkApiPost, Map<Integer, VKApiUser> userMap, Map<Integer, VKApiCommunity> groupMap, PostItemNotifier notifier) {
         this.post = vkApiPost;
@@ -138,6 +155,16 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         postDescription.appendToDescriptionTextView(ownerContentView.getPostTextView());
         postDescription.appendToExpandCollapseTextView(ownerContentView.getPostExpandCollapseView());
 
+        for (int i = 0; i < viewHolder.getAttHolders().size(); i++) {
+            if (i < attItems.size()) {
+                PostAttachmentSubHolder attHolder = viewHolder.getAttHolders().get(i);
+                attHolder.getHolderView().setVisibility(VISIBLE);
+                attItems.get(i).bindView(attHolder);
+            } else {
+                viewHolder.getAttHolders().get(i).getHolderView().setVisibility(GONE);
+            }
+        }
+
         for (int i = 0; i < attPhotos.size(); i++) {
             VKApiPhotoSize photoSize = photoSizes.get(i);
             ImageView photoView = ownerContentView.getPhotos().get(i);
@@ -147,23 +174,6 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             }
 
             Picasso.with(getAppContext()).load(photoSize.src).into(photoView);
-        }
-
-        for (int i = 0; i < attAudios.size(); i++) {
-            VKApiAudio audio = attAudios.get(i);
-            AudioAttachmentSubHolder audioHolder = viewHolder.getAudioAttachmentViews().get(i);
-
-            audioHolder.getArtistView().setText(audio.artist);
-            audioHolder.getTitleView().setText(audio.title);
-            audioHolder.getDurationView().setText(String.valueOf(audio.duration));
-        }
-
-        for (int i = 0; i < attWikiPages.size(); i++) {
-            VKApiWikiPage wikiPage = attWikiPages.get(i);
-            WikiPageSubHolder wikiPageHolder = viewHolder.getWikiPageAttachmentViews().get(i);
-
-            wikiPageHolder.getNameView().setText(wikiPage.title);
-            wikiPageHolder.getTypeView().setText(res().string(R.string.wiki_page));
         }
     }
 
@@ -255,34 +265,13 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
                 ownerPostContent.setPhotos(photos);
 
-                List<AudioAttachmentSubHolder> audioHolders = new ArrayList<>();
-                View audioView;
-                for (VKApiAudio attAudio : attAudios) {
-                    audioView = layoutInflater.inflate(R.layout.attachment_audio, ownerPostContent, false);
-
-                    AudioAttachmentSubHolder.ResourceParams params = new AudioAttachmentSubHolder.ResourceParams();
-                    params.artistViewId = R.id.artist;
-                    params.titleViewId = R.id.title;
-                    params.durationViewId = R.id.duration;
-
-                    ownerPostContent.addView(audioView);
-                    audioHolders.add(new AudioAttachmentSubHolder(audioView, params));
-                }
-
-                List<WikiPageSubHolder> wikiPageHolders = new ArrayList<>();
-                View wikiPageView;
-                for (VKApiWikiPage attWikiPage : attWikiPages) {
-                    wikiPageView = layoutInflater.inflate(R.layout.attachment_wiki_page, ownerPostContent, false);
-
-                    WikiPageSubHolder.ResourceParams params = new WikiPageSubHolder.ResourceParams();
-                    params.nameViewId = R.id.name;
-                    params.typeViewId = R.id.type;
-
-                    ownerPostContent.addView(wikiPageView);
-                    wikiPageHolders.add(new WikiPageSubHolder(wikiPageView, params));
-                }
-
                 postSections.addView(ownerPostContent, 0);
+
+                List<PostAttachmentSubHolder> attHolders = createAttHolders(baseView,
+                        R.id.attachment_1, R.id.attachment_2, R.id.attachment_3,
+                        R.id.attachment_4, R.id.attachment_5, R.id.attachment_6,
+                        R.id.attachment_7, R.id.attachment_8, R.id.attachment_9,
+                        R.id.attachment_10);
 
                 PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
                 params.likeActionId = R.id.like_action;
@@ -295,13 +284,34 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
                 params.repostCountId = R.id.share_post_count;
                 params.commentCountId = R.id.comment_count;
 
-                return new PostItemHolder(baseView, ownerPostContent, audioHolders, wikiPageHolders, params);
+                return new PostItemHolder(baseView, ownerPostContent, attHolders, params);
             }
         };
     }
 
+    private List<PostAttachmentSubHolder> createAttHolders(View parent, int... ids) {
+        List<PostAttachmentSubHolder> result = new ArrayList<>();
+
+        for (int id : ids) {
+            View attachment = parent.findViewById(id);
+            result.add(createAttHolder(attachment));
+        }
+
+        return result;
+    }
+
+    private PostAttachmentSubHolder createAttHolder(View attachment) {
+        PostAttachmentSubHolder.ResourceParams params = new PostAttachmentSubHolder.ResourceParams();
+        params.iconId = R.id.icon;
+        params.titleId = R.id.title;
+        params.subtitleId = R.id.subtitle;
+        params.optionalInfoId = R.id.optional_info;
+
+        return new PostAttachmentSubHolder(attachment, params);
+    }
+
     public String getItemId() {
-        return "p:" + attPhotos.size() + ";a:" + attAudios.size() + ";w:" + attWikiPages.size();
+        return "p:" + attPhotos.size();
     }
 
     private void initAllDescriptions() {
@@ -319,8 +329,17 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
     private void initAttachments(VKApiPost post) {
         attPhotos = getAttachments(post, VKApiPhoto.class);
-        attAudios = getAttachments(post, VKApiAudio.class);
-        attWikiPages = getAttachments(post, VKApiWikiPage.class);
+
+        attItems = new ArrayList<>();
+        for (VKApiAttachment attachment : post.attachments) {
+            if (isAttachmentOneOf(attachment, AUDIO, DOC, LINK, NOTE, POLL, POST, WIKI_PAGE)) {
+                attItems.add(createAttItem(attachment));
+            }
+        }
+
+        if (post.geo != null) {
+            attItems.add(new MapAttachmentItem(post.geo));
+        }
     }
 
     private <T> List<T> getAttachments(VKApiPost post, Class<T> attachmentType) {
@@ -335,23 +354,11 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return result;
     }
 
-    private List<VKApiPhoto> getPhotos(VKApiPost post) {
-        List<VKApiPhoto> result = new ArrayList<>();
-
-        for (VKApiAttachment attachment : post.attachments) {
-            if (isAttachmentPhoto(attachment)) {
-                result.add((VKApiPhoto)attachment);
-            }
-        }
-
-        return result;
-    }
-
     private boolean isAttachmentPhoto(VKApiAttachment attachment) {
-        return isAttachmentOnOf(attachment, PHOTO, POSTED_PHOTO);
+        return isAttachmentOneOf(attachment, PHOTO, POSTED_PHOTO);
     }
 
-    private boolean isAttachmentOnOf(VKApiAttachment attachment, Type... types) {
+    private boolean isAttachmentOneOf(VKApiAttachment attachment, Type... types) {
         for (Type type : types) {
             if (type == attachment.getType()) {
                 return true;
@@ -364,6 +371,27 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     private void getPhotos(View sourceView, List<ImageView> targetList, int... ids) {
         for (int id : ids) {
             targetList.add((ImageView) sourceView.findViewById(id));
+        }
+    }
+
+    private AttachmentItem createAttItem(VKApiAttachment apiAttachment) {
+        switch (apiAttachment.getType()) {
+            case AUDIO:
+                return new AudioAttachmentItem((VKApiAudio) apiAttachment);
+            case DOC:
+                return new DocAttachmentItem((VKApiDocument) apiAttachment);
+            case LINK:
+                return new LinkAttachmentItem((VKApiLink) apiAttachment);
+            case NOTE:
+                return new NoteAttachmentItem((VKApiNote) apiAttachment);
+            case POLL:
+                return new PollAttachmentItem((VKApiPoll) apiAttachment);
+            case POST:
+                return new PostAttachmentItem((VKApiPost) apiAttachment);
+            case WIKI_PAGE:
+                return new WikiPageAttachmentItem((VKApiWikiPage) apiAttachment);
+            default:
+                return new SimpleAttachmentItem(apiAttachment);
         }
     }
 

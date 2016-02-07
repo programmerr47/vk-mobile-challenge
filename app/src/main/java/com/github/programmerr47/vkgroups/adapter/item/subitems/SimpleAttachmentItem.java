@@ -10,7 +10,7 @@ import com.vk.sdk.api.model.VKAttachments;
  * @author Michael Spitsin
  * @since 05.02.2016
  */
-public class SimpleAttachmentItem extends AbstractPostAttachmentItem {
+public class SimpleAttachmentItem extends AbstractAttachmentItem {
 
     VKAttachments.VKApiAttachment apiAttachment;
 

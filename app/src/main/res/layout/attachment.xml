@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/margin_small"
-        android:padding="@dimen/margin_small"
+        android:padding="@dimen/margin_medium"
         android:src="@drawable/ic_map_marker_white_36dp"
         android:background="@drawable/bg_attachment_default"/>
 

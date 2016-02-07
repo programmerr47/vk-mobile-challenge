@@ -38,5 +38,14 @@
 
     <!-- Attachment types -->
     <string name="wiki_page">Page</string>
+    <string name="file">File</string>
+    <string name="image">Image</string>
+    <string name="gif_image">GIF Image</string>
+    <string name="note">Note</string>
+    <string name="post">Post</string>
+    <plurals name="poll_votes">
+        <item quantity="one">%1$d vote</item>
+        <item quantity="other">%1$d votes</item>
+    </plurals>
 
 </resources>
