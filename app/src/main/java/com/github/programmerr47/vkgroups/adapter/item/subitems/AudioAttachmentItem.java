@@ -38,6 +38,30 @@ public class AudioAttachmentItem extends AbstractAttachmentItem {
     @Nullable
     @Override
     protected String getOptionalInfo() {
-        return String.valueOf(apiAudio.duration);
+        return formatDuration(apiAudio.duration);
+    }
+
+    private String formatDuration(int durSec) {
+        int durMin = durSec / 60;
+        int remSec = durSec - durMin * 60;
+        String result = formatTwoDigitNumber(remSec);
+
+        if (durMin > 0) {
+            int durH = durMin / 60;
+            int remMin = durMin - durH * 60;
+
+            if (durH > 0) {
+                return durH + ":" + formatTwoDigitNumber(remMin) + ":" + result;
+            } else {
+                return remMin + ":" + result;
+            }
+        } else {
+            return "0:" + result;
+        }
+
+    }
+
+    private String formatTwoDigitNumber(int n) {
+        return n > 10 ? String.valueOf(n) : "0" + n;
     }
 }

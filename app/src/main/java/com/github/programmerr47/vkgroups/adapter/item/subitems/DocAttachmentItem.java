@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiDocument;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 
 /**
@@ -46,6 +49,23 @@ public class DocAttachmentItem extends AbstractAttachmentItem {
     @Nullable
     @Override
     protected String getOptionalInfo() {
-        return String.valueOf(apiDocument.size);
+        return formatSize(apiDocument.size);
+    }
+
+    private String formatSize(long bytes) {
+        NumberFormat numberFormat = new DecimalFormat("#.##");
+        double kBytes = bytes / 1024.0f;
+
+        if (kBytes > .2) {
+            double mBytes = bytes / 1024.0f / 1024.0f;
+
+            if (mBytes > .2) {
+                return numberFormat.format(mBytes) + " MB";
+            } else {
+                return numberFormat.format(kBytes) + " KB";
+            }
+        } else {
+            return bytes + " B";
+        }
     }
 }
