@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ViewPager pager;
     private VkPagerAdapter pagerAdapter;
     private DrawerLayout drawerLayout;
     private GroupsFragment groupsFragment;
@@ -39,37 +38,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] t = VKUtil.getCertificateFingerprint(this, this.getPackageName());
         if (VKSdk.isLoggedIn()) {
             init();
         } else {
             VKSdk.login(this, VKScope.GROUPS, VKScope.FRIENDS);
         }
-//        VKRequest request = VKApi.wall().get(VKParameters.from(VKApiConst.OFFSET, 2, VKApiConst.COUNT, 1));
-//        request.executeWithListener(new VKRequest.VKRequestListener() {
-//            @Override
-//            public void onComplete(VKResponse response) {
-//                super.onComplete(response);
-//            }
-//
-//            @Override
-//            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-//                super.attemptFailed(request, attemptNumber, totalAttempts);
-//            }
-//
-//            @Override
-//            public void onError(VKError error) {
-//                super.onError(error);
-//            }
-//
-//            @Override
-//            public void onProgress(VKRequest.VKProgressType progressType, long bytesLoaded, long bytesTotal) {
-//                super.onProgress(progressType, bytesLoaded, bytesTotal);
-//            }
-//        });
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
     }
 
@@ -162,63 +135,60 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_communities);
 
-        FragmentManager fm = getSupportFragmentManager();
-        groupsFragment = GroupsFragment.createInstance();
-
-        pager = (ViewPager) findViewById(R.id.main_pager);
-        pager.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        pager.setPageTransformer(false, new VkPagerTransformer());
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            private boolean isScrolledToPage;
-
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (i > 0) {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                } else {
-                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
-
-                isScrolledToPage = true;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-                if (i == ViewPager.SCROLL_STATE_IDLE) {
-                    if (pager.getCurrentItem() < pagerAdapter.getCount() - 1) {
-                        pagerAdapter.removeLast();
-                    } else {
-                        if (isScrolledToPage) {
-                            int currentItemPos = pager.getCurrentItem();
-//                            pagerAdapter.getFragmentList().get(currentItemPos).onPageOpened();
-                        } else {
-                            isScrolledToPage = false;
-                        }
-                    }
-                }
-            }
-        });
-        slowDownPager();
-
-        pagerAdapter = new VkPagerAdapter(fm, groupsFragment);
-        pager.setAdapter(pagerAdapter);
+//        pager = (ViewPager) findViewById(R.id.main_pager);
+//        pager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+//        pager.setPageTransformer(false, new VkPagerTransformer());
+//        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//
+//            private boolean isScrolledToPage;
+//
+//            @Override
+//            public void onPageScrolled(int i, float v, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int i) {
+//                if (i > 0) {
+//                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                } else {
+//                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+//                }
+//
+//                isScrolledToPage = true;
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int i) {
+//                if (i == ViewPager.SCROLL_STATE_IDLE) {
+//                    if (pager.getCurrentItem() < pagerAdapter.getCount() - 1) {
+//                        pagerAdapter.removeLast();
+//                    } else {
+//                        if (isScrolledToPage) {
+//                            int currentItemPos = pager.getCurrentItem();
+////                            pagerAdapter.getFragmentList().get(currentItemPos).onPageOpened();
+//                        } else {
+//                            isScrolledToPage = false;
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//        slowDownPager();
+//
+//        pagerAdapter = new VkPagerAdapter(fm, groupsFragment);
+//        pager.setAdapter(pagerAdapter);
     }
 
-    private void slowDownPager() {
-        try {
-            Field mScroller;
-            mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            FixedSpeedScroller scroller = new FixedSpeedScroller(pager.getContext());
-            mScroller.set(pager, scroller);
-        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-            //ignore
-        }
-    }
+//    private void slowDownPager() {
+//        try {
+//            Field mScroller;
+//            mScroller = ViewPager.class.getDeclaredField("mScroller");
+//            mScroller.setAccessible(true);
+//            FixedSpeedScroller scroller = new FixedSpeedScroller(pager.getContext());
+//            mScroller.set(pager, scroller);
+//        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+//            //ignore
+//        }
+//    }
 }
