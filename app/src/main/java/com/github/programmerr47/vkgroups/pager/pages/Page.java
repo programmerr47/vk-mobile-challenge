@@ -10,6 +10,7 @@ import android.view.View;
 public abstract class Page {
 
     private View pageView;
+    protected PagerListener pagerListener;
 
     public View createView(Context context) {
         pageView = onCreateView(context);
@@ -33,5 +34,17 @@ public abstract class Page {
 
     public View getPageView() {
         return pageView;
+    }
+
+    public void setPagerListener(PagerListener pagerListener) {
+        this.pagerListener = pagerListener;
+    }
+
+    public boolean hasBackStack() {
+        return false;
+    }
+
+    public void onBackPressed() {
+
     }
 }

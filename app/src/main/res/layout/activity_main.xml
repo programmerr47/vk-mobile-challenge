@@ -9,7 +9,8 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <fragment android:name="com.github.programmerr47.vkgroups.MainFragment"
+    <fragment
+        android:name="com.github.programmerr47.vkgroups.MainFragment"
         android:id="@+id/main_fragment"
         android:layout_weight="1"
         android:layout_width="0dp"

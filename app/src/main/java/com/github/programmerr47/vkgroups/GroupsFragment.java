@@ -281,10 +281,10 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 int position = myCommunityListView.getChildAdapterPosition(v);
 
-                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
-                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
-                intent.putExtra("TEST_ID", myGroupItems.get(position).getCommunity().id);
-                startActivity(intent);
+//                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
+//                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
+//                intent.putExtra("TEST_ID", myGroupItems.get(position).getCommunity().id);
+//                startActivity(intent);
             }
         });
 

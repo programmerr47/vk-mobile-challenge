@@ -1,15 +1,18 @@
 package com.github.programmerr47.vkgroups.pager.pages;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.PostAdapter;
 import com.github.programmerr47.vkgroups.adapter.item.PostItem;
 import com.github.programmerr47.vkgroups.collections.PostItems;
+import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -25,33 +28,46 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
+
 /**
  * @author Michael Spitsin
  * @since 2016-01-23
  */
-public class GroupDetailPage {
+public class GroupDetailPage extends Page {
 
-    private int id;
+    private final VKApiCommunity community;
 
     private View attachedView;
 
+    private ImageView groupImage;
     private RecyclerView postListView;
+    private PostItems items;
 
-    public GroupDetailPage(Context context, int id){
-        this.id = id;
-        attachedView = getViewByLayoutId(context, R.layout.group_page);
-        onViewCreated(attachedView);
+    public GroupDetailPage(VKApiCommunity community) {
+        this.community = community;
     }
 
-    private View getViewByLayoutId(Context context, int layoutId) {
-        return LayoutInflater.from(context).inflate(layoutId, null);
+    @SuppressLint("InflateParams")
+    @Override
+    public View onCreateView(Context context) {
+        return LayoutInflater.from(context).inflate(R.layout.group_page, null, false);
     }
 
-    private void onViewCreated(View attachedView) {
+    @Override
+    public void onViewCreated(View attachedView) {
+        groupImage = (ImageView) attachedView.findViewById(R.id.group_image);
         postListView = (RecyclerView) attachedView.findViewById(R.id.post_list);
         postListView.setLayoutManager(new LinearLayoutManager(postListView.getContext()));
 
-        loadPosts();
+        if (items == null) {
+            loadPosts();
+        }
+
+        getImageWorker().loadImage(
+                community.photo_200,
+                groupImage,
+                new ImageWorker.LoadBitmapParams(200, 200, false));
     }
 
     public View getAttachedView() {
@@ -60,7 +76,7 @@ public class GroupDetailPage {
 
     //TODO it for test
     private void loadPosts() {
-        final VKRequest request = VKApi.wall().get(VKParameters.from(VKApiConst.OWNER_ID, id, VKApiConst.EXTENDED, 1));
+        final VKRequest request = VKApi.wall().get(VKParameters.from(VKApiConst.OWNER_ID, -community.id, VKApiConst.EXTENDED, 1));
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
@@ -77,7 +93,7 @@ public class GroupDetailPage {
                     groupMap.put(group.id, group);
                 }
 
-                PostItems items = new PostItems(new ArrayList<PostItem>());
+                items = new PostItems(new ArrayList<PostItem>());
                 PostAdapter adapter = new PostAdapter(items);
                 for (VKApiPost apiPost : postArray) {
                     PostItem postItem = new PostItem(apiPost, userMap, groupMap, adapter);

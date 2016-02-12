@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     private VkPagerAdapter pagerAdapter;
     private DrawerLayout drawerLayout;
-    private GroupsFragment groupsFragment;
+    private MainFragment mainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (mainFragment.hasBackStack()) {
+                mainFragment.onBackPressed();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -134,6 +138,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_communities);
+
+        mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.main_fragment);
 
 //        pager = (ViewPager) findViewById(R.id.main_pager);
 //        pager.setOverScrollMode(View.OVER_SCROLL_NEVER);

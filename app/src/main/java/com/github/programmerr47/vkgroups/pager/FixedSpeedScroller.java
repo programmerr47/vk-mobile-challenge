@@ -33,6 +33,6 @@ public class FixedSpeedScroller extends Scroller {
     @Override
     public void startScroll(int startX, int startY, int dx, int dy) {
         // Ignore received duration, use fixed one instead
-        super.startScroll(startX, startY, dx, dy, 300 * mFraction);
+        super.startScroll(startX, startY, dx, dy, 300);
     }
 }

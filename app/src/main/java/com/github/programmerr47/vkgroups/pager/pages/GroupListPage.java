@@ -1,5 +1,6 @@
 package com.github.programmerr47.vkgroups.pager.pages;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -183,6 +184,7 @@ public class GroupListPage extends Page implements View.OnClickListener {
 //        });
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View onCreateView(Context context) {
         return LayoutInflater.from(context).inflate(R.layout.community_layout, null, false);
@@ -254,7 +256,8 @@ public class GroupListPage extends Page implements View.OnClickListener {
                 int position = myCommunityListView.getChildAdapterPosition(v);
 
                 Snackbar.make(v, "Test grouplistpage click", Snackbar.LENGTH_SHORT);
-
+                Page detailPage = new GroupDetailPage(myGroupItems.get(position).getCommunity());
+                pagerListener.openPage(detailPage);
 //                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
 //                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
 //                intent.putExtra("TEST_ID", myGroupItems.get(position).getCommunity().id);

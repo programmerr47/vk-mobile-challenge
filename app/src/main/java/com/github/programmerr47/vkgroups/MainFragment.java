@@ -13,6 +13,7 @@ import com.github.programmerr47.vkgroups.pager.FixedSpeedScroller;
 import com.github.programmerr47.vkgroups.pager.VkPagerTransformer;
 import com.github.programmerr47.vkgroups.pager.pages.GroupListPage;
 import com.github.programmerr47.vkgroups.pager.pages.Page;
+import com.github.programmerr47.vkgroups.pager.pages.PagerListener;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author Michael Spitsin
  * @since 2/10/2016.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements PagerListener, ViewPager.OnPageChangeListener {
 
     private ViewPager pager;
     private VkPageAdapter adapter;
@@ -35,6 +36,7 @@ public class MainFragment extends Fragment {
 
         Page groupListPage = new GroupListPage();
         groupListPage.onCreate();
+        groupListPage.setPagerListener(this);
         pages.add(groupListPage);
         adapter = new VkPageAdapter(pages);
     }
@@ -62,6 +64,7 @@ public class MainFragment extends Fragment {
         pager.setPageTransformer(false, new VkPagerTransformer());
         slowDownPager();
         pager.setAdapter(adapter);
+        pager.addOnPageChangeListener(this);
     }
 
     @Override
@@ -85,6 +88,47 @@ public class MainFragment extends Fragment {
         }
     }
 
+    @Override
+    public void openPage(Page newPage) {
+        newPage.onCreate();
+        newPage.setPagerListener(this);
+        newPage.createView(getActivity());
+        newPage.onResume();
+        adapter.addPage(newPage);
+        pager.setCurrentItem(pages.size() - 1, true);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        if (state == ViewPager.SCROLL_STATE_IDLE &&
+                pager.getCurrentItem() < pages.size() - 1) {
+            adapter.removeLast();
+        }
+    }
+
+    public boolean hasBackStack() {
+        return pages.size() > 1 || pages.get(0).hasBackStack();
+    }
+
+
+    public void onBackPressed() {
+        if (getLastPage().hasBackStack()) {
+            getLastPage().onBackPressed();
+        } else {
+            pager.setCurrentItem(pages.size() - 2, true);
+        }
+    }
+
     private void slowDownPager() {
         try {
             Field mScroller;
@@ -95,6 +139,10 @@ public class MainFragment extends Fragment {
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             //ignore
         }
+    }
+
+    private Page getLastPage() {
+        return pages.get(pages.size() - 1);
     }
 
     public static final class VkPageAdapter extends PagerAdapter {
@@ -144,6 +192,10 @@ public class MainFragment extends Fragment {
         public void removePage(int position) {
             pages.remove(position);
             notifyDataSetChanged();
+        }
+
+        public void removeLast() {
+            removePage(pages.size() - 1);
         }
     }
 }
