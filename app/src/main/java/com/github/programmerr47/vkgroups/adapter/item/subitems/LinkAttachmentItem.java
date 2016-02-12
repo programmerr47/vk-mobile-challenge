@@ -32,7 +32,11 @@ public class LinkAttachmentItem extends AbstractAttachmentItem {
     @Nullable
     @Override
     protected String getSubtitle() {
-        return apiLink.url;
+        if (apiLink.caption != null) {
+            return apiLink.caption;
+        } else {
+            return apiLink.url;
+        }
     }
 
     @Nullable

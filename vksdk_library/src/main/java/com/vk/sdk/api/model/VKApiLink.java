@@ -67,6 +67,8 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
      */
     public String preview_page;
 
+    public String caption;
+
     /**
      * Creates link attachment to attach it to the post
      * @param url full URL of link
@@ -88,6 +90,7 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
         description = source.optString("description");
         image_src = source.optString("image_src");
         preview_page = source.optString("preview_page");
+        caption = source.optString("caption");
         return this;
     }
 
