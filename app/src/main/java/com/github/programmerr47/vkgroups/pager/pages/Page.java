@@ -2,6 +2,13 @@ package com.github.programmerr47.vkgroups.pager.pages;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
+
+import com.github.programmerr47.vkgroups.R;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin
@@ -9,12 +16,15 @@ import android.view.View;
  */
 public abstract class Page {
 
+    public static final int VEIL_ID = 1;
+
     private View pageView;
     protected PagerListener pagerListener;
 
     public View createView(Context context) {
-        pageView = onCreateView(context);
-        onViewCreated(pageView);
+        View originPageView = onCreateView(context);
+        pageView = wrapPageView(context, originPageView);
+        onViewCreated(originPageView);
         return pageView;
     }
 
@@ -46,5 +56,21 @@ public abstract class Page {
 
     public void onBackPressed() {
 
+    }
+
+    private View wrapPageView(Context context, View pageView) {
+        LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        FrameLayout wrapperLayout = new FrameLayout(context);
+        wrapperLayout.setLayoutParams(params);
+
+        View blackVeilView = new View(context);
+        blackVeilView.setId(VEIL_ID);
+        blackVeilView.setBackgroundColor(res().color(R.color.vk_black));
+        blackVeilView.setAlpha(0.0f);
+
+        wrapperLayout.addView(pageView);
+        wrapperLayout.addView(blackVeilView);
+
+        return wrapperLayout;
     }
 }
