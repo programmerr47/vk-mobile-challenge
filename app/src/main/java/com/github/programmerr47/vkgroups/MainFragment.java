@@ -1,6 +1,8 @@
 package com.github.programmerr47.vkgroups;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -28,6 +30,14 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
     private ViewPager pager;
     private VkPageAdapter adapter;
     private List<Page> pages = new ArrayList<>();
+
+    private MainActivityCallbacks activityCallbacks;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activityCallbacks = (MainActivityCallbacks) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,16 +120,18 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
 
     @Override
     public void onPageScrollStateChanged(int state) {
-        if (state == ViewPager.SCROLL_STATE_IDLE &&
-                pager.getCurrentItem() < pages.size() - 1) {
-            adapter.removeLast();
+        if (state == ViewPager.SCROLL_STATE_IDLE) {
+            changeDrawerState();
+
+            if (pager.getCurrentItem() < pages.size() - 1) {
+                adapter.removeLast();
+            }
         }
     }
 
     public boolean hasBackStack() {
         return pages.size() > 1 || pages.get(0).hasBackStack();
     }
-
 
     public void onBackPressed() {
         if (getLastPage().hasBackStack()) {
@@ -143,6 +155,14 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
 
     private Page getLastPage() {
         return pages.get(pages.size() - 1);
+    }
+
+    private void changeDrawerState() {
+        if (pages.size() == 1) {
+            activityCallbacks.unlockDrawer();
+        } else {
+            activityCallbacks.lockDrawer();
+        }
     }
 
     public static final class VkPageAdapter extends PagerAdapter {

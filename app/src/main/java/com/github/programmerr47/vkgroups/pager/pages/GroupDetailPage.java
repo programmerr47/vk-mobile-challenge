@@ -38,14 +38,14 @@ public class GroupDetailPage extends Page {
 
     private final VKApiCommunity community;
 
-    private View attachedView;
-
     private ImageView groupImage;
     private RecyclerView postListView;
     private PostItems items;
 
     public GroupDetailPage(VKApiCommunity community) {
         this.community = community;
+
+        loadPosts();
     }
 
     @SuppressLint("InflateParams")
@@ -60,18 +60,10 @@ public class GroupDetailPage extends Page {
         postListView = (RecyclerView) attachedView.findViewById(R.id.post_list);
         postListView.setLayoutManager(new LinearLayoutManager(postListView.getContext()));
 
-        if (items == null) {
-            loadPosts();
-        }
-
         getImageWorker().loadImage(
                 community.photo_200,
                 groupImage,
                 new ImageWorker.LoadBitmapParams(200, 200, false));
-    }
-
-    public View getAttachedView() {
-        return attachedView;
     }
 
     //TODO it for test

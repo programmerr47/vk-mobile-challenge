@@ -26,11 +26,15 @@ import com.vk.sdk.util.VKUtil;
 
 import java.lang.reflect.Field;
 
+import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+import static android.support.v4.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainActivityCallbacks {
 
     private VkPagerAdapter pagerAdapter;
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private MainFragment mainFragment;
 
     @Override
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(navigationView);
         return true;
     }
 
@@ -128,6 +132,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void lockDrawer() {
+        if (drawerLayout.isDrawerOpen(navigationView)) {
+            drawerLayout.closeDrawer(navigationView);
+        }
+
+        drawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public void unlockDrawer() {
+        drawerLayout.setDrawerLockMode(LOCK_MODE_UNLOCKED);
+    }
+
     private void init() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -135,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_communities);
 
