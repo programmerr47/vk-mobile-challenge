@@ -16,8 +16,11 @@ import android.widget.Spinner;
 
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.GroupAdapter;
+import com.github.programmerr47.vkgroups.adapter.PostAdapter;
+import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
 import com.github.programmerr47.vkgroups.adapter.item.CommunityItem;
 import com.github.programmerr47.vkgroups.adapter.item.MyCommunityItem;
+import com.github.programmerr47.vkgroups.adapter.item.PostItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
 import com.github.programmerr47.vkgroups.collections.RecyclerItems;
 import com.vk.sdk.api.VKApi;
@@ -28,8 +31,12 @@ import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
+import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKApiPost;
+import com.vk.sdk.api.model.VKList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Michael Spitsin
@@ -70,6 +77,8 @@ public class GroupListPage extends Page implements View.OnClickListener {
     private RecyclerView friendCommunityListView;
     private GroupAdapter friendGroupAdapter;
     private RecyclerItems<CommunityItem> friendGroupItems;
+
+    private final RecyclerView.RecycledViewPool postViewPool = new RecyclerView.RecycledViewPool();
 
     @Override
     public void onCreate() {
@@ -202,6 +211,7 @@ public class GroupListPage extends Page implements View.OnClickListener {
         prepareSpinner();
         prepareCreateCommunityButton();
         prepareItemsViews(pageView);
+//        preparePostRecyclerPool(pageView.getContext());
     }
 
     @Override
@@ -256,7 +266,7 @@ public class GroupListPage extends Page implements View.OnClickListener {
                 int position = myCommunityListView.getChildAdapterPosition(v);
 
                 Snackbar.make(v, "Test grouplistpage click", Snackbar.LENGTH_SHORT);
-                Page detailPage = new GroupDetailPage(myGroupItems.get(position).getCommunity());
+                Page detailPage = new GroupDetailPage(myGroupItems.get(position).getCommunity(), postViewPool);
                 pagerListener.openPage(detailPage);
 //                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
 //                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
@@ -330,5 +340,32 @@ public class GroupListPage extends Page implements View.OnClickListener {
                 super.onProgress(progressType, bytesLoaded, bytesTotal);
             }
         });
+    }
+
+    private void preparePostRecyclerPool(Context context) {
+        RecyclerView fakeRecyclerView = new RecyclerView(context);
+        fakeRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        List<PostItem> fakeItems = new ArrayList<>();
+        for (int photoCount = 0; photoCount < 11; photoCount++) {
+            fakeItems.add(new PostItem(createFakePost(photoCount), null, null, null));
+        }
+
+        PostAdapter fakeAdapter = new PostAdapter(fakeItems);
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 6; j++) {
+                PostItemHolder holder = fakeAdapter.createViewHolder(fakeRecyclerView, i);
+                postViewPool.putRecycledView(holder);
+            }
+        }
+    }
+
+    private VKApiPost createFakePost(int photoCount) {
+        VKApiPost apiPost = new VKApiPost();
+        apiPost.text = "";
+        apiPost.copy_history = new VKList<>();
+        for (int i = 0; i < photoCount; i++) {
+            apiPost.attachments.add(new VKApiPhoto());
+        }
+        return apiPost;
     }
 }

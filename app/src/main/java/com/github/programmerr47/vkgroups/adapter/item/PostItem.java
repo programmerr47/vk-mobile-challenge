@@ -14,7 +14,6 @@ import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
-import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.AudioAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.AttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.DocAttachmentItem;
@@ -177,119 +176,114 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
     }
 
-    public PostItemHolderProducer getViewHolderProducer() {
-        return new PostItemHolderProducer() {
-            @Override
-            public PostItemHolder produce(ViewGroup parentView) {
-                LayoutInflater layoutInflater = LayoutInflater.from(parentView.getContext());
-                ViewGroup baseView = (ViewGroup) layoutInflater.inflate(R.layout.post_item, parentView, false);
+    public static PostItemHolder createHolder(ViewGroup parentView, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parentView.getContext());
+        ViewGroup baseView = (ViewGroup) layoutInflater.inflate(R.layout.post_item, parentView, false);
 
-                if (baseView == null) {
-                    throw new IllegalStateException("View not created");
+        if (baseView == null) {
+            throw new IllegalStateException("View not created");
+        }
+
+        LinearLayout postSections = (LinearLayout) baseView.getChildAt(0);
+
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        PostContentView ownerPostContent = new PostContentView(postSections.getContext());
+        ownerPostContent.setLayoutParams(layoutParams);
+
+        List<ImageView> photos = new ArrayList<>();
+        View view;
+        switch (viewType) {
+            case 2:
+                view = layoutInflater.inflate(R.layout.attachment_photo_2, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2);
+                break;
+            case 3:
+                view = layoutInflater.inflate(R.layout.attachment_photo_3, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3);
+                break;
+            case 4:
+                view = layoutInflater.inflate(R.layout.attachment_photo_4, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4);
+                break;
+            case 5:
+                view = layoutInflater.inflate(R.layout.attachment_photo_5, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5);
+                break;
+            case 6:
+                view = layoutInflater.inflate(R.layout.attachment_photo_6, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5, R.id.photo_6);
+                break;
+            case 7:
+                view = layoutInflater.inflate(R.layout.attachment_photo_7, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                        R.id.photo_7);
+                break;
+            case 8:
+                view = layoutInflater.inflate(R.layout.attachment_photo_8, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                        R.id.photo_7, R.id.photo_8);
+                break;
+            case 9:
+                view = layoutInflater.inflate(R.layout.attachment_photo_9, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                        R.id.photo_7, R.id.photo_8, R.id.photo_9);
+                break;
+            case 10:
+                view = layoutInflater.inflate(R.layout.attachment_photo_10, ownerPostContent, true);
+                getPhotos(view, photos,
+                        R.id.photo_1, R.id.photo_2, R.id.photo_3,
+                        R.id.photo_4, R.id.photo_5, R.id.photo_6,
+                        R.id.photo_7, R.id.photo_8, R.id.photo_9,
+                        R.id.photo_10);
+                break;
+            default:
+                for (int i = 0; i < viewType; i++) {
+                    view = layoutInflater.inflate(R.layout.attachment_photo, ownerPostContent, false);
+                    ImageView photo = (ImageView) view.findViewById(R.id.photo_1);
+                    ownerPostContent.addView(view);
+                    photos.add(photo);
                 }
+        }
 
-                LinearLayout postSections = (LinearLayout) baseView.getChildAt(0);
+        ownerPostContent.setPhotos(photos);
 
-                LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                PostContentView ownerPostContent = new PostContentView(postSections.getContext());
-                ownerPostContent.setLayoutParams(layoutParams);
+        postSections.addView(ownerPostContent, 0);
 
-                List<ImageView> photos = new ArrayList<>();
-                View view;
-                switch (attPhotos.size()) {
-                    case 2:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_2, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2);
-                        break;
-                    case 3:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_3, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3);
-                        break;
-                    case 4:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_4, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4);
-                        break;
-                    case 5:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_5, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5);
-                        break;
-                    case 6:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_6, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5, R.id.photo_6);
-                        break;
-                    case 7:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_7, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                                R.id.photo_7);
-                        break;
-                    case 8:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_8, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                                R.id.photo_7, R.id.photo_8);
-                        break;
-                    case 9:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_9, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                                R.id.photo_7, R.id.photo_8, R.id.photo_9);
-                        break;
-                    case 10:
-                        view = layoutInflater.inflate(R.layout.attachment_photo_10, ownerPostContent, true);
-                        getPhotos(view, photos,
-                                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                                R.id.photo_7, R.id.photo_8, R.id.photo_9,
-                                R.id.photo_10);
-                        break;
-                    default:
-                        for (VKApiPhoto attPhoto : attPhotos) {
-                            view = layoutInflater.inflate(R.layout.attachment_photo, ownerPostContent, false);
-                            ImageView photo = (ImageView) view.findViewById(R.id.photo_1);
-                            ownerPostContent.addView(view);
-                            photos.add(photo);
-                        }
-                }
+        List<PostAttachmentSubHolder> attHolders = createAttHolders(baseView,
+                R.id.attachment_1, R.id.attachment_2, R.id.attachment_3,
+                R.id.attachment_4, R.id.attachment_5, R.id.attachment_6,
+                R.id.attachment_7, R.id.attachment_8, R.id.attachment_9,
+                R.id.attachment_10);
 
-                ownerPostContent.setPhotos(photos);
+        PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
+        params.likeActionId = R.id.like_action;
+        params.repostActionId = R.id.share_post_action;
+        params.commentActionId = R.id.comment_action;
+        params.likeIconId = R.id.like_image;
+        params.repostIconId = R.id.share_post_image;
+        params.commentIconId = R.id.comment_image;
+        params.likeCountId = R.id.like_count;
+        params.repostCountId = R.id.share_post_count;
+        params.commentCountId = R.id.comment_count;
 
-                postSections.addView(ownerPostContent, 0);
-
-                List<PostAttachmentSubHolder> attHolders = createAttHolders(baseView,
-                        R.id.attachment_1, R.id.attachment_2, R.id.attachment_3,
-                        R.id.attachment_4, R.id.attachment_5, R.id.attachment_6,
-                        R.id.attachment_7, R.id.attachment_8, R.id.attachment_9,
-                        R.id.attachment_10);
-
-                PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
-                params.likeActionId = R.id.like_action;
-                params.repostActionId = R.id.share_post_action;
-                params.commentActionId = R.id.comment_action;
-                params.likeIconId = R.id.like_image;
-                params.repostIconId = R.id.share_post_image;
-                params.commentIconId = R.id.comment_image;
-                params.likeCountId = R.id.like_count;
-                params.repostCountId = R.id.share_post_count;
-                params.commentCountId = R.id.comment_count;
-
-                return new PostItemHolder(baseView, ownerPostContent, attHolders, params);
-            }
-        };
+        return new PostItemHolder(baseView, ownerPostContent, attHolders, params);
     }
 
-    private List<PostAttachmentSubHolder> createAttHolders(View parent, int... ids) {
+    private static List<PostAttachmentSubHolder> createAttHolders(View parent, int... ids) {
         List<PostAttachmentSubHolder> result = new ArrayList<>();
 
         for (int id : ids) {
@@ -300,7 +294,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return result;
     }
 
-    private PostAttachmentSubHolder createAttHolder(View attachment) {
+    private static PostAttachmentSubHolder createAttHolder(View attachment) {
         PostAttachmentSubHolder.ResourceParams params = new PostAttachmentSubHolder.ResourceParams();
         params.iconId = R.id.icon;
         params.titleId = R.id.title;
@@ -310,8 +304,8 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return new PostAttachmentSubHolder(attachment, params);
     }
 
-    public String getItemId() {
-        return "p:" + attPhotos.size();
+    public int getItemType() {
+        return attPhotos.size();
     }
 
     public VKApiPost getPost() {
@@ -372,7 +366,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return false;
     }
 
-    private void getPhotos(View sourceView, List<ImageView> targetList, int... ids) {
+    private static void getPhotos(View sourceView, List<ImageView> targetList, int... ids) {
         for (int id : ids) {
             targetList.add((ImageView) sourceView.findViewById(id));
         }

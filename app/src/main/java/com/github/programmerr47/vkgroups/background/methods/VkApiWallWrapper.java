@@ -5,7 +5,6 @@ import android.util.LruCache;
 import com.github.programmerr47.vkgroups.VKGroupApplication;
 import com.github.programmerr47.vkgroups.adapter.item.PostItem;
 import com.github.programmerr47.vkgroups.adapter.item.PostItemNotifier;
-import com.github.programmerr47.vkgroups.collections.PostItems;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -19,6 +18,7 @@ import com.vk.sdk.api.model.VKPostArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -31,17 +31,17 @@ public class VkApiWallWrapper {
 
     private static final Executor REQUEST_EXECUTOR = Executors.newSingleThreadExecutor();
 
-    private static final LruCache<Integer, PostItems> postsCache = new LruCache<>(100);
+    private static final LruCache<Integer, List<PostItem>> postsCache = new LruCache<>(100);
 
-    public static PostItems getFromOwner(int id, PostItemNotifier itemNotifier, GetPostsListener listener) {
+    public static List<PostItem> getFromOwner(int id, PostItemNotifier itemNotifier, GetPostsListener listener) {
         return getFromOwner(id, 0, itemNotifier, listener);
     }
 
-    public static PostItems getFromOwner(int id, int offset, PostItemNotifier itemNotifier, GetPostsListener listener) {
+    public static List<PostItem> getFromOwner(int id, int offset, PostItemNotifier itemNotifier, GetPostsListener listener) {
         return getFromOwner(id, offset, 20, itemNotifier, listener);
     }
 
-    public static PostItems getFromOwner(final int id, final int offset, final int count, final PostItemNotifier itemNotifier, final GetPostsListener listener) {
+    public static List<PostItem> getFromOwner(final int id, final int offset, final int count, final PostItemNotifier itemNotifier, final GetPostsListener listener) {
         final VKRequest request = VKApi.wall().get(VKParameters.from(
                 VKApiConst.OWNER_ID, id,
                 VKApiConst.EXTENDED, 1,
@@ -66,7 +66,7 @@ public class VkApiWallWrapper {
                             groupMap.put(group.id, group);
                         }
 
-                        final PostItems items = new PostItems(new ArrayList<PostItem>());
+                        final List<PostItem> items = new ArrayList<>();
                         for (VKApiPost apiPost : postArray) {
                             PostItem postItem = new PostItem(apiPost, userMap, groupMap, itemNotifier);
                             items.add(postItem);
@@ -102,6 +102,6 @@ public class VkApiWallWrapper {
     }
 
     public interface GetPostsListener {
-        void onPostsLoaded(PostItems posts, int offset, int count);
+        void onPostsLoaded(List<PostItem> posts, int offset, int count);
     }
 }

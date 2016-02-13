@@ -66,7 +66,11 @@ public class PhotoUtil {
     }
 
     public static Pair<Integer, Integer> getPostPhotoDimensions(VKApiPhotoSize photoSize) {
-        return getPostPhotoDimensions(new Pair<>(photoSize.width, photoSize.height));
+        if (photoSize == null) {
+            return getDimensionsOfPostPhoto(0.5f);
+        } else {
+            return getPostPhotoDimensions(new Pair<>(photoSize.width, photoSize.height));
+        }
     }
 
     public static VKApiPhotoSize getMinPhotoSize(VKPhotoSizes photoSizes, Pair<Integer, Integer> minDimensions) {

@@ -6,13 +6,10 @@ import android.view.ViewGroup;
 
 import com.github.programmerr47.vkgroups.adapter.item.PostItemNotifier;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
-import com.github.programmerr47.vkgroups.adapter.holder.producer.PostItemHolderProducer;
 import com.github.programmerr47.vkgroups.adapter.item.PostItem;
-import com.github.programmerr47.vkgroups.collections.PostItems;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Michael Spitsin
@@ -20,23 +17,15 @@ import java.util.Map;
  */
 public class PostAdapter extends RecyclerView.Adapter<PostItemHolder> implements PostItemNotifier {
 
-    private PostItems items;
-
-    public PostAdapter(@NonNull PostItems items) {
-        this.items = items;
-    }
+    private List<PostItem> items;
 
     public PostAdapter(@NonNull List<PostItem> items) {
-        this.items = new PostItems(items);
+        this.items = items;
     }
 
     @Override
     public PostItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Map<Integer, PostItemHolderProducer> typeProducers = items.getTypesMap();
-        PostItemHolderProducer producer = typeProducers.get(viewType);
-        PostItemHolder result = producer.produce(parent);
-        onPostCreateViewHolder(result);
-        return result;
+        return PostItem.createHolder(parent, viewType);
     }
 
     @Override
@@ -66,10 +55,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostItemHolder> implements
 
     @Override
     public final int getItemViewType(int position) {
-        return items.getItemType(position);
+        return items.get(position).getItemType();
     }
 
-    public void updateItems(@NonNull PostItems newItems) {
+    public void updateItems(@NonNull List<PostItem> newItems) {
         items = newItems;
         notifyDataSetChanged();
     }
