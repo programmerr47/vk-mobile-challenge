@@ -15,6 +15,7 @@
         android:layout_margin="@dimen/margin_small"
         android:padding="@dimen/margin_medium"
         android:src="@drawable/ic_map_marker_white_36dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/bg_attachment_default"/>
 
     <LinearLayout
@@ -59,8 +60,8 @@
         <com.github.programmerr47.vkgroups.view.CustomFontTextView
             android:id="@+id/optional_info"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginRight="@dimen/margin_medium"

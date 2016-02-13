@@ -1,5 +1,7 @@
 package com.github.programmerr47.vkgroups;
 
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import static com.github.programmerr47.vkgroups.AndroidUtils.hasJellyBeanMr1;
@@ -17,7 +19,7 @@ public class ViewUtils {
         setMarginEndIfPossible(layoutParams, margin);
     }
 
-    public static void setMarginEndIfPossible(LinearLayout.LayoutParams layoutParams, int margin) {
+    public static void setMarginEndIfPossible(ViewGroup.MarginLayoutParams layoutParams, int margin) {
         if (hasJellyBeanMr1()) {
             layoutParams.setMarginEnd(margin);
         } else {

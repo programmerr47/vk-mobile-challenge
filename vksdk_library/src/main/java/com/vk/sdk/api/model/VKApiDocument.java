@@ -25,6 +25,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static com.vk.sdk.api.model.VKAttachments.*;
@@ -113,6 +114,34 @@ public class VKApiDocument extends VKApiAttachment implements Parcelable, Identi
         if(!TextUtils.isEmpty(photo_130)) {
             photo.add(VKApiPhotoSize.create(photo_130, 130, 100));
         }
+
+        JSONObject preview = jo.optJSONObject("preview");
+        JSONObject photoJson = preview != null ? preview.optJSONObject("photo") : null;
+        JSONArray sizes = photoJson != null ? photoJson.optJSONArray("sizes") : null;
+
+        if (sizes != null) {
+            for (int i = 0; i < sizes.length(); i++) {
+                JSONObject photoSize = sizes.optJSONObject(i);
+
+                if (photoSize != null && !TextUtils.isEmpty(photoSize.optString("src"))) {
+                    if (!TextUtils.isEmpty(photoSize.optString("type"))) {
+                        photo.add(VKApiPhotoSize.create(
+                                photoSize.optString("src"),
+                                photoSize.optString("type").charAt(0),
+                                photoSize.optInt("width"),
+                                photoSize.optInt("height")
+                        ));
+                    } else {
+                        photo.add(VKApiPhotoSize.create(
+                                photoSize.optString("src"),
+                                photoSize.optInt("width"),
+                                photoSize.optInt("height")
+                        ));
+                    }
+                }
+            }
+        }
+
         photo.sort();
         return this;
     }

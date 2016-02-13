@@ -29,6 +29,7 @@
 package com.vk.sdk.api.model;
 
 import android.os.Parcel;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,6 +92,13 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
         image_src = source.optString("image_src");
         preview_page = source.optString("preview_page");
         caption = source.optString("caption");
+
+        if (TextUtils.isEmpty(image_src)) {
+            JSONObject photo = source.optJSONObject("photo");
+            image_src = optFirstString(photo,
+                    "photo_2560", "photo_1280", "photo_807",
+                    "photo_604", "photo_130", "photo_75");
+        }
         return this;
     }
 
@@ -149,5 +157,17 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     @Override
     public int getId() {
         return 0;
+    }
+
+    private String optFirstString(JSONObject json, String... keys) {
+        if (json != null) {
+            for (String key : keys) {
+                if (json.has(key)) {
+                    return json.optString(key);
+                }
+            }
+        }
+
+        return null;
     }
 }

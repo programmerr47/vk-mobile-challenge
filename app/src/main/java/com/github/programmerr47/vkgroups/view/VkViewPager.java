@@ -41,7 +41,6 @@ public class VkViewPager extends ViewPager {
         return super.onTouchEvent(ev);
     }
 
-    @SuppressWarnings("deprecation")
     private void init() {
         if (layerShadowDrawable == null) {
             layerShadowDrawable = getResources().getDrawable(R.drawable.layer_shadow);

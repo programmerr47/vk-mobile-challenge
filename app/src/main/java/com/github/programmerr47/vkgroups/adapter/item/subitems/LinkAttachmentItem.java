@@ -19,6 +19,11 @@ public class LinkAttachmentItem extends AbstractAttachmentItem {
     }
 
     @Override
+    protected String getIconUrl() {
+        return apiLink.image_src;
+    }
+
+    @Override
     protected int getIconId() {
         return R.drawable.ic_link_variant_white_36dp;
     }

@@ -2,8 +2,10 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 
 import com.github.programmerr47.vkgroups.R;
+import com.squareup.picasso.Picasso;
 import com.vk.sdk.api.model.VKApiDocument;
 
 import java.text.DecimalFormat;
@@ -24,6 +26,20 @@ public class DocAttachmentItem extends AbstractAttachmentItem {
     }
 
     @Override
+    protected String getIconUrl() {
+        if (apiDocument.photo.size() > 0) {
+            return apiDocument.photo.get(apiDocument.photo.size() - 1).src;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    protected int getOptionalInfoViewGravity() {
+        return Gravity.CENTER;
+    }
+
+    @Override
     protected int getIconId() {
         return R.drawable.ic_file_white_36dp;
     }
@@ -31,7 +47,7 @@ public class DocAttachmentItem extends AbstractAttachmentItem {
     @NonNull
     @Override
     protected String getTitle() {
-        return apiDocument.title + "." + apiDocument.ext;
+        return apiDocument.title;
     }
 
     @Nullable
