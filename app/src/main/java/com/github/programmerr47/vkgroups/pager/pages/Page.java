@@ -21,6 +21,8 @@ public abstract class Page {
     private View pageView;
     protected PagerListener pagerListener;
 
+    protected boolean isTransitionAnimating;
+
     public View createView(Context context) {
         View originPageView = onCreateView(context);
         pageView = wrapPageView(context, originPageView);
@@ -48,6 +50,14 @@ public abstract class Page {
 
     public void setPagerListener(PagerListener pagerListener) {
         this.pagerListener = pagerListener;
+    }
+
+    public boolean isTransitionAnimating() {
+        return isTransitionAnimating;
+    }
+
+    public void setTransitionAnimating(boolean isTransitionAnimating) {
+        this.isTransitionAnimating = isTransitionAnimating;
     }
 
     public boolean hasBackStack() {

@@ -314,6 +314,10 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return "p:" + attPhotos.size();
     }
 
+    public VKApiPost getPost() {
+        return post;
+    }
+
     private void initAllDescriptions() {
         postDescription = createDescription(post);
 

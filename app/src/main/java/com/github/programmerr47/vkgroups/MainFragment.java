@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +104,9 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         newPage.onCreate();
         newPage.setPagerListener(this);
         newPage.createView(getActivity());
-        newPage.onResume();
         adapter.addPage(newPage);
+
+        newPage.setTransitionAnimating(true);
         pager.setCurrentItem(pages.size() - 1, true);
     }
 
@@ -124,8 +126,16 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
             changeDrawerState();
 
             if (pager.getCurrentItem() < pages.size() - 1) {
+                getLastPage().onPause();
+                getLastPage().onDestroy();
                 adapter.removeLast();
+            } else {
+                getLastPage().setTransitionAnimating(false);
+                getLastPage().onResume();
             }
+        } else if (state == ViewPager.SCROLL_STATE_DRAGGING && getLastPage().isTransitionAnimating()) {
+            getLastPage().setTransitionAnimating(false);
+            getLastPage().onResume();
         }
     }
 

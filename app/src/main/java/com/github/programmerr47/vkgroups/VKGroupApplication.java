@@ -2,6 +2,7 @@ package com.github.programmerr47.vkgroups;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import com.github.programmerr47.vkgroups.imageloading.ImageCache;
 import com.github.programmerr47.vkgroups.imageloading.ImageFetcher;
@@ -16,6 +17,7 @@ public class VKGroupApplication extends Application {
 
     private static Context appContext;
     private static ImageWorker imageWorker;
+    private static Handler uiHandler;
 
     @Override
     public void onCreate() {
@@ -25,6 +27,7 @@ public class VKGroupApplication extends Application {
 
         appContext = getApplicationContext();
         imageWorker = new ImageFetcher(appContext, imageCacheParams);
+        uiHandler = new Handler();
 
         VKSdk.initialize(appContext);
     }
@@ -39,5 +42,9 @@ public class VKGroupApplication extends Application {
 
     public static ImageWorker getImageWorker() {
         return imageWorker;
+    }
+
+    public static Handler getUiHandler() {
+        return uiHandler;
     }
 }
