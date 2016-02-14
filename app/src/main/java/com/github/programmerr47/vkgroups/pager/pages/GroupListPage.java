@@ -211,7 +211,6 @@ public class GroupListPage extends Page implements View.OnClickListener {
         prepareSpinner();
         prepareCreateCommunityButton();
         prepareItemsViews(pageView);
-//        preparePostRecyclerPool(pageView.getContext());
     }
 
     @Override
@@ -346,26 +345,10 @@ public class GroupListPage extends Page implements View.OnClickListener {
         RecyclerView fakeRecyclerView = new RecyclerView(context);
         fakeRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         List<PostItem> fakeItems = new ArrayList<>();
-        for (int photoCount = 0; photoCount < 11; photoCount++) {
-            fakeItems.add(new PostItem(createFakePost(photoCount), null, null, null));
-        }
-
         PostAdapter fakeAdapter = new PostAdapter(fakeItems);
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 6; j++) {
-                PostItemHolder holder = fakeAdapter.createViewHolder(fakeRecyclerView, i);
-                postViewPool.putRecycledView(holder);
-            }
+        for (int i = 0; i < 12; i++) {
+            PostItemHolder holder = fakeAdapter.createViewHolder(fakeRecyclerView, 1);
+            postViewPool.putRecycledView(holder);
         }
-    }
-
-    private VKApiPost createFakePost(int photoCount) {
-        VKApiPost apiPost = new VKApiPost();
-        apiPost.text = "";
-        apiPost.copy_history = new VKList<>();
-        for (int i = 0; i < photoCount; i++) {
-            apiPost.attachments.add(new VKApiPhoto());
-        }
-        return apiPost;
     }
 }

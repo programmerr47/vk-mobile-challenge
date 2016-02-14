@@ -87,7 +87,7 @@ public class GroupDetailPage extends Page {
                 groupImage,
                 new ImageWorker.LoadBitmapParams(200, 200, false));
 
-//        postListView.setRecycledViewPool(postViewPool);
+        postListView.setRecycledViewPool(postViewPool);
         postListView.setAdapter(postAdapter);
     }
 

@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.programmerr47.vkgroups.view.PostContentView;
-
 import java.util.List;
 
 /**
@@ -14,6 +12,12 @@ import java.util.List;
  * @since 2016-01-25
  */
 public class PostItemHolder extends RecyclerView.ViewHolder {
+
+    private ImageView ownerIconView;
+    private TextView ownerTitleView;
+    private TextView ownerDateView;
+    private TextView postTextView;
+    private TextView postExpandCollapseView;
 
     private View likeActionView;
     private View repostActionView;
@@ -25,15 +29,18 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
     private TextView repostCountView;
     private TextView commentCountView;
 
-    private PostContentView ownerContentView;
-    private List<AudioAttachmentSubHolder> audioAttachmentViews;
-    private List<WikiPageSubHolder> wikiPageAttachmentViews;
     private List<PostAttachmentSubHolder> attHolders;
+    private List<View> photoContainers;
+    private List<List<ImageView>> photos;
 
-    public PostItemHolder(View view, PostContentView ownerContentView, List<PostAttachmentSubHolder> attHolders, ResourceParams params) {
+    public PostItemHolder(View view, List<PostAttachmentSubHolder> attHolders, List<View> photoContainers, List<List<ImageView>> photos, ResourceParams params) {
         super(view);
-        this.ownerContentView = ownerContentView;
 
+        this.ownerIconView = (ImageView) view.findViewById(params.ownerIconId);
+        this.ownerTitleView = (TextView) view.findViewById(params.ownerTitleId);
+        this.ownerDateView = (TextView) view.findViewById(params.ownerDateId);
+        this.postTextView = (TextView) view.findViewById(params.postTextId);
+        this.postExpandCollapseView = (TextView) view.findViewById(params.postExpandCollapseId);
         this.likeActionView = view.findViewById(params.likeActionId);
         this.repostActionView = view.findViewById(params.repostActionId);
         this.commentActionView = view.findViewById(params.commentActionId);
@@ -44,6 +51,28 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         this.repostCountView = (TextView) view.findViewById(params.repostCountId);
         this.commentCountView = (TextView) view.findViewById(params.commentCountId);
         this.attHolders = attHolders;
+        this.photoContainers = photoContainers;
+        this.photos = photos;
+    }
+
+    public ImageView getOwnerIconView() {
+        return ownerIconView;
+    }
+
+    public TextView getOwnerTitleView() {
+        return ownerTitleView;
+    }
+
+    public TextView getOwnerDateView() {
+        return ownerDateView;
+    }
+
+    public TextView getPostTextView() {
+        return postTextView;
+    }
+
+    public TextView getPostExpandCollapseView() {
+        return postExpandCollapseView;
     }
 
     public View getLikeActionView() {
@@ -82,23 +111,24 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         return commentCountView;
     }
 
-    public PostContentView getOwnerContentView() {
-        return ownerContentView;
-    }
-
-    public List<AudioAttachmentSubHolder> getAudioAttachmentViews() {
-        return audioAttachmentViews;
-    }
-
-    public List<WikiPageSubHolder> getWikiPageAttachmentViews() {
-        return wikiPageAttachmentViews;
-    }
-
     public List<PostAttachmentSubHolder> getAttHolders() {
         return attHolders;
     }
 
+    public List<View> getPhotoContainers() {
+        return photoContainers;
+    }
+
+    public List<List<ImageView>> getPhotos() {
+        return photos;
+    }
+
     public static class ResourceParams {
+        public int ownerIconId;
+        public int ownerTitleId;
+        public int ownerDateId;
+        public int postTextId;
+        public int postExpandCollapseId;
         public int likeActionId;
         public int repostActionId;
         public int commentActionId;
