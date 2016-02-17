@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import android.widget.ImageView;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.PostAdapter;
 import com.github.programmerr47.vkgroups.adapter.item.PostItem;
-import com.github.programmerr47.vkgroups.background.methods.VkApiWallWrapper;
+import com.github.programmerr47.vkgroups.background.methods.VkApiWallDownloader;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
 import com.vk.sdk.api.model.VKApiCommunity;
 
@@ -28,6 +29,7 @@ import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorke
 public class GroupDetailPage extends Page {
 
     private final VKApiCommunity community;
+    private final VkApiWallDownloader wallDownloader = new VkApiWallDownloader();
 
     private ImageView groupImage;
     RecyclerView.RecycledViewPool postViewPool;
@@ -43,10 +45,13 @@ public class GroupDetailPage extends Page {
 
         items = new ArrayList<>();
         postAdapter = new PostAdapter(items);
-        VkApiWallWrapper.getFromOwner(-community.id, postAdapter, new VkApiWallWrapper.GetPostsListener() {
+        wallDownloader.setItemNotifier(postAdapter);
+        wallDownloader.setPostsListener(new VkApiWallDownloader.GetPostsListener() {
             @Override
             public void onPostsLoaded(final List<PostItem> posts, int offset, int count) {
+                Log.v("FUCK", "Do I downloaded posts? " + (posts != null));
                 if (posts != null) {
+                    Log.v("FUCK", "Downloaded " + posts.size() + " items with requested offset: " + offset + ", count: " + count);
                     if (isTransitionAnimating) {
                         uiWorks.add(new Runnable() {
                             @Override
@@ -60,6 +65,7 @@ public class GroupDetailPage extends Page {
                 }
             }
         });
+        wallDownloader.download(-community.id);
     }
 
     @SuppressLint("InflateParams")
@@ -89,6 +95,28 @@ public class GroupDetailPage extends Page {
 
         postListView.setRecycledViewPool(postViewPool);
         postListView.setAdapter(postAdapter);
+        postListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.v("FUCK", "scrolled, can I download now? " + wallDownloader.canDownload() + " .My dy = " + dy);
+                if (wallDownloader.canDownload() && dy > 0) {
+                    Log.v("FUCK", "I can download, dy = " + dy);
+                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int count = 2 * (manager.findLastVisibleItemPosition() - manager.findFirstVisibleItemPosition() + 1);
+                    Log.v("FUCK", "Have: " + items.size() + " items, next is: " + (manager.findLastVisibleItemPosition() + count) + ", window size: " + count);
+                    if (items.size() < manager.findLastVisibleItemPosition() + count) {
+//                        if (!mChatListRecyclerView.getLoadingState()) {
+//                            mChatListItems.add(mLoadingItem);
+//                            mChatListAdapter.notifyDataSetChanged();
+//                        }
+
+                        Log.v("FUCK", "Download!");
+                        wallDownloader.download(-community.id, items.size());
+                    }
+                }
+            }
+        });
     }
 
     @Override
