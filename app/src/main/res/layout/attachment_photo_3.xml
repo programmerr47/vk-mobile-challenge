@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_small"
@@ -13,14 +13,12 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.github.programmerr47.vkgroups.view.SquareImageView
+        <include
+            layout="@layout/attachment_photo_inner"
             android:id="@+id/photo_1"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_small"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:dimension="base_width"/>
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/margin_small"/>
 
     </LinearLayout>
 
@@ -30,23 +28,21 @@
         android:layout_weight="2"
         android:orientation="vertical">
 
-        <com.github.programmerr47.vkgroups.view.SquareImageView
+        <include
+            layout="@layout/attachment_photo_inner"
             android:id="@+id/photo_2"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:layout_margin="@dimen/margin_small"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:dimension="base_width"/>
+            android:layout_weight="1"/>
 
-        <com.github.programmerr47.vkgroups.view.SquareImageView
+        <include
+            layout="@layout/attachment_photo_inner"
             android:id="@+id/photo_3"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:layout_margin="@dimen/margin_small"
-            android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:dimension="base_width"/>
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

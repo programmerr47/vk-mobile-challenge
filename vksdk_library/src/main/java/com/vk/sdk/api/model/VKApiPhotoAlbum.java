@@ -33,7 +33,7 @@ import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
  * Describes a photo album
  */
 @SuppressWarnings("unused")
-public class VKApiPhotoAlbum extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable {
+public class VKApiPhotoAlbum extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable, PhotoSizable {
 
     /**
      * URL for empty album cover with max width at 75px
@@ -192,6 +192,11 @@ public class VKApiPhotoAlbum extends VKAttachments.VKApiAttachment implements Pa
     @Override
     public Type getType() {
         return ALBUM;
+    }
+
+    @Override
+    public VKPhotoSizes getPhotoSizes() {
+        return photo;
     }
 
     @Override

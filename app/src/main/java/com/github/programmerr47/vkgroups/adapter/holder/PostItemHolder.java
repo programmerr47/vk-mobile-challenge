@@ -31,9 +31,9 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
 
     private List<PostAttachmentSubHolder> attHolders;
     private List<View> photoContainers;
-    private List<List<ImageView>> photos;
+    private List<List<PhotoSizeAttachmentSubHolder>> photoHolders;
 
-    public PostItemHolder(View view, List<PostAttachmentSubHolder> attHolders, List<View> photoContainers, List<List<ImageView>> photos, ResourceParams params) {
+    public PostItemHolder(View view, List<PostAttachmentSubHolder> attHolders, List<View> photoContainers, List<List<PhotoSizeAttachmentSubHolder>> photoHolders, ResourceParams params) {
         super(view);
 
         this.ownerIconView = (ImageView) view.findViewById(params.ownerIconId);
@@ -52,7 +52,7 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         this.commentCountView = (TextView) view.findViewById(params.commentCountId);
         this.attHolders = attHolders;
         this.photoContainers = photoContainers;
-        this.photos = photos;
+        this.photoHolders = photoHolders;
     }
 
     public ImageView getOwnerIconView() {
@@ -119,8 +119,8 @@ public class PostItemHolder extends RecyclerView.ViewHolder {
         return photoContainers;
     }
 
-    public List<List<ImageView>> getPhotos() {
-        return photos;
+    public List<List<PhotoSizeAttachmentSubHolder>> getPhotoHolders() {
+        return photoHolders;
     }
 
     public static class ResourceParams {

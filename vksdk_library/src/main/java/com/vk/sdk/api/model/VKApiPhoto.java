@@ -37,7 +37,7 @@ import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
 /**
  * Describes a photo object from VK.
  */
-public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable {
+public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable, PhotoSizable {
 
     /**
      * Photo ID, positive number
@@ -271,6 +271,11 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
     }
 
     @Override
+    public VKPhotoSizes getPhotoSizes() {
+        return src;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
         dest.writeInt(this.album_id);
@@ -303,5 +308,4 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
             return new VKApiPhoto[size];
         }
     };
-
 }

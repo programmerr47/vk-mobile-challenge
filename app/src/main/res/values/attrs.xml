@@ -15,4 +15,8 @@
         <attr name="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="SquareRelativeLayout">
+        <attr name="dimension"/>
+    </declare-styleable>
+
 </resources>

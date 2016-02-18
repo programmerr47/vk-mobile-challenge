@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.github.programmerr47.vkgroups.view.SquareRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:dimension="base_width">
 
-    <ImageView
+    <com.github.programmerr47.vkgroups.view.SquareImageView
         android:id="@+id/photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_thumb_up_grey600_36dp"/>
 
@@ -90,4 +90,4 @@
         android:gravity="center_vertical"
         app:fontName="Roboto-Regular.ttf"/>
 
-</RelativeLayout>
+</com.github.programmerr47.vkgroups.view.SquareRelativeLayout>

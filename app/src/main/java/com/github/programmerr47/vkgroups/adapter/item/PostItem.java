@@ -4,37 +4,45 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 import com.github.programmerr47.vkgroups.DateFormatter;
 import com.github.programmerr47.vkgroups.PhotoUtil;
 import com.github.programmerr47.vkgroups.PostDescription;
 import com.github.programmerr47.vkgroups.R;
+import com.github.programmerr47.vkgroups.adapter.holder.PhotoSizeAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostItemHolder;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.AlbumAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.AppAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.AudioAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.AttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.DocAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.LinkAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.MapAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.NoteAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.PhotoAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.PhotoSizeAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.PollAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.PostAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.SimpleAttachmentItem;
+import com.github.programmerr47.vkgroups.adapter.item.subitems.VideoAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.WikiPageAttachmentItem;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
-import com.squareup.picasso.Picasso;
+import com.vk.sdk.api.model.PhotoSizable;
+import com.vk.sdk.api.model.VKApiApplicationContent;
 import com.vk.sdk.api.model.VKApiAudio;
 import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiDocument;
 import com.vk.sdk.api.model.VKApiLink;
 import com.vk.sdk.api.model.VKApiNote;
-import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKApiPhotoAlbum;
 import com.vk.sdk.api.model.VKApiPhotoSize;
 import com.vk.sdk.api.model.VKApiPoll;
 import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
+import com.vk.sdk.api.model.VKApiVideo;
 import com.vk.sdk.api.model.VKApiWikiPage;
 import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
@@ -47,9 +55,10 @@ import java.util.Map;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
-import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
+import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
+import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;
 import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
 import static com.vk.sdk.api.model.VKAttachments.Type.LINK;
@@ -58,6 +67,7 @@ import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
 import static com.vk.sdk.api.model.VKAttachments.Type.POLL;
 import static com.vk.sdk.api.model.VKAttachments.Type.POST;
 import static com.vk.sdk.api.model.VKAttachments.Type.POSTED_PHOTO;
+import static com.vk.sdk.api.model.VKAttachments.Type.VIDEO;
 import static com.vk.sdk.api.model.VKAttachments.Type.WIKI_PAGE;
 
 /**
@@ -74,13 +84,10 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
     private PostDescription postDescription;
 
-    private List<VKApiPhoto> attPhotos;
-    private List<LayoutParams> photosParams;
-    private List<VKApiPhotoSize> photoSizes;
-
     private List<PostDescription> historyDescriptions;
 
     private List<AttachmentItem> attItems;
+    private List<PhotoSizeAttachmentItem> photoSizeAttItems;
 
     public PostItem(VKApiPost vkApiPost, Map<Integer, VKApiUser> userMap, Map<Integer, VKApiCommunity> groupMap, PostItemNotifier notifier) {
         this.post = vkApiPost;
@@ -89,8 +96,6 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         this.notifier = notifier;
         initAllDescriptions();
         initAttachments(post);
-        this.photosParams = initLayoutParams(attPhotos);
-        this.photoSizes = initPhotoSizes(attPhotos);
     }
 
     @Override
@@ -161,17 +166,9 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             }
         }
 
-        List<ImageView> photos = enableAppropriatePhotoList(viewHolder);
-
-        for (int i = 0; i < attPhotos.size(); i++) {
-            VKApiPhotoSize photoSize = photoSizes.get(i);
-            ImageView photoView = photos.get(i);
-
-            if (i < photosParams.size()) {
-                photoView.setLayoutParams(photosParams.get(i));
-            }
-
-            Picasso.with(getAppContext()).load(photoSize.src).into(photoView);
+        List<PhotoSizeAttachmentSubHolder> photoHolders = enableAppropriatePhotoList(viewHolder);
+        for (int i = 0; i < photoSizeAttItems.size(); i++) {
+            photoSizeAttItems.get(i).bindView(photoHolders.get(i));
         }
     }
 
@@ -184,65 +181,75 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
 
         List<View> photosContainers = new ArrayList<>();
-        List<List<ImageView>> photos = new ArrayList<>();
+        List<List<PhotoSizeAttachmentSubHolder>> photoHolders = new ArrayList<>();
+
+        PhotoSizeAttachmentSubHolder.ResourceParams photoSizeResourceParams = new PhotoSizeAttachmentSubHolder.ResourceParams();
+        photoSizeResourceParams.bottomBackgroundId = R.id.bottom_background;
+        photoSizeResourceParams.bottomImagesIconId = R.id.bottom_images_icon;
+        photoSizeResourceParams.bottomOptionalInfoId = R.id.bottom_optional_info;
+        photoSizeResourceParams.bottomTitleId = R.id.bottom_title;
+        photoSizeResourceParams.photoId = R.id.photo;
+        photoSizeResourceParams.topAppIconId = R.id.top_app_icon;
+        photoSizeResourceParams.topBackgroundId = R.id.top_background;
+        photoSizeResourceParams.topTitleId = R.id.top_title;
 
         View photoContainer = baseView.findViewById(R.id.attachment_photo_1);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_2);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3));
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
+                R.id.photo_1, R.id.photo_2));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_3);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_4);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_5);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_6);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5, R.id.photo_6));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_7);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5, R.id.photo_6,
                 R.id.photo_7));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_8);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5, R.id.photo_6,
                 R.id.photo_7, R.id.photo_8));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_9);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5, R.id.photo_6,
                 R.id.photo_7, R.id.photo_8, R.id.photo_9));
 
         photoContainer = baseView.findViewById(R.id.attachment_photo_10);
         photosContainers.add(photoContainer);
-        photos.add(getPhotos(photoContainer,
+        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
                 R.id.photo_1, R.id.photo_2, R.id.photo_3,
                 R.id.photo_4, R.id.photo_5, R.id.photo_6,
                 R.id.photo_7, R.id.photo_8, R.id.photo_9,
@@ -270,7 +277,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         params.repostCountId = R.id.share_post_count;
         params.commentCountId = R.id.comment_count;
 
-        return new PostItemHolder(baseView, attHolders, photosContainers, photos, params);
+        return new PostItemHolder(baseView, attHolders, photosContainers, photoHolders, params);
     }
 
     private static List<PostAttachmentSubHolder> createAttHolders(View parent, int... ids) {
@@ -316,12 +323,21 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     private void initAttachments(VKApiPost post) {
-        attPhotos = getAttachments(post, VKApiPhoto.class);
+        List<PhotoSizable> photoSizeObjects = getAttachments(post, PhotoSizable.class);
+        List<LayoutParams> photosParams = initLayoutParams(photoSizeObjects);
+        List<VKApiPhotoSize> photoSizes = initPhotoSizes(photoSizeObjects);
+        
 
+        int photoAttIndex = 0;
         attItems = new ArrayList<>();
+        photoSizeAttItems = new ArrayList<>();
         for (VKApiAttachment attachment : post.attachments) {
             if (isAttachmentOneOf(attachment, AUDIO, DOC, LINK, NOTE, POLL, POST, WIKI_PAGE)) {
                 attItems.add(createAttItem(attachment));
+            } else if (isAttachmentPhoto(attachment)) {
+                LayoutParams params = photoAttIndex < photosParams.size() ? photosParams.get(photoAttIndex) : null;
+                photoSizeAttItems.add(createPhotoSizeAttItem(attachment, photoSizes.get(photoAttIndex), params));
+                photoAttIndex++;
             }
         }
 
@@ -343,7 +359,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     private boolean isAttachmentPhoto(VKApiAttachment attachment) {
-        return isAttachmentOneOf(attachment, PHOTO, POSTED_PHOTO);
+        return isAttachmentOneOf(attachment, PHOTO, POSTED_PHOTO, VIDEO, APP, ALBUM);
     }
 
     private boolean isAttachmentOneOf(VKApiAttachment attachment, Type... types) {
@@ -356,10 +372,15 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return false;
     }
 
-    private static List<ImageView> getPhotos(View sourceView, int... ids) {
-        List<ImageView> result = new ArrayList<>();
-        for (int id : ids) {
-            result.add((ImageView) sourceView.findViewById(id));
+    private static List<PhotoSizeAttachmentSubHolder> getPhotos(View sourceView, PhotoSizeAttachmentSubHolder.ResourceParams resourceParams, int... ids) {
+        List<PhotoSizeAttachmentSubHolder> result = new ArrayList<>();
+        if (ids.length == 1) {
+            result.add(new PhotoSizeAttachmentSubHolder(sourceView, resourceParams));
+        } else {
+            for (int id : ids) {
+                View photoSizeView = sourceView.findViewById(id);
+                result.add(new PhotoSizeAttachmentSubHolder(photoSizeView, resourceParams));
+            }
         }
         return result;
     }
@@ -385,12 +406,28 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
     }
 
-    private List<LayoutParams> initLayoutParams(List<VKApiPhoto> photos) {
+    private PhotoSizeAttachmentItem createPhotoSizeAttItem(VKApiAttachment apiPhotoSizeAttachment, VKApiPhotoSize photoSize, ViewGroup.LayoutParams layoutParams) {
+        switch (apiPhotoSizeAttachment.getType()) {
+            case PHOTO:
+            case POSTED_PHOTO:
+                return new PhotoAttachmentItem(photoSize, layoutParams);
+            case VIDEO:
+                return new VideoAttachmentItem((VKApiVideo) apiPhotoSizeAttachment, photoSize, layoutParams);
+            case APP:
+                return new AppAttachmentItem((VKApiApplicationContent) apiPhotoSizeAttachment, photoSize, layoutParams);
+            case ALBUM:
+                return new AlbumAttachmentItem((VKApiPhotoAlbum) apiPhotoSizeAttachment, photoSize, layoutParams);
+            default:
+                throw new IllegalArgumentException("There is no photo size attachment item for type " + apiPhotoSizeAttachment.getType());
+        }
+    }
+
+    private List<LayoutParams> initLayoutParams(List<PhotoSizable> photos) {
         if (photos.size() != 1) {
             return Collections.emptyList();
         } else {
             List<LayoutParams> paramsList = new ArrayList<>();
-            VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
+            VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).getPhotoSizes());
             Pair<Integer, Integer> dimensForPhoto = PhotoUtil.getPostPhotoDimensions(minPhotoSize);
             LayoutParams layoutParams = new LayoutParams(dimensForPhoto.first, dimensForPhoto.second);
             setCommonMargin(layoutParams, res().dimenI(R.dimen.margin_medium));
@@ -399,7 +436,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
     }
 
-    private List<VKApiPhotoSize> initPhotoSizes(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizes(List<PhotoSizable> photos) {
         switch (photos.size()) {
             case 1:
                 return initPhotoSizesForOne(photos);
@@ -426,114 +463,104 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForOne(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForOne(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).src);
+        VKApiPhotoSize minPhotoSize = PhotoUtil.getMinPhotoSizeForPost(photos.get(0).getPhotoSizes());
         photoSizeList.add(minPhotoSize);
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForFixed(List<VKApiPhoto> photos, float fixed) {
+    private List<VKApiPhotoSize> initPhotoSizesForFixed(List<PhotoSizable> photos, float fixed) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        for (VKApiPhoto photo : photos) {
-            photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photo.src, fixed));
+        for (PhotoSizable photo : photos) {
+            photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photo.getPhotoSizes(), fixed));
         }
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForThree(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForThree(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 3 / 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 3 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 3));
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForFive(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForFive(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 5 / 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 5 / 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 5 / 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 5 / 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 5 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 5 / 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 5 / 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 5 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).getPhotoSizes(), 5 / 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).getPhotoSizes(), 5 / 2));
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForSix(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForSix(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).getPhotoSizes(), 4));
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForSeven(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForSeven(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 5));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 5));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 5));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 5));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).getPhotoSizes(), 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).getPhotoSizes(), 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).getPhotoSizes(), 5));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).getPhotoSizes(), 5));
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForNine(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForNine(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 3));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).getPhotoSizes(), 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).getPhotoSizes(), 3));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).getPhotoSizes(), 4));
         return photoSizeList;
     }
 
-    private List<VKApiPhotoSize> initPhotoSizesForTen(List<VKApiPhoto> photos) {
+    private List<VKApiPhotoSize> initPhotoSizesForTen(List<PhotoSizable> photos) {
         List<VKApiPhotoSize> photoSizeList = new ArrayList<>();
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).src, 2));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).src, 4));
-        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(9).src, 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(0).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(1).getPhotoSizes(), 2));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(2).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(3).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(4).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(5).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(6).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(7).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).getPhotoSizes(), 4));
+        photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(9).getPhotoSizes(), 4));
         return photoSizeList;
     }
 
-    private PostAttachmentSubHolder createAttachmentSubHolder(View attachmentView) {
-        PostAttachmentSubHolder.ResourceParams params = new PostAttachmentSubHolder.ResourceParams();
-        params.iconId = R.id.icon;
-        params.titleId = R.id.title;
-        params.subtitleId = R.id.subtitle;
-        params.optionalInfoId = R.id.optional_info;
-
-        return new PostAttachmentSubHolder(attachmentView, params);
-    }
-
-    private List<ImageView> enableAppropriatePhotoList(PostItemHolder holder) {
+    private List<PhotoSizeAttachmentSubHolder> enableAppropriatePhotoList(PostItemHolder holder) {
         for (int i = 0; i < holder.getPhotoContainers().size(); i++) {
-            if (i == attPhotos.size() - 1) {
+            if (i == photoSizeAttItems.size() - 1) {
                 holder.getPhotoContainers().get(i).setVisibility(VISIBLE);
             } else {
                 holder.getPhotoContainers().get(i).setVisibility(GONE);
             }
         }
 
-        if (attPhotos.size() == 0) {
+        if (photoSizeAttItems.size() == 0) {
             return Collections.emptyList();
         } else {
-            return holder.getPhotos().get(attPhotos.size() - 1);
+            return holder.getPhotoHolders().get(photoSizeAttItems.size() - 1);
         }
     }
 }

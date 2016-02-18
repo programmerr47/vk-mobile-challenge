@@ -19,7 +19,7 @@ import static com.vk.sdk.api.model.VKAttachments.Type.APP;
  * Describes information about application in the post.
  */
 @SuppressWarnings("unused")
-public class VKApiApplicationContent extends VKApiAttachment implements android.os.Parcelable {
+public class VKApiApplicationContent extends VKApiAttachment implements android.os.Parcelable, PhotoSizable {
 
     /**
      * ID of the application that posted on the wall;
@@ -122,5 +122,10 @@ public class VKApiApplicationContent extends VKApiAttachment implements android.
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public VKPhotoSizes getPhotoSizes() {
+        return photo;
     }
 }

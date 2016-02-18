@@ -3,8 +3,11 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.github.programmerr47.vkgroups.DurationFormatter;
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiAudio;
+
+import static com.github.programmerr47.vkgroups.DurationFormatter.formatDuration;
 
 /**
  * @author Michael Spitsin
@@ -39,29 +42,5 @@ public class AudioAttachmentItem extends AbstractAttachmentItem {
     @Override
     protected String getOptionalInfo() {
         return formatDuration(apiAudio.duration);
-    }
-
-    private String formatDuration(int durSec) {
-        int durMin = durSec / 60;
-        int remSec = durSec - durMin * 60;
-        String result = formatTwoDigitNumber(remSec);
-
-        if (durMin > 0) {
-            int durH = durMin / 60;
-            int remMin = durMin - durH * 60;
-
-            if (durH > 0) {
-                return durH + ":" + formatTwoDigitNumber(remMin) + ":" + result;
-            } else {
-                return remMin + ":" + result;
-            }
-        } else {
-            return "0:" + result;
-        }
-
-    }
-
-    private String formatTwoDigitNumber(int n) {
-        return n > 10 ? String.valueOf(n) : "0" + n;
     }
 }

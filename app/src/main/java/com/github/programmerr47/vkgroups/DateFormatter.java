@@ -25,6 +25,8 @@ public class DateFormatter {
 
     private static final String SPACE = " ";
 
+    private DateFormatter() {}
+
     public static String formatDate(long dateSeconds) {
         return formatDateMillis(dateSeconds * 1000);
     }

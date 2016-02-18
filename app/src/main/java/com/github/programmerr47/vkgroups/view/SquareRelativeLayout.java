@@ -5,35 +5,35 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.view.params.DimensionType;
 
 /**
- * @author Michael Spitsin
- * @since 2016-01-08
+ * @author Mihail Spitsin
+ * @since 2/18/2016
  */
-public class SquareImageView extends ImageView {
+public class SquareRelativeLayout extends RelativeLayout {
 
     private DimensionType dimensionType = DimensionType.MIN;
 
-    public SquareImageView(Context context) {
+    public SquareRelativeLayout(Context context) {
         super(context);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
     }
@@ -47,8 +47,8 @@ public class SquareImageView extends ImageView {
 
     private void init(AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SquareRelativeLayout);
-            dimensionType = DimensionType.fromId(typedArray.getInt(R.styleable.SquareRelativeLayout_dimension, DimensionType.MIN.getId()));
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SquareImageView);
+            dimensionType = DimensionType.fromId(typedArray.getInt(R.styleable.SquareImageView_dimension, DimensionType.MIN.getId()));
             typedArray.recycle();
         }
     }

@@ -43,7 +43,7 @@ import static com.vk.sdk.api.model.VKAttachments.Type.VIDEO;
  * A video object describes an video file.
  */
 @SuppressWarnings("unused")
-public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable {
+public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcelable, Identifiable, PhotoSizable {
 
     /**
      * Video ID.
@@ -310,6 +310,11 @@ public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcela
     @Override
     public String toString() {
         return title;
+    }
+
+    @Override
+    public VKPhotoSizes getPhotoSizes() {
+        return photo;
     }
 
     @Override
