@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -75,7 +76,7 @@ public class AndroidUtils {
         }
 
         public String string(Context context, int id) {
-            return context.getResources().getString(id);
+            return context.getString(id);
         }
 
         public String plural(int id, int quantity, Object... formatArgs) {

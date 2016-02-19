@@ -4,7 +4,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.github.programmerr47.vkgroups.DateFormatter;
@@ -57,6 +56,7 @@ import static android.view.View.VISIBLE;
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
+import static com.github.programmerr47.vkgroups.ViewUtils.setTextViewTopDrawable;
 import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
 import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;
@@ -105,34 +105,31 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
 
     public void bindView(PostItemHolder viewHolder, int position) {
         if (post.user_likes) {
-            viewHolder.getLikeIconView().setImageResource(R.drawable.ic_heart_grey600_36dp);
+            viewHolder.getLikeCountView().setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_heart_grey600_36dp, 0, 0);
         } else {
-            viewHolder.getLikeIconView().setImageResource(R.drawable.ic_heart_outline_grey600_36dp);
+            viewHolder.getLikeCountView().setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_heart_outline_grey600_36dp, 0, 0);
         }
 
         if (post.likes_count > 0) {
             viewHolder.getLikeCountView().setText(String.valueOf(post.likes_count));
-            viewHolder.getLikeCountView().setVisibility(VISIBLE);
         } else {
-            viewHolder.getLikeCountView().setVisibility(GONE);
+            viewHolder.getLikeCountView().setText(null);
         }
 
         if (post.reposts_count > 0) {
             viewHolder.getRepostCountView().setText(String.valueOf(post.reposts_count));
-            viewHolder.getRepostCountView().setVisibility(VISIBLE);
         } else {
-            viewHolder.getRepostCountView().setVisibility(GONE);
+            viewHolder.getRepostCountView().setText(null);
         }
 
         if (post.comments_count > 0) {
             viewHolder.getCommentCountView().setText(String.valueOf(post.comments_count));
             viewHolder.getCommentCountView().setVisibility(VISIBLE);
-            viewHolder.getCommentActionView().setVisibility(VISIBLE);
         } else {
             if (post.can_post_comment) {
-                viewHolder.getCommentCountView().setVisibility(GONE);
+                viewHolder.getRepostCountView().setText(null);
             } else {
-                viewHolder.getCommentActionView().setVisibility(GONE);
+                viewHolder.getCommentCountView().setVisibility(GONE);
             }
         }
 
@@ -267,12 +264,6 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         params.ownerDateId = R.id.owner_date;
         params.postTextId = R.id.post_text;
         params.postExpandCollapseId = R.id.post_expand_collapse;
-        params.likeActionId = R.id.like_action;
-        params.repostActionId = R.id.share_post_action;
-        params.commentActionId = R.id.comment_action;
-        params.likeIconId = R.id.like_image;
-        params.repostIconId = R.id.share_post_image;
-        params.commentIconId = R.id.comment_image;
         params.likeCountId = R.id.like_count;
         params.repostCountId = R.id.share_post_count;
         params.commentCountId = R.id.comment_count;

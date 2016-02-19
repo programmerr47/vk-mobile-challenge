@@ -5,8 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import static com.github.programmerr47.vkgroups.AndroidUtils.hasJellyBeanMr1;
+import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin

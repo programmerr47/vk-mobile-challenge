@@ -19,4 +19,9 @@
         <attr name="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="DrawablesSizeTextView">
+        <attr name="drawableWidth" format="dimension"/>
+        <attr name="drawableHeight" format="dimension"/>
+    </declare-styleable>
+
 </resources>
