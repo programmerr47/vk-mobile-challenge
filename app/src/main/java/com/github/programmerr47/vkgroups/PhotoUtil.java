@@ -1,11 +1,17 @@
 package com.github.programmerr47.vkgroups;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 
 import com.vk.sdk.api.model.VKApiPhotoSize;
 import com.vk.sdk.api.model.VKPhotoSizes;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 

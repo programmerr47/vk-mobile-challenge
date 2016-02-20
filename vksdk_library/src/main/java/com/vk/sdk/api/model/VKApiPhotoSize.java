@@ -312,36 +312,6 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
     }
 
     /**
-     * Creates a dimension with explicit dimensions.
-     * Can be helpful if the dimensions are exactly known.
-     */
-    public static VKApiPhotoSize create(String url, int width, int height) {
-        VKApiPhotoSize result = new VKApiPhotoSize();
-        result.src = url;
-        result.width = width;
-        result.height = height;
-        float ratio = width / (float) height ;
-        if(width <= 75) {
-            result.type = S;
-        } else if(width <= 130) {
-            result.type = ratio <= 1.5f ? O : M;
-        } else if(width <= 200 && ratio <= 1.5f) {
-            result.type = P;
-        } else if(width <= 320 && ratio <= 1.5f) {
-            result.type = Q;
-        } else if(width <= 604 ) {
-            result.type = X;
-        } else if(width <= 807) {
-            result.type = Y;
-        } else if(width <= 1280 && height <= 1024) {
-            result.type = Z;
-        } else if(width <= 2560 && height <= 2048) {
-            result.type = W;
-        }
-        return result;
-    }
-
-    /**
      * Creates a dimension type and size of the original.
      */
     public static VKApiPhotoSize create(String url, char type, int originalWidth, int originalHeight) {
@@ -357,5 +327,48 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
      */
     public static VKApiPhotoSize create(String url, int dimension) {
         return create(url, dimension, dimension);
+    }
+
+    public static VKApiPhotoSize create(String url, int originalWidth, float ratio) {
+        VKApiPhotoSize result = new VKApiPhotoSize();
+        result.src = url;
+        result.width = originalWidth;
+        result.height = (int)(originalWidth / ratio);
+        return initPhotoSize(result, ratio);
+    }
+
+    /**
+     * Creates a dimension with explicit dimensions.
+     * Can be helpful if the dimensions are exactly known.
+     */
+    public static VKApiPhotoSize create(String url, int width, int height) {
+        VKApiPhotoSize result = new VKApiPhotoSize();
+        result.src = url;
+        result.width = width;
+        result.height = height;
+        float ratio = width / (float) height ;
+        return initPhotoSize(result, ratio);
+    }
+
+    private static VKApiPhotoSize initPhotoSize(VKApiPhotoSize createdPhotoSize, float ratio) {
+        if(createdPhotoSize.width <= 75) {
+            createdPhotoSize.type = S;
+        } else if(createdPhotoSize.width <= 130) {
+            createdPhotoSize.type = ratio <= 1.5f ? O : M;
+        } else if(createdPhotoSize.width <= 200 && ratio <= 1.5f) {
+            createdPhotoSize.type = P;
+        } else if(createdPhotoSize.width <= 320 && ratio <= 1.5f) {
+            createdPhotoSize.type = Q;
+        } else if(createdPhotoSize.width <= 604 ) {
+            createdPhotoSize.type = X;
+        } else if(createdPhotoSize.width <= 807) {
+            createdPhotoSize.type = Y;
+        } else if(createdPhotoSize.width <= 1280 && createdPhotoSize.height <= 1024) {
+            createdPhotoSize.type = Z;
+        } else if(createdPhotoSize.width <= 2560 && createdPhotoSize.height <= 2048) {
+            createdPhotoSize.type = W;
+        }
+
+        return createdPhotoSize;
     }
 }

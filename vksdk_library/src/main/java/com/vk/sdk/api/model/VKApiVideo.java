@@ -231,17 +231,17 @@ public class VKApiVideo extends VKAttachments.VKApiAttachment implements Parcela
 
         photo_130 = from.optString("photo_130");
         if(!TextUtils.isEmpty(photo_130)) {
-            photo.add(VKApiPhotoSize.create(photo_130, 130));
+            photo.add(VKApiPhotoSize.create(photo_130, 130, 16f / 9));
         }
 
         photo_320 = from.optString("photo_320");
         if(!TextUtils.isEmpty(photo_320)) {
-            photo.add(VKApiPhotoSize.create(photo_320, 320));
+            photo.add(VKApiPhotoSize.create(photo_320, 320, 16f / 9));
         }
 
         photo_640 = from.optString("photo_640");
         if(!TextUtils.isEmpty(photo_640)) {
-            photo.add(VKApiPhotoSize.create(photo_640, 640));
+            photo.add(VKApiPhotoSize.create(photo_640, 640, 16f / 9));
         }
         return this;
     }

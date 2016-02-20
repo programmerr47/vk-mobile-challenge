@@ -9,6 +9,7 @@
     <dimen name="list_item_height_default">72dp</dimen>
     <dimen name="list_item_height_default_half">36dp</dimen>
     <dimen name="list_item_height_small">48dp</dimen>
+    <dimen name="list_item_height_small_half">24dp</dimen>
     <dimen name="margin_big">16dp</dimen>
     <dimen name="margin_medium">8dp</dimen>
     <dimen name="margin_small">4dp</dimen>

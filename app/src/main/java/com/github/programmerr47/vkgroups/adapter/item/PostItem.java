@@ -43,6 +43,7 @@ import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiVideo;
 import com.vk.sdk.api.model.VKApiWikiPage;
+import com.vk.sdk.api.model.VKAttachments;
 import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
@@ -56,7 +57,6 @@ import static android.view.View.VISIBLE;
 import static com.github.programmerr47.vkgroups.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
 import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
-import static com.github.programmerr47.vkgroups.ViewUtils.setTextViewTopDrawable;
 import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
 import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;

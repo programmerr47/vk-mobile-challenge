@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height_small"
     android:layout_marginLeft="@dimen/margin_small"
     android:layout_marginStart="@dimen/margin_small"
-    android:orientation="horizontal">
+    android:orientation="horizontal">`
 
     <com.github.programmerr47.vkgroups.view.SquareImageView
         android:id="@+id/icon"
@@ -18,59 +18,60 @@
         android:scaleType="centerCrop"
         android:background="@drawable/bg_attachment_default"/>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <com.github.programmerr47.vkgroups.view.CustomFontTextView
+        android:id="@+id/optional_info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="13sp"
+        android:textColor="@color/text_color_primary"
+        android:text="1:12:43"
+        app:fontName="Roboto-Regular.ttf"/>
+
+    <com.github.programmerr47.vkgroups.view.CustomFontTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height_small_half"
+        android:layout_gravity="bottom"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_toRightOf="@+id/icon"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_toLeftOf="@+id/optional_info"
+        android:layout_toStartOf="@+id/optional_info"
+        android:textSize="15sp"
+        android:textColor="@color/text_color_primary"
+        android:text="Super awesome name"
+        android:gravity="bottom"
+        android:singleLine="true"
+        app:fontName="Roboto-Medium.ttf"/>
 
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textSize="15sp"
-            android:textColor="@color/text_color_primary"
-            android:text="Super awesome name"
-            android:singleLine="true"
-            app:fontName="Roboto-Medium.ttf"/>
+    <com.github.programmerr47.vkgroups.view.CustomFontTextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height_small_half"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_toEndOf="@+id/icon"
+        android:layout_toLeftOf="@+id/optional_info"
+        android:layout_toStartOf="@+id/optional_info"
+        android:layout_below="@id/title"
+        android:textSize="14sp"
+        android:textColor="@color/text_color_secondary"
+        android:text="Page"
+        android:singleLine="true"
+        app:fontName="Roboto-Regular.ttf"/>
 
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textSize="14sp"
-            android:textColor="@color/text_color_secondary"
-            android:text="Page"
-            android:singleLine="true"
-            app:fontName="Roboto-Regular.ttf"/>
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <com.github.programmerr47.vkgroups.view.CustomFontTextView
-            android:id="@+id/optional_info"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:textSize="13sp"
-            android:textColor="@color/text_color_primary"
-            android:text="1:12:43"
-            app:fontName="Roboto-Regular.ttf"/>
-
-    </FrameLayout>
-
-</LinearLayout>
+</RelativeLayout>
