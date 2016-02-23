@@ -29,6 +29,7 @@ import com.github.programmerr47.vkgroups.adapter.item.subitems.SimpleAttachmentI
 import com.github.programmerr47.vkgroups.adapter.item.subitems.VideoAttachmentItem;
 import com.github.programmerr47.vkgroups.adapter.item.subitems.WikiPageAttachmentItem;
 import com.github.programmerr47.vkgroups.imageloading.ImageWorker;
+import com.github.programmerr47.vkgroups.utils.PostIdConverter;
 import com.vk.sdk.api.model.PhotoSizable;
 import com.vk.sdk.api.model.VKApiApplicationContent;
 import com.vk.sdk.api.model.VKApiAudio;
@@ -43,7 +44,6 @@ import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiVideo;
 import com.vk.sdk.api.model.VKApiWikiPage;
-import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
 import java.util.ArrayList;
@@ -53,20 +53,21 @@ import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.view.View.inflate;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.identifiers;
 import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
+import static com.github.programmerr47.vkgroups.utils.AttachmentUtils.isAttachmentOneOf;
+import static com.github.programmerr47.vkgroups.utils.AttachmentUtils.isAttachmentPhoto;
+import static com.github.programmerr47.vkgroups.utils.PostIdConverter.idFromPost;
+import static com.github.programmerr47.vkgroups.utils.PostIdConverter.postInfoFromId;
 import static com.github.programmerr47.vkgroups.utils.ViewUtils.setCommonMargin;
-import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
-import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;
 import static com.vk.sdk.api.model.VKAttachments.Type.DOC;
 import static com.vk.sdk.api.model.VKAttachments.Type.LINK;
 import static com.vk.sdk.api.model.VKAttachments.Type.NOTE;
-import static com.vk.sdk.api.model.VKAttachments.Type.PHOTO;
 import static com.vk.sdk.api.model.VKAttachments.Type.POLL;
 import static com.vk.sdk.api.model.VKAttachments.Type.POST;
-import static com.vk.sdk.api.model.VKAttachments.Type.POSTED_PHOTO;
-import static com.vk.sdk.api.model.VKAttachments.Type.VIDEO;
 import static com.vk.sdk.api.model.VKAttachments.Type.WIKI_PAGE;
 
 /**
@@ -169,6 +170,8 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     public static PostItemHolder createHolder(ViewGroup parentView, int viewType) {
+        PostIdConverter.PostCounters postCounters = postInfoFromId(viewType);
+
         LayoutInflater layoutInflater = LayoutInflater.from(parentView.getContext());
         ViewGroup baseView = (ViewGroup) layoutInflater.inflate(R.layout.post_item, parentView, false);
 
@@ -177,85 +180,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         }
 
         List<View> photosContainers = new ArrayList<>();
-        List<List<PhotoSizeAttachmentSubHolder>> photoHolders = new ArrayList<>();
-
-        PhotoSizeAttachmentSubHolder.ResourceParams photoSizeResourceParams = new PhotoSizeAttachmentSubHolder.ResourceParams();
-        photoSizeResourceParams.bottomBackgroundId = R.id.bottom_background;
-        photoSizeResourceParams.bottomImagesIconId = R.id.bottom_images_icon;
-        photoSizeResourceParams.bottomOptionalInfoId = R.id.bottom_optional_info;
-        photoSizeResourceParams.bottomTitleId = R.id.bottom_title;
-        photoSizeResourceParams.photoId = R.id.photo;
-        photoSizeResourceParams.topAppIconId = R.id.top_app_icon;
-        photoSizeResourceParams.topBackgroundId = R.id.top_background;
-        photoSizeResourceParams.topTitleId = R.id.top_title;
-
-        View photoContainer = baseView.findViewById(R.id.attachment_photo_1);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_2);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_3);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_4);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_5);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_6);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5, R.id.photo_6));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_7);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                R.id.photo_7));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_8);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                R.id.photo_7, R.id.photo_8));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_9);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                R.id.photo_7, R.id.photo_8, R.id.photo_9));
-
-        photoContainer = baseView.findViewById(R.id.attachment_photo_10);
-        photosContainers.add(photoContainer);
-        photoHolders.add(getPhotos(photoContainer, photoSizeResourceParams,
-                R.id.photo_1, R.id.photo_2, R.id.photo_3,
-                R.id.photo_4, R.id.photo_5, R.id.photo_6,
-                R.id.photo_7, R.id.photo_8, R.id.photo_9,
-                R.id.photo_10));
-
-        List<PostAttachmentSubHolder> attHolders = createAttHolders(baseView,
-                R.id.attachment_1, R.id.attachment_2, R.id.attachment_3,
-                R.id.attachment_4, R.id.attachment_5, R.id.attachment_6,
-                R.id.attachment_7, R.id.attachment_8, R.id.attachment_9,
-                R.id.attachment_10);
+        List<PhotoSizeAttachmentSubHolder> photoHolders = createAttPhotoHolders(layoutInflater, baseView, postCounters.photoAttachments);
 
         PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
         params.ownerIconId = R.id.owner_icon;
@@ -267,18 +192,39 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         params.repostCountId = R.id.share_post_count;
         params.commentCountId = R.id.comment_count;
 
+        List<PostAttachmentSubHolder> attHolders = createAttHolders(layoutInflater, baseView, postCounters.otherAttachments);
+
         return new PostItemHolder(baseView, attHolders, photosContainers, photoHolders, params);
     }
 
-    private static List<PostAttachmentSubHolder> createAttHolders(View parent, int... ids) {
-        List<PostAttachmentSubHolder> result = new ArrayList<>();
+    private static List<PhotoSizeAttachmentSubHolder> createAttPhotoHolders(LayoutInflater inflater, ViewGroup root, int photoCount) {
+        if (photoCount > 0) {
+            View photosView = inflater.inflate(identifiers().layout("attachment_photo_" + photoCount), root, true);
+            int[] ids = new int[photoCount];
 
-        for (int id : ids) {
-            View attachment = parent.findViewById(id);
-            result.add(createAttHolder(attachment));
+            for (int i = 0; i < photoCount; i++) {
+                ids[i] = identifiers().id("photo_" + (i + 1));
+            }
+
+            return getPhotos(photosView, ids);
+        } else {
+            return Collections.emptyList();
         }
+    }
 
-        return result;
+    private static List<PostAttachmentSubHolder> createAttHolders(LayoutInflater inflater, ViewGroup root, int attCount) {
+        if (attCount > 0) {
+            List<PostAttachmentSubHolder> result = new ArrayList<>();
+
+            for (int i = 0; i < attCount; i++) {
+                View attachment = inflater.inflate(R.layout.attachment, root, true);
+                result.add(createAttHolder(attachment));
+            }
+
+            return result;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     private static PostAttachmentSubHolder createAttHolder(View attachment) {
@@ -292,7 +238,7 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
     }
 
     public int getItemType() {
-        return 1;
+        return idFromPost(post);
     }
 
     public VKApiPost getPost() {
@@ -348,28 +294,24 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         return result;
     }
 
-    private boolean isAttachmentPhoto(VKApiAttachment attachment) {
-        return isAttachmentOneOf(attachment, PHOTO, POSTED_PHOTO, VIDEO, APP, ALBUM);
-    }
+    private static List<PhotoSizeAttachmentSubHolder> getPhotos(View sourceView, int... ids) {
+        PhotoSizeAttachmentSubHolder.ResourceParams photoSizeResourceParams = new PhotoSizeAttachmentSubHolder.ResourceParams();
+        photoSizeResourceParams.bottomBackgroundId = R.id.bottom_background;
+        photoSizeResourceParams.bottomImagesIconId = R.id.bottom_images_icon;
+        photoSizeResourceParams.bottomOptionalInfoId = R.id.bottom_optional_info;
+        photoSizeResourceParams.bottomTitleId = R.id.bottom_title;
+        photoSizeResourceParams.photoId = R.id.photo;
+        photoSizeResourceParams.topAppIconId = R.id.top_app_icon;
+        photoSizeResourceParams.topBackgroundId = R.id.top_background;
+        photoSizeResourceParams.topTitleId = R.id.top_title;
 
-    private boolean isAttachmentOneOf(VKApiAttachment attachment, Type... types) {
-        for (Type type : types) {
-            if (type == attachment.getType()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static List<PhotoSizeAttachmentSubHolder> getPhotos(View sourceView, PhotoSizeAttachmentSubHolder.ResourceParams resourceParams, int... ids) {
         List<PhotoSizeAttachmentSubHolder> result = new ArrayList<>();
         if (ids.length == 1) {
-            result.add(new PhotoSizeAttachmentSubHolder(sourceView, resourceParams));
+            result.add(new PhotoSizeAttachmentSubHolder(sourceView, photoSizeResourceParams));
         } else {
             for (int id : ids) {
                 View photoSizeView = sourceView.findViewById(id);
-                result.add(new PhotoSizeAttachmentSubHolder(photoSizeView, resourceParams));
+                result.add(new PhotoSizeAttachmentSubHolder(photoSizeView, photoSizeResourceParams));
             }
         }
         return result;

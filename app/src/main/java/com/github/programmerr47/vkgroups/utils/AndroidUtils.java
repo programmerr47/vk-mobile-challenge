@@ -23,6 +23,10 @@ public class AndroidUtils {
         return ResourceHelper.INSTANCE;
     }
 
+    public static IdHelper identifiers() {
+        return IdHelper.INSTANCE;
+    }
+
     public static Typeface getAssetsTypeface(Constants.Font font) {
         return getAssetsTypeface(getAppContext(), font);
     }
@@ -108,6 +112,26 @@ public class AndroidUtils {
         @ColorInt
         public int color(Context context, @ColorRes int id) {
             return context.getResources().getColor(id);
+        }
+    }
+
+    public enum IdHelper {
+        INSTANCE;
+
+        public int layout(String resName) {
+            return layout(getAppContext(), resName);
+        }
+
+        public int layout(Context context, String resName) {
+            return context.getResources().getIdentifier(resName, "layout", context.getPackageName());
+        }
+
+        public int id(String resName) {
+            return id(getAppContext(), resName);
+        }
+
+        public int id(Context context, String resName) {
+            return context.getResources().getIdentifier(resName, "id", context.getPackageName());
         }
     }
 }
