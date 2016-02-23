@@ -5,13 +5,12 @@ import android.support.annotation.Nullable;
 import android.view.Gravity;
 
 import com.github.programmerr47.vkgroups.R;
-import com.squareup.picasso.Picasso;
 import com.vk.sdk.api.model.VKApiDocument;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin

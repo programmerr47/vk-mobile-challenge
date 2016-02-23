@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import com.github.programmerr47.vkgroups.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin

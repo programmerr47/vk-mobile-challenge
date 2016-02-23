@@ -8,10 +8,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.github.programmerr47.vkgroups.Constants;
 import com.github.programmerr47.vkgroups.R;
+import com.github.programmerr47.vkgroups.utils.Constants;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.getAssetsTypeface;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.getAssetsTypeface;
 
 /**
  * Extension of standard {@link TextView} that can specify type of font.

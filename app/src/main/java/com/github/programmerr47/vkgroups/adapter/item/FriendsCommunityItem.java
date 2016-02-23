@@ -3,7 +3,7 @@ package com.github.programmerr47.vkgroups.adapter.item;
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin

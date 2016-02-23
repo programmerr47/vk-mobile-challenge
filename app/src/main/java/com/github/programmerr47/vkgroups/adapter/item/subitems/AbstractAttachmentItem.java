@@ -3,25 +3,20 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.github.programmerr47.vkgroups.AndroidUtils;
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.ViewUtils;
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
 import com.squareup.picasso.Picasso;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.github.programmerr47.vkgroups.AndroidUtils.pxI;
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.pxI;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getAppContext;
 
 /**

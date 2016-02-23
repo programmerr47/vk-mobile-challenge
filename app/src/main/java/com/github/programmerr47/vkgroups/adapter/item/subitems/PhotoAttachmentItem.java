@@ -1,13 +1,12 @@
 package com.github.programmerr47.vkgroups.adapter.item.subitems;
 
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
 import com.github.programmerr47.vkgroups.adapter.holder.PhotoSizeAttachmentSubHolder;
 import com.vk.sdk.api.model.VKApiPhotoSize;
 
 import static android.view.View.GONE;
-import static com.github.programmerr47.vkgroups.ViewUtils.setVisibilityIfNeed;
+import static com.github.programmerr47.vkgroups.utils.ViewUtils.setVisibilityIfNeed;
 
 /**
  * @author Mihail Spitsin

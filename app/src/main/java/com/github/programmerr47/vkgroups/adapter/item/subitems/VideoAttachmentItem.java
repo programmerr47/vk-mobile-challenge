@@ -8,8 +8,8 @@ import com.vk.sdk.api.model.VKApiVideo;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.programmerr47.vkgroups.DurationFormatter.formatDuration;
-import static com.github.programmerr47.vkgroups.ViewUtils.setVisibilityIfNeed;
+import static com.github.programmerr47.vkgroups.utils.DurationFormatter.formatDuration;
+import static com.github.programmerr47.vkgroups.utils.ViewUtils.setVisibilityIfNeed;
 
 /**
  * @author Mihail Spitsin

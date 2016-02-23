@@ -7,7 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.toolbarDefaultHeight;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.toolbarDefaultHeight;
 
 /**
  * @author Michael Spitsin

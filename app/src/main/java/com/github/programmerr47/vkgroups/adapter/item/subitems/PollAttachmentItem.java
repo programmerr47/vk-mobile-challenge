@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiPoll;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
 /**
  * @author Michael Spitsin

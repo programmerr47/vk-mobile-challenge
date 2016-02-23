@@ -2,7 +2,7 @@ package com.github.programmerr47.vkgroups.collections;
 
 import android.support.annotation.NonNull;
 
-import com.github.programmerr47.vkgroups.Utils;
+import com.github.programmerr47.vkgroups.utils.Utils;
 import com.github.programmerr47.vkgroups.adapter.holder.producer.HolderProducer;
 import com.github.programmerr47.vkgroups.adapter.item.AdapterItem;
 

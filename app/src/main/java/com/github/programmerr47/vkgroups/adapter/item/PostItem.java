@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.github.programmerr47.vkgroups.DateFormatter;
-import com.github.programmerr47.vkgroups.PhotoUtil;
-import com.github.programmerr47.vkgroups.PostDescription;
+import com.github.programmerr47.vkgroups.utils.DateFormatter;
+import com.github.programmerr47.vkgroups.utils.PhotoUtil;
+import com.github.programmerr47.vkgroups.utils.PostDescription;
 import com.github.programmerr47.vkgroups.R;
 import com.github.programmerr47.vkgroups.adapter.holder.PhotoSizeAttachmentSubHolder;
 import com.github.programmerr47.vkgroups.adapter.holder.PostAttachmentSubHolder;
@@ -43,7 +43,6 @@ import com.vk.sdk.api.model.VKApiPost;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiVideo;
 import com.vk.sdk.api.model.VKApiWikiPage;
-import com.vk.sdk.api.model.VKAttachments;
 import com.vk.sdk.api.model.VKAttachments.Type;
 import com.vk.sdk.api.model.VKAttachments.VKApiAttachment;
 
@@ -54,9 +53,9 @@ import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.github.programmerr47.vkgroups.AndroidUtils.res;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
-import static com.github.programmerr47.vkgroups.ViewUtils.setCommonMargin;
+import static com.github.programmerr47.vkgroups.utils.ViewUtils.setCommonMargin;
 import static com.vk.sdk.api.model.VKAttachments.Type.ALBUM;
 import static com.vk.sdk.api.model.VKAttachments.Type.APP;
 import static com.vk.sdk.api.model.VKAttachments.Type.AUDIO;

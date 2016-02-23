@@ -47,7 +47,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import static com.github.programmerr47.vkgroups.AndroidUtils.hasKitKat;
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.hasKitKat;
 
 public class ImageCache {
     private static final String TAG = "ImageCache";

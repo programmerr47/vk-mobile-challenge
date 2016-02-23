@@ -3,11 +3,10 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.programmerr47.vkgroups.DurationFormatter;
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiAudio;
 
-import static com.github.programmerr47.vkgroups.DurationFormatter.formatDuration;
+import static com.github.programmerr47.vkgroups.utils.DurationFormatter.formatDuration;
 
 /**
  * @author Michael Spitsin
