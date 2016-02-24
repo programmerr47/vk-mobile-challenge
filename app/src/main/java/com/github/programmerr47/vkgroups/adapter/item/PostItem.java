@@ -4,6 +4,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.github.programmerr47.vkgroups.utils.DateFormatter;
@@ -53,7 +54,6 @@ import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.view.View.inflate;
 import static com.github.programmerr47.vkgroups.utils.AndroidUtils.identifiers;
 import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 import static com.github.programmerr47.vkgroups.VKGroupApplication.getImageWorker;
@@ -154,18 +154,11 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         postDescription.appendToExpandCollapseTextView(viewHolder.getPostExpandCollapseView());
 
         for (int i = 0; i < viewHolder.getAttHolders().size(); i++) {
-            if (i < attItems.size()) {
-                PostAttachmentSubHolder attHolder = viewHolder.getAttHolders().get(i);
-                attHolder.getHolderView().setVisibility(VISIBLE);
-                attItems.get(i).bindView(attHolder);
-            } else {
-                viewHolder.getAttHolders().get(i).getHolderView().setVisibility(GONE);
-            }
+            attItems.get(i).bindView(viewHolder.getAttHolders().get(i));
         }
 
-        List<PhotoSizeAttachmentSubHolder> photoHolders = enableAppropriatePhotoList(viewHolder);
-        for (int i = 0; i < photoSizeAttItems.size(); i++) {
-            photoSizeAttItems.get(i).bindView(photoHolders.get(i));
+        for (int i = 0; i < viewHolder.getPhotoHolders().size(); i++) {
+            photoSizeAttItems.get(i).bindView(viewHolder.getPhotoHolders().get(i));
         }
     }
 
@@ -179,8 +172,10 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
             throw new IllegalStateException("View not created");
         }
 
+        LinearLayout postContent = (LinearLayout) baseView.findViewById(R.id.post_content);
+
         List<View> photosContainers = new ArrayList<>();
-        List<PhotoSizeAttachmentSubHolder> photoHolders = createAttPhotoHolders(layoutInflater, baseView, postCounters.photoAttachments);
+        List<PhotoSizeAttachmentSubHolder> photoHolders = createAttPhotoHolders(layoutInflater, postContent, postCounters.photoAttachments);
 
         PostItemHolder.ResourceParams params = new PostItemHolder.ResourceParams();
         params.ownerIconId = R.id.owner_icon;
@@ -192,14 +187,15 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         params.repostCountId = R.id.share_post_count;
         params.commentCountId = R.id.comment_count;
 
-        List<PostAttachmentSubHolder> attHolders = createAttHolders(layoutInflater, baseView, postCounters.otherAttachments);
+        List<PostAttachmentSubHolder> attHolders = createAttHolders(layoutInflater, postContent, postCounters.otherAttachments);
 
         return new PostItemHolder(baseView, attHolders, photosContainers, photoHolders, params);
     }
 
     private static List<PhotoSizeAttachmentSubHolder> createAttPhotoHolders(LayoutInflater inflater, ViewGroup root, int photoCount) {
         if (photoCount > 0) {
-            View photosView = inflater.inflate(identifiers().layout("attachment_photo_" + photoCount), root, true);
+            View photosView = inflater.inflate(identifiers().layout("attachment_photo_" + photoCount), root, false);
+            root.addView(photosView, getAddIndex(root));
             int[] ids = new int[photoCount];
 
             for (int i = 0; i < photoCount; i++) {
@@ -216,8 +212,10 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         if (attCount > 0) {
             List<PostAttachmentSubHolder> result = new ArrayList<>();
 
+            int addIndex = getAddIndex(root);
             for (int i = 0; i < attCount; i++) {
-                View attachment = inflater.inflate(R.layout.attachment, root, true);
+                View attachment = inflater.inflate(R.layout.attachment, root, false);
+                root.addView(attachment, addIndex + i);
                 result.add(createAttHolder(attachment));
             }
 
@@ -235,6 +233,10 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         params.optionalInfoId = R.id.optional_info;
 
         return new PostAttachmentSubHolder(attachment, params);
+    }
+
+    private static int getAddIndex(ViewGroup postContentLayout) {
+        return postContentLayout.indexOfChild(postContentLayout.findViewById(R.id.post_delimiter));
     }
 
     public int getItemType() {
@@ -478,21 +480,5 @@ public final class PostItem implements PostDescription.OnDescriptionRepresentati
         photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(8).getPhotoSizes(), 4));
         photoSizeList.add(PhotoUtil.getMinPhotoSizeForSquareInPost(photos.get(9).getPhotoSizes(), 4));
         return photoSizeList;
-    }
-
-    private List<PhotoSizeAttachmentSubHolder> enableAppropriatePhotoList(PostItemHolder holder) {
-        for (int i = 0; i < holder.getPhotoContainers().size(); i++) {
-            if (i == photoSizeAttItems.size() - 1) {
-                holder.getPhotoContainers().get(i).setVisibility(VISIBLE);
-            } else {
-                holder.getPhotoContainers().get(i).setVisibility(GONE);
-            }
-        }
-
-        if (photoSizeAttItems.size() == 0) {
-            return Collections.emptyList();
-        } else {
-            return holder.getPhotoHolders().get(photoSizeAttItems.size() - 1);
-        }
     }
 }

@@ -9,6 +9,7 @@
     app:cardElevation="3dp">
 
     <LinearLayout
+        android:id="@+id/post_content"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -84,6 +85,7 @@
             app:fontName="Roboto-Bold.ttf"/>
 
         <View
+            android:id="@+id/post_delimiter"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_gravity="bottom"
