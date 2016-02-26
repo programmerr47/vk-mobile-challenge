@@ -37,8 +37,6 @@ public class GroupDetailPage extends Page {
     private PostAdapter postAdapter;
     private List<PostItem> items;
 
-    private final List<Runnable> uiWorks = new ArrayList<>();
-
     public GroupDetailPage(VKApiCommunity community, RecyclerView.RecycledViewPool postViewPool) {
         this.community = community;
         this.postViewPool = postViewPool;
@@ -93,7 +91,7 @@ public class GroupDetailPage extends Page {
                 groupImage,
                 new ImageWorker.LoadBitmapParams(200, 200, false));
 
-//        postListView.setRecycledViewPool(postViewPool);
+        postListView.setRecycledViewPool(postViewPool);
         postListView.setAdapter(postAdapter);
         postListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -117,20 +115,4 @@ public class GroupDetailPage extends Page {
             }
         });
     }
-
-    @Override
-    public void onResume() {
-        executeAllWorks();
-    }
-
-    private void executeAllWorks() {
-        if (uiWorks.size() > 0) {
-            for (Runnable runnable : uiWorks) {
-                runnable.run();
-            }
-
-            uiWorks.clear();
-        }
-    }
-
 }

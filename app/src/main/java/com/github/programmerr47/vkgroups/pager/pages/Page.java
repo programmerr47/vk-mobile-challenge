@@ -7,6 +7,9 @@ import android.widget.FrameLayout;
 
 import com.github.programmerr47.vkgroups.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
@@ -22,6 +25,7 @@ public abstract class Page {
     protected PagerListener pagerListener;
 
     protected boolean isTransitionAnimating;
+    protected final List<Runnable> uiWorks = new ArrayList<>();
 
     public View createView(Context context) {
         View originPageView = onCreateView(context);
@@ -38,7 +42,9 @@ public abstract class Page {
 
     }
 
-    public void onResume() {}
+    public void onResume() {
+        executeAllWorks();
+    }
 
     public void onPause() {}
 
@@ -82,5 +88,15 @@ public abstract class Page {
         wrapperLayout.addView(blackVeilView);
 
         return wrapperLayout;
+    }
+
+    private void executeAllWorks() {
+        if (uiWorks.size() > 0) {
+            for (Runnable runnable : uiWorks) {
+                runnable.run();
+            }
+
+            uiWorks.clear();
+        }
     }
 }

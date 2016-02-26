@@ -264,13 +264,8 @@ public class GroupListPage extends Page implements View.OnClickListener {
             public void onClick(View v) {
                 int position = myCommunityListView.getChildAdapterPosition(v);
 
-                Snackbar.make(v, "Test grouplistpage click", Snackbar.LENGTH_SHORT);
                 Page detailPage = new GroupDetailPage(myGroupItems.get(position).getCommunity(), postViewPool);
                 pagerListener.openPage(detailPage);
-//                Intent intent = new Intent(GroupsFragment.this.getContext(), TestDetailActivity.class);
-//                intent.putExtra("TEST_IMAGE", myGroupItems.get(position).getCommunity().photo_200);
-//                intent.putExtra("TEST_ID", myGroupItems.get(position).getCommunity().id);
-//                startActivity(intent);
             }
         });
 

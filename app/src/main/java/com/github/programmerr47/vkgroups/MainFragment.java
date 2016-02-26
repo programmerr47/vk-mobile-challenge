@@ -143,6 +143,10 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         return pages.size() > 1 || pages.get(0).hasBackStack();
     }
 
+    public Page getOpenedPage() {
+        return pages.get(pages.size() - 1);
+    }
+
     public void onBackPressed() {
         if (getLastPage().hasBackStack()) {
             getLastPage().onBackPressed();

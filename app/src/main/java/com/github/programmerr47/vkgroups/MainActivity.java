@@ -2,9 +2,6 @@ package com.github.programmerr47.vkgroups;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.github.programmerr47.vkgroups.pager.FixedSpeedScroller;
 import com.github.programmerr47.vkgroups.pager.VkPagerAdapter;
-import com.github.programmerr47.vkgroups.pager.VkPagerTransformer;
+import com.github.programmerr47.vkgroups.pager.pages.GroupListPage;
+import com.github.programmerr47.vkgroups.pager.pages.Page;
+import com.github.programmerr47.vkgroups.pager.pages.RecommendationsPage;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
-import com.vk.sdk.util.VKUtil;
-
-import java.lang.reflect.Field;
 
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
@@ -91,20 +85,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Page drawerPage = getDrawerPage(id);
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
+        if (drawerPage != null && mainFragment.getOpenedPage().getClass() != drawerPage.getClass()) {
+            mainFragment.openPage(drawerPage);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(navigationView);
@@ -204,15 +189,14 @@ public class MainActivity extends AppCompatActivity
 //        pager.setAdapter(pagerAdapter);
     }
 
-//    private void slowDownPager() {
-//        try {
-//            Field mScroller;
-//            mScroller = ViewPager.class.getDeclaredField("mScroller");
-//            mScroller.setAccessible(true);
-//            FixedSpeedScroller scroller = new FixedSpeedScroller(pager.getContext());
-//            mScroller.set(pager, scroller);
-//        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-//            //ignore
-//        }
-//    }
+    private Page getDrawerPage(int menuItemId) {
+        switch (menuItemId) {
+            case R.id.nav_communities:
+                return new GroupListPage();
+            case R.id.nav_recommendations:
+                return new RecommendationsPage();
+            default:
+                return null;
+        }
+    }
 }

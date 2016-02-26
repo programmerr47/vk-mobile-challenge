@@ -32,6 +32,10 @@ public class VKApiGroups extends VKApiBase {
         return prepareRequest("getMembers", params);
     }
 
+    public VKRequest getCatalog(VKParameters params) {
+        return prepareRequest("getCatalog", params, VKApiCommunityArray.class);
+    }
+
     public VKRequest join(VKParameters params) {
         return prepareRequest("join", params);
     }
