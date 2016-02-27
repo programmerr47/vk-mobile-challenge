@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.programmerr47.vkgroups.pager.VkPagerAdapter;
+import com.github.programmerr47.vkgroups.pager.pages.EventListPage;
 import com.github.programmerr47.vkgroups.pager.pages.GroupListPage;
 import com.github.programmerr47.vkgroups.pager.pages.Page;
 import com.github.programmerr47.vkgroups.pager.pages.RecommendationsPage;
@@ -193,6 +194,8 @@ public class MainActivity extends AppCompatActivity
         switch (menuItemId) {
             case R.id.nav_communities:
                 return new GroupListPage();
+            case R.id.nav_events:
+                return new EventListPage();
             case R.id.nav_recommendations:
                 return new RecommendationsPage();
             default:
