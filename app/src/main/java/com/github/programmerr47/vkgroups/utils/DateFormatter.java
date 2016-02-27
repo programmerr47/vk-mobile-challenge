@@ -6,6 +6,7 @@ import com.github.programmerr47.vkgroups.R;
 
 import java.util.Calendar;
 
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 import static java.util.Calendar.DAY_OF_YEAR;
 import static java.util.Calendar.YEAR;
 
@@ -44,9 +45,11 @@ public class DateFormatter {
     private static String formatDateCompareTo(Calendar sourceDate, Calendar comparedDate) {
         if (sourceDate.get(YEAR) == comparedDate.get(YEAR)) {
             if (sourceDate.get(DAY_OF_YEAR) == comparedDate.get(DAY_OF_YEAR)) {
-                return AndroidUtils.res().string(R.string.today) + SPACE + DateFormat.format(TIME_FORMAT, sourceDate);
+                return res().string(R.string.today) + SPACE + DateFormat.format(TIME_FORMAT, sourceDate);
             } else if (comparedDate.get(DAY_OF_YEAR) - sourceDate.get(DAY_OF_YEAR) == 1) {
-                return AndroidUtils.res().string(R.string.yesterday) + SPACE + DateFormat.format(TIME_FORMAT, sourceDate);
+                return res().string(R.string.yesterday) + SPACE + DateFormat.format(TIME_FORMAT, sourceDate);
+            } else if (sourceDate.get(DAY_OF_YEAR) - comparedDate.get(DAY_OF_YEAR) == 1) {
+                return res().string(R.string.tomorrow) + SPACE + DateFormat.format(TIME_FORMAT, sourceDate);
             } else {
                 return DateFormat.format(DAY_IN_YEAR_FORMAT, sourceDate).toString();
             }

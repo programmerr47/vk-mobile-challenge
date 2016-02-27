@@ -28,6 +28,7 @@
     <!-- Dates -->
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="tomorrow">Tomorrow</string>
 
     <!-- Posts -->
     <string name="read_more">Read more</string>
@@ -47,5 +48,13 @@
         <item quantity="one">%1$d vote</item>
         <item quantity="other">%1$d votes</item>
     </plurals>
+
+    <!-- Group types -->
+    <string name="publics">public</string>
+    <string name="open">open</string>
+    <string name="privates">private</string>
+    <string name="closed">closed</string>
+    <string name="page">page</string>
+    <string name="group">group</string>
 
 </resources>
