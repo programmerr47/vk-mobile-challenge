@@ -16,8 +16,9 @@
             android:layout_weight="1"
             android:background="@color/good_state">
 
-            <com.github.programmerr47.vkgroups.view.SquareImageView
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/accept_button"
+                android:layout_width="@dimen/list_item_height_default"
                 android:layout_height="match_parent"
                 android:scaleType="center"
                 android:alpha="0.4"
@@ -31,8 +32,9 @@
             android:layout_weight="1"
             android:background="@color/wrong_state">
 
-            <com.github.programmerr47.vkgroups.view.SquareImageView
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/decline_button"
+                android:layout_width="@dimen/list_item_height_default"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:scaleType="center"
@@ -46,49 +48,70 @@
     <LinearLayout
         android:id="@+id/community_info"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height_default"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/list_item_height_default"
         android:layout_marginRight="@dimen/list_item_height_default"
         android:layout_gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="@drawable/list_item_selector">
-
-        <com.github.programmerr47.vkgroups.view.SquareImageView
-            android:id="@+id/icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_medium"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_manage"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingRight="@dimen/margin_big"
-            android:paddingEnd="@dimen/margin_big"
-            android:layout_gravity="center">
+            android:layout_height="@dimen/list_item_height_default"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_primary"
-                android:textSize="18sp"
-                android:text="Test group name"
-                android:singleLine="true"
-                app:fontName="Roboto-Medium.ttf"/>
+            <com.github.programmerr47.vkgroups.view.SquareImageView
+                android:id="@+id/icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_medium"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu_manage"/>
 
-            <com.github.programmerr47.vkgroups.view.CustomFontTextView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color_secondary"
-                android:textSize="16sp"
-                android:text="Test group type"
-                app:fontName="Roboto-Regular.ttf"/>
+                android:orientation="vertical"
+                android:paddingRight="@dimen/margin_big"
+                android:paddingEnd="@dimen/margin_big"
+                android:layout_gravity="center">
+
+                <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_primary"
+                    android:textSize="18sp"
+                    android:text="Test group name"
+                    android:singleLine="true"
+                    app:fontName="Roboto-Medium.ttf"/>
+
+                <com.github.programmerr47.vkgroups.view.CustomFontTextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_secondary"
+                    android:textSize="16sp"
+                    android:text="Test group type"
+                    app:fontName="Roboto-Regular.ttf"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <com.github.programmerr47.vkgroups.view.CustomFontTextView
+            android:id="@+id/not_sure_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/margin_medium"
+            android:paddingRight="@dimen/margin_medium"
+            android:paddingBottom="@dimen/margin_medium"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:text="@string/not_sure"
+            app:fontName="Roboto-Medium.ttf"/>
 
     </LinearLayout>
 

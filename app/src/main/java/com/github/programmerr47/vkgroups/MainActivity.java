@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.github.programmerr47.vkgroups.pager.VkPagerAdapter;
 import com.github.programmerr47.vkgroups.pager.pages.EventListPage;
 import com.github.programmerr47.vkgroups.pager.pages.GroupListPage;
+import com.github.programmerr47.vkgroups.pager.pages.InviteListPage;
 import com.github.programmerr47.vkgroups.pager.pages.Page;
 import com.github.programmerr47.vkgroups.pager.pages.RecommendationsPage;
 import com.vk.sdk.VKAccessToken;
@@ -192,6 +193,8 @@ public class MainActivity extends AppCompatActivity
 
     private Page getDrawerPage(int menuItemId) {
         switch (menuItemId) {
+            case R.id.nav_invites:
+                return new InviteListPage();
             case R.id.nav_communities:
                 return new GroupListPage();
             case R.id.nav_events:

@@ -24,6 +24,7 @@
         <item quantity="one">%1$d friend</item>
         <item quantity="other">%1$d friends</item>
     </plurals>
+    <string name="not_sure">Not sure</string>
 
     <!-- Dates -->
     <string name="today">Today</string>

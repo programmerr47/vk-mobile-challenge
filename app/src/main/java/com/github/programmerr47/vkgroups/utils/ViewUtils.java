@@ -11,6 +11,11 @@ import android.widget.LinearLayout;
  */
 public class ViewUtils {
 
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T findViewById(View root, int id) {
+        return (T) root.findViewById(id);
+    }
+
     public static void setCommonMargin(@NonNull LinearLayout.MarginLayoutParams layoutParams, int margin) {
         layoutParams.topMargin = margin;
         layoutParams.bottomMargin = margin;

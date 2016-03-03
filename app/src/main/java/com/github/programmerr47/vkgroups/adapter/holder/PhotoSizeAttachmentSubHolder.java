@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.github.programmerr47.vkgroups.utils.ViewUtils.findViewById;
+
 /**
  * @author Mihail Spitsin
  * @since 2/18/2016
@@ -66,11 +68,6 @@ public class PhotoSizeAttachmentSubHolder {
 
     public ImageView getPhoto() {
         return photo;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T extends View> T findViewById(View root, int id) {
-        return (T) root.findViewById(id);
     }
 
     public static final class ResourceParams {
