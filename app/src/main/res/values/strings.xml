@@ -57,5 +57,11 @@
     <string name="closed">closed</string>
     <string name="page">page</string>
     <string name="group">group</string>
+    <string name="event">event</string>
+
+    <!-- Invites -->
+    <string name="accept_message">You accepted the invitation</string>
+    <string name="decline_message">You decline the invitation</string>
+    <string name="not_sure_message">Not sure? Why, bro?</string>
 
 </resources>

@@ -24,7 +24,11 @@ public class MyCommunityItem extends CommunityItem {
     @Override
     protected String getTextForSubInfoView() {
         if (community.type == EVENT) {
-            return DateFormatter.formatDate(community.start_date);
+            if (community.start_date > 0) {
+                return DateFormatter.formatDate(community.start_date);
+            } else {
+                return getLocalizedType(community);
+            }
         } else {
             if (!TextUtils.isEmpty(community.activity)) {
                 return community.activity;
@@ -71,8 +75,10 @@ public class MyCommunityItem extends CommunityItem {
             case PAGE:
                 return R.string.page;
             case GROUP:
-            default:
                 return R.string.group;
+            case EVENT:
+            default:
+                return R.string.event;
         }
     }
 }

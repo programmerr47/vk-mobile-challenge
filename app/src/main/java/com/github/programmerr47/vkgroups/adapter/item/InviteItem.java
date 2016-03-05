@@ -53,14 +53,14 @@ public class InviteItem extends MyCommunityItem {
         this.itemCallbacks = callbacks;
     }
 
-    private void bindView(InviteItemHolder viewHolder, int position) {
+    private void bindView(final InviteItemHolder viewHolder, int position) {
         bindView((CommunityItemHolder) viewHolder, position);
 
         viewHolder.getContentView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (itemCallbacks != null) {
-                    itemCallbacks.onInviteItemClick(v);
+                    itemCallbacks.onInviteItemClick(viewHolder.itemView);
                 }
             }
         });
@@ -68,7 +68,7 @@ public class InviteItem extends MyCommunityItem {
             @Override
             public void onClick(View v) {
                 if (itemCallbacks != null) {
-                    itemCallbacks.onAcceptButtonClick(v);
+                    itemCallbacks.onAcceptButtonClick(viewHolder.itemView);
                 }
             }
         });
@@ -76,7 +76,7 @@ public class InviteItem extends MyCommunityItem {
             @Override
             public void onClick(View v) {
                 if (itemCallbacks != null) {
-                    itemCallbacks.onDeclineButtonClick(v);
+                    itemCallbacks.onDeclineButtonClick(viewHolder.itemView);
                 }
             }
         });
@@ -87,7 +87,7 @@ public class InviteItem extends MyCommunityItem {
                 @Override
                 public void onClick(View v) {
                     if (itemCallbacks != null) {
-                        itemCallbacks.onNotSureButtonClick(v);
+                        itemCallbacks.onNotSureButtonClick(viewHolder.itemView);
                     }
                 }
             });

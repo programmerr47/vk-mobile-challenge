@@ -129,4 +129,5 @@ public class VKApiConst {
 
     //Events
     public static final String VKCaptchaAnsweredEvent = "VKCaptchaAnsweredEvent";
+    public static final String NOT_SURE = "not_sure";
 }

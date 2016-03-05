@@ -15,6 +15,7 @@ import com.github.programmerr47.vkgroups.adapter.InviteAdapter;
 import com.github.programmerr47.vkgroups.adapter.item.InviteItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
 import com.github.programmerr47.vkgroups.collections.RecyclerItems;
+import com.github.programmerr47.vkgroups.utils.AndroidUtils;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -25,6 +26,8 @@ import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
 import java.util.ArrayList;
+
+import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
 
 /**
  * @author Mihail Spitsin
@@ -62,22 +65,37 @@ public class InviteListPage extends Page implements InviteItem.InviteItemCallbac
 
     @Override
     public void onInviteItemClick(View view) {
-        int t = 5;
+        int position = inviteListView.getChildAdapterPosition(view);
+
+        Page detailPage = new GroupDetailPage(inviteItems.get(position).getCommunity(), null);
+        pagerListener.openPage(detailPage);
     }
 
     @Override
     public void onNotSureButtonClick(View view) {
-        int t = 5;
+        int position = inviteListView.getChildAdapterPosition(view);
+        int id = inviteItems.get(position).getCommunity().id;
+
+        VKRequest request = VKApi.groups().join(VKParameters.from(VKApiConst.GROUP_ID, id, VKApiConst.NOT_SURE, 1));
+        request.executeWithListener(new InvitationRequestListener(position, R.string.not_sure_message));
     }
 
     @Override
     public void onAcceptButtonClick(View view) {
-        int t = 5;
+        int position = inviteListView.getChildAdapterPosition(view);
+        int id = inviteItems.get(position).getCommunity().id;
+
+        VKRequest request = VKApi.groups().join(VKParameters.from(VKApiConst.GROUP_ID, id, VKApiConst.NOT_SURE, 0));
+        request.executeWithListener(new InvitationRequestListener(position, R.string.accept_message));
     }
 
     @Override
     public void onDeclineButtonClick(View view) {
-        int t = 5;
+        int position = inviteListView.getChildAdapterPosition(view);
+        int id = inviteItems.get(position).getCommunity().id;
+
+        VKRequest request = VKApi.groups().leave(id);
+        request.executeWithListener(new InvitationRequestListener(position, R.string.decline_message));
     }
 
     private void prepareItemsViews(View pageView) {
@@ -145,5 +163,27 @@ public class InviteListPage extends Page implements InviteItem.InviteItemCallbac
                 super.onProgress(progressType, bytesLoaded, bytesTotal);
             }
         });
+    }
+
+    private class InvitationRequestListener extends VKRequest.VKRequestListener {
+        private int position;
+        private int messageId;
+
+        public InvitationRequestListener(int position, int messageId) {
+            this.position = position;
+            this.messageId = messageId;
+        }
+
+        @Override
+        public void onComplete(VKResponse response) {
+            inviteItems.remove(position);
+            inviteAdapter.notifyItemRemoved(position);
+            Snackbar.make(inviteListView, res().string(messageId), Snackbar.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(VKError error) {
+            Snackbar.make(inviteListView, error.toString(), Snackbar.LENGTH_LONG).show();
+        }
     }
 }
