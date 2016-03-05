@@ -10,7 +10,7 @@ import android.widget.Scroller;
  */
 public class FixedSpeedScroller extends Scroller {
 
-    private int mFraction = 2;
+    private int mFraction = 1;
 
     public FixedSpeedScroller(Context context) {
         super(context);

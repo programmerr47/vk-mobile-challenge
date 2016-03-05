@@ -2,6 +2,7 @@ package com.github.programmerr47.vkgroups.adapter.item.subitems;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.github.programmerr47.vkgroups.R;
 import com.vk.sdk.api.model.VKApiLink;
@@ -37,8 +38,10 @@ public class LinkAttachmentItem extends AbstractAttachmentItem {
     @Nullable
     @Override
     protected String getSubtitle() {
-        if (apiLink.caption != null) {
+        if (!TextUtils.isEmpty(apiLink.caption)) {
             return apiLink.caption;
+        } else if (!TextUtils.isEmpty(apiLink.description)) {
+            return apiLink.description;
         } else {
             return apiLink.url;
         }

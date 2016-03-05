@@ -32,6 +32,7 @@ public class VkViewPager extends ViewPager {
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         boolean result = super.drawChild(canvas, child, drawingTime);
         layerShadowDrawable.setBounds((int) child.getX() - layerShadowDrawable.getIntrinsicWidth(), child.getTop(), (int) child.getX(), child.getBottom());
+        layerShadowDrawable.setAlpha((int)(0xFF * child.getAlpha()));
         layerShadowDrawable.draw(canvas);
         return result;
     }

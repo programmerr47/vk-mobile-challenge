@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.programmerr47.vkgroups.R;
@@ -28,18 +31,25 @@ public abstract class AbstractAttachmentItem implements AttachmentItem {
     private static final LinearLayout.LayoutParams BIG_PARAMS = new LinearLayout.LayoutParams(MATCH_PARENT, res().dimenI(R.dimen.list_item_height_default));
     private static final LinearLayout.LayoutParams SMALL_PARAMS = new LinearLayout.LayoutParams(MATCH_PARENT, res().dimenI(R.dimen.list_item_height_small));
 
+    private static final RelativeLayout.LayoutParams BIG_PARAMS_HALF = new RelativeLayout.LayoutParams(MATCH_PARENT, res().dimenI(R.dimen.list_item_height_default_half));
+    private static final RelativeLayout.LayoutParams SMALL_PARAMS_HALF = new RelativeLayout.LayoutParams(MATCH_PARENT, res().dimenI(R.dimen.list_item_height_small_half));
+
     private static final Drawable DEF_BACKGROUND = getAppContext().getResources().getDrawable(R.drawable.bg_attachment_default);
 
     @Override
     public void bindView(PostAttachmentSubHolder holder) {
         if (!TextUtils.isEmpty(getIconUrl())) {
             holder.getHolderView().setLayoutParams(BIG_PARAMS);
+            updateParams(holder.getTitleView(), BIG_PARAMS_HALF);
+            updateParams(holder.getSubtitleView(), BIG_PARAMS_HALF);
 
             holder.getIconView().setBackgroundDrawable(null);
             holder.getIconView().setPadding(0, 0, 0, 0);
             Picasso.with(getAppContext()).load(getIconUrl()).into(holder.getIconView());
         } else {
             holder.getHolderView().setLayoutParams(SMALL_PARAMS);
+            updateParams(holder.getTitleView(), SMALL_PARAMS_HALF);
+            updateParams(holder.getSubtitleView(), SMALL_PARAMS_HALF);
 
             holder.getIconView().setBackgroundDrawable(DEF_BACKGROUND);
             holder.getIconView().setPadding(res().dimenI(R.dimen.margin_medium), res().dimenI(R.dimen.margin_medium), res().dimenI(R.dimen.margin_medium), res().dimenI(R.dimen.margin_medium));
@@ -80,5 +90,10 @@ public abstract class AbstractAttachmentItem implements AttachmentItem {
             textView.setVisibility(VISIBLE);
             textView.setText(text);
         }
+    }
+
+    private void updateParams(View view, ViewGroup.LayoutParams targetParams) {
+        view.getLayoutParams().width = targetParams.width;
+        view.getLayoutParams().height = targetParams.height;
     }
 }

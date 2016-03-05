@@ -9,7 +9,7 @@ import com.github.programmerr47.vkgroups.pager.pages.Page;
  * @author Michael Spitsin
  * @since 2016-01-09
  */
-public class VkPagerTransformer implements ViewPager.PageTransformer {
+public class VkPagerTransformerManual implements ViewPager.PageTransformer {
 
     private static final float MAX_ALPHA_SLIDE = 0.7f;
 

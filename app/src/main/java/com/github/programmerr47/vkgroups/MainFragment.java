@@ -1,19 +1,21 @@
 package com.github.programmerr47.vkgroups;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.github.programmerr47.vkgroups.pager.FixedSpeedScroller;
-import com.github.programmerr47.vkgroups.pager.VkPagerTransformer;
+import com.github.programmerr47.vkgroups.pager.VkPageTransformerAuto;
+import com.github.programmerr47.vkgroups.pager.VkPagerTransformerManual;
 import com.github.programmerr47.vkgroups.pager.pages.GroupListPage;
 import com.github.programmerr47.vkgroups.pager.pages.Page;
 import com.github.programmerr47.vkgroups.pager.pages.PagerListener;
@@ -72,8 +74,7 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         }
 
         pager.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        pager.setPageTransformer(false, new VkPagerTransformer());
-        slowDownPager();
+        setManualTransformer();
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(this);
     }
@@ -107,7 +108,7 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         adapter.addPage(newPage);
 
         newPage.setTransitionAnimating(true);
-        pager.setCurrentItem(pages.size() - 1, true);
+        setCurrentPage(pages.size() - 1, true);
     }
 
     @Override
@@ -123,6 +124,7 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
     @Override
     public void onPageScrollStateChanged(int state) {
         if (state == ViewPager.SCROLL_STATE_IDLE) {
+            setManualTransformer();
             changeDrawerState();
 
             if (pager.getCurrentItem() < pages.size() - 1) {
@@ -151,16 +153,16 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         if (getLastPage().hasBackStack()) {
             getLastPage().onBackPressed();
         } else {
-            pager.setCurrentItem(pages.size() - 2, true);
+            setCurrentPage(pages.size() - 2, true);
         }
     }
 
-    private void slowDownPager() {
+    private void setCustomScroller(Interpolator interpolator) {
         try {
             Field mScroller;
             mScroller = ViewPager.class.getDeclaredField("mScroller");
             mScroller.setAccessible(true);
-            FixedSpeedScroller scroller = new FixedSpeedScroller(pager.getContext());
+            FixedSpeedScroller scroller = new FixedSpeedScroller(pager.getContext(), interpolator);
             mScroller.set(pager, scroller);
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             //ignore
@@ -171,12 +173,30 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
         return pages.get(pages.size() - 1);
     }
 
+    private void setManualTransformer() {
+        pager.setPageTransformer(false, new VkPagerTransformerManual());
+        setCustomScroller(null);
+    }
+
     private void changeDrawerState() {
         if (pages.size() == 1) {
             activityCallbacks.unlockDrawer();
         } else {
             activityCallbacks.lockDrawer();
         }
+    }
+
+    private void setCurrentPage(int item, boolean smoothScroll) {
+        if (pager.getCurrentItem() > item) {
+            setCustomScroller(new AccelerateInterpolator(3f));
+        } else if (pager.getCurrentItem() < item) {
+            setCustomScroller(new DecelerateInterpolator(3f));
+        } else {
+            setCustomScroller(null);
+        }
+
+        pager.setPageTransformer(false, new VkPageTransformerAuto());
+        pager.setCurrentItem(item, smoothScroll);
     }
 
     public static final class VkPageAdapter extends PagerAdapter {
