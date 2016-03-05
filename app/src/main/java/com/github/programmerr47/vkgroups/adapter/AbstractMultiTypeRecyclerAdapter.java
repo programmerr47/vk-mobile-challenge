@@ -68,38 +68,4 @@ public class AbstractMultiTypeRecyclerAdapter<Item extends AdapterItem> extends 
     public final int getItemViewType(int position) {
         return mItems.getItemType(position);
     }
-
-    public void updateItems(@NonNull RecyclerItems<Item> newItems) {
-        mItems = newItems;
-        notifyDataSetChanged();
-    }
-
-    public void addItem(@NonNull Item newItem) {
-        addItem(mItems.size(), newItem);
-    }
-
-    public void addItem(int position, @NonNull Item newItem) {
-        mItems.add(position, newItem);
-        notifyItemInserted(position);
-    }
-
-    public void addItems(@NonNull Collection<? extends Item> newItems) {
-        addItems(mItems.size(), newItems);
-    }
-
-    public void addItems(int position, @NonNull Collection<? extends Item> newItems) {
-        mItems.addAll(position, newItems);
-        notifyItemRangeInserted(position, newItems.size());
-    }
-
-    public Item getItem(int position) {
-        return mItems.get(position);
-    }
-
-    public void notifyElementChange(Item item) {
-        int position = mItems.indexOf(item);
-        if (position != -1) {
-            notifyItemChanged(position);
-        }
-    }
 }

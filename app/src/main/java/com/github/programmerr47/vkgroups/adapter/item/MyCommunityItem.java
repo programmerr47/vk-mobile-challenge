@@ -15,7 +15,7 @@ import static com.vk.sdk.api.model.special.VkGroupType.PAGE;
  * @author Michael Spitsin
  * @since 2016-01-20
  */
-public final class MyCommunityItem extends CommunityItem {
+public class MyCommunityItem extends CommunityItem {
 
     public MyCommunityItem(VKApiCommunityFull community) {
         super(community);

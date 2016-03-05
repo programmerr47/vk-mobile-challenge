@@ -11,13 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.programmerr47.vkgroups.R;
-import com.github.programmerr47.vkgroups.adapter.GroupAdapter;
-import com.github.programmerr47.vkgroups.adapter.item.CommunityItem;
-import com.github.programmerr47.vkgroups.adapter.item.MyCommunityItem;
+import com.github.programmerr47.vkgroups.adapter.InviteAdapter;
+import com.github.programmerr47.vkgroups.adapter.item.InviteItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
 import com.github.programmerr47.vkgroups.collections.RecyclerItems;
 import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiCommunityArray;
@@ -27,20 +28,20 @@ import java.util.ArrayList;
 
 /**
  * @author Mihail Spitsin
- * @since 2/26/2016
+ * @since 2016-03-02
  */
-public class RecommendationsPage extends Page {
+public class InviteListPage extends Page implements InviteItem.InviteItemCallbacks {
 
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
 
-    private RecyclerView recommendListView;
-    private GroupAdapter recommendAdapter;
-    private RecyclerItems<CommunityItem> recommendItems;
+    private RecyclerView inviteListView;
+    private InviteAdapter inviteAdapter;
+    private RecyclerItems<InviteItem> inviteItems;
 
     @Override
     public void onCreate() {
-        recommendItems = new RecyclerItems<>(new ArrayList<CommunityItem>());
+        inviteItems = new RecyclerItems<>(new ArrayList<InviteItem>());
         requestAllRecommendations();
     }
 
@@ -54,29 +55,41 @@ public class RecommendationsPage extends Page {
     public void onViewCreated(View pageView) {
         appBarLayout = (AppBarLayout) pageView.findViewById(R.id.appbar_layout);
         toolbar = (Toolbar) pageView.findViewById(R.id.toolbar);
-        recommendListView = (RecyclerView) pageView.findViewById(R.id.community_list);
+        inviteListView = (RecyclerView) pageView.findViewById(R.id.community_list);
 
         prepareItemsViews(pageView);
     }
 
+    @Override
+    public void onInviteItemClick(View view) {
+        int t = 5;
+    }
+
+    @Override
+    public void onNotSureButtonClick(View view) {
+        int t = 5;
+    }
+
+    @Override
+    public void onAcceptButtonClick(View view) {
+        int t = 5;
+    }
+
+    @Override
+    public void onDeclineButtonClick(View view) {
+        int t = 5;
+    }
+
     private void prepareItemsViews(View pageView) {
-        recommendAdapter = new GroupAdapter(recommendItems, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = recommendListView.getChildAdapterPosition(v);
+        inviteAdapter = new InviteAdapter(inviteItems, this);
 
-                Page detailPage = new GroupDetailPage(recommendItems.get(position).getCommunity(), null);
-                pagerListener.openPage(detailPage);
-            }
-        });
-
-        recommendListView.setLayoutManager(new LinearLayoutManager(pageView.getContext()));
-        recommendListView.setAdapter(recommendAdapter);
+        inviteListView.setLayoutManager(new LinearLayoutManager(pageView.getContext()));
+        inviteListView.setAdapter(inviteAdapter);
     }
 
     private void requestAllRecommendations() {
         //TODO move it
-        VKRequest vkRequest = VKApi.groups().getCatalog(null);
+        VKRequest vkRequest = VKApi.groups().getInvites(VKParameters.from(VKApiConst.EXTENDED, 1));
         vkRequest.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(final VKResponse response) {
@@ -89,9 +102,10 @@ public class RecommendationsPage extends Page {
                             GroupDao groupDao = new GroupDao();
                             for (final VKApiCommunityFull group : communityArray) {
                                 groupDao.saveGroup(group);
-                                CommunityItem item = new MyCommunityItem(group);
-                                recommendItems.add(item);
-                                recommendAdapter.notifyItemInserted(recommendItems.size() - 1);
+                                InviteItem item = new InviteItem(group);
+                                inviteItems.add(item);
+                                item.setItemCallbacks(InviteListPage.this);
+                                inviteAdapter.notifyItemInserted(inviteItems.size() - 1);
                             }
                         }
                     });
@@ -100,9 +114,10 @@ public class RecommendationsPage extends Page {
                     GroupDao groupDao = new GroupDao();
                     for (final VKApiCommunityFull group : communityArray) {
                         groupDao.saveGroup(group);
-                        CommunityItem item = new MyCommunityItem(group);
-                        recommendItems.add(item);
-                        recommendAdapter.notifyItemInserted(recommendItems.size() - 1);
+                        InviteItem item = new InviteItem(group);
+                        inviteItems.add(item);
+                        item.setItemCallbacks(InviteListPage.this);
+                        inviteAdapter.notifyItemInserted(inviteItems.size() - 1);
                     }
                 }
             }

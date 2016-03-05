@@ -11,9 +11,9 @@ import android.widget.TextView;
  */
 public class CommunityItemHolder extends RecyclerView.ViewHolder {
 
-    private ImageView avatarView;
-    private TextView titleView;
-    private TextView subInfoView;
+    private final ImageView avatarView;
+    private final TextView titleView;
+    private final TextView subInfoView;
 
     public CommunityItemHolder(View itemView,ResourceParams params) {
         super(itemView);

@@ -21,20 +21,14 @@ public abstract class CommunityItem implements AdapterItem {
 
     protected VKApiCommunityFull community;
 
-    private CommunityItemHolder cachedHolder;
-
     public CommunityItem(VKApiCommunityFull community) {
         this.community = community;
     }
 
     @Override
     public void bindView(RecyclerView.ViewHolder viewHolder, int position) {
-        if (cachedHolder != null && cachedHolder == viewHolder) {
-            bindView(cachedHolder, position);
-        } else {
-            CommunityItemHolder holder = (CommunityItemHolder) viewHolder;
-            bindView(holder, position);
-        }
+        CommunityItemHolder holder = (CommunityItemHolder) viewHolder;
+        bindView(holder, position);
     }
 
     @Override
@@ -43,19 +37,13 @@ public abstract class CommunityItem implements AdapterItem {
             @Override
             public RecyclerView.ViewHolder produce(ViewGroup parentView) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parentView.getContext());
-                View view = layoutInflater.inflate(R.layout.community_item, parentView, false);
+                View view = layoutInflater.inflate(getLayoutId(), parentView, false);
 
                 if (view == null) {
                     throw new IllegalStateException("View not created");
                 }
 
-                CommunityItemHolder.ResourceParams params = new CommunityItemHolder.ResourceParams();
-                params.avatarId = R.id.icon;
-                params.titleId = R.id.title;
-                params.subInfoId = R.id.type;
-
-                cachedHolder = new CommunityItemHolder(view, params);
-                return cachedHolder;
+                return createHolder(view);
             }
         };
     }
@@ -64,9 +52,7 @@ public abstract class CommunityItem implements AdapterItem {
         return community;
     }
 
-    protected abstract String getTextForSubInfoView();
-
-    private void bindView(CommunityItemHolder viewHolder, int position) {
+    protected void bindView(CommunityItemHolder viewHolder, int position) {
         getImageWorker().loadImage(
                 community.photo_100,
                 viewHolder.getAvatarView(),
@@ -74,5 +60,20 @@ public abstract class CommunityItem implements AdapterItem {
 
         viewHolder.getTitleView().setText(community.name);
         viewHolder.getSubInfoView().setText(getTextForSubInfoView());
+    }
+
+    protected abstract String getTextForSubInfoView();
+
+    protected int getLayoutId() {
+        return R.layout.community_item;
+    }
+
+    protected CommunityItemHolder createHolder(View view) {
+        CommunityItemHolder.ResourceParams params = new CommunityItemHolder.ResourceParams();
+        params.avatarId = R.id.icon;
+        params.titleId = R.id.title;
+        params.subInfoId = R.id.type;
+
+        return new CommunityItemHolder(view, params);
     }
 }
