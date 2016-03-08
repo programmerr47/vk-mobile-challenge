@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,7 +62,6 @@ public abstract class CommunityListPage extends Page {
     }
 
     private Spinner spinner;
-    private Toolbar toolbar;
     private AppBarLayout appBarLayout;
     private FloatingActionButton createCommunityButton;
 
@@ -198,8 +196,8 @@ public abstract class CommunityListPage extends Page {
 
     @Override
     public void onViewCreated(View pageView) {
+        super.onViewCreated(pageView);
         appBarLayout = (AppBarLayout) pageView.findViewById(R.id.appbar_layout);
-        toolbar = (Toolbar) pageView.findViewById(R.id.toolbar);
         spinner = (Spinner) pageView.findViewById(R.id.toolbar_spinner);
         createCommunityButton = (FloatingActionButton) pageView.findViewById(R.id.fab);
         myCommunityListView = (RecyclerView) pageView.findViewById(R.id.my_community_list);
@@ -212,7 +210,7 @@ public abstract class CommunityListPage extends Page {
 
     private void prepareSpinner(){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
-                toolbar.getContext(), R.array.communities_spinner_items, R.layout.spinner_title);
+                toolbar.getContext(), getSpinnerArrayId(), R.layout.spinner_title);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -327,6 +325,8 @@ public abstract class CommunityListPage extends Page {
             }
         });
     }
+
+    protected abstract int getSpinnerArrayId();
 
     protected abstract String getCommunityFilter();
 

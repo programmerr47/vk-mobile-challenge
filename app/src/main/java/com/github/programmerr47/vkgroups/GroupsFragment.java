@@ -1,6 +1,5 @@
 package com.github.programmerr47.vkgroups;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -10,25 +9,20 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.github.programmerr47.vkgroups.adapter.GroupAdapter;
 import com.github.programmerr47.vkgroups.adapter.item.CommunityItem;
-import com.github.programmerr47.vkgroups.adapter.item.FriendsCommunityItem;
 import com.github.programmerr47.vkgroups.adapter.item.MyCommunityItem;
 import com.github.programmerr47.vkgroups.background.db.GroupDao;
-import com.github.programmerr47.vkgroups.background.parsers.UsersIdJsonParser;
 import com.github.programmerr47.vkgroups.collections.RecyclerItems;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
-import com.vk.sdk.api.VKBatchRequest;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -37,9 +31,6 @@ import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Michael Spitsin
@@ -237,7 +228,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
 
     private void prepareSpinner(){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
-                toolbar.getContext(), R.array.communities_spinner_items, R.layout.spinner_title);
+                toolbar.getContext(), R.array.groups_spinner_items, R.layout.spinner_title);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

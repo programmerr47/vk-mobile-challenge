@@ -7,4 +7,5 @@ package com.github.programmerr47.vkgroups;
 public interface MainActivityCallbacks {
     void lockDrawer();
     void unlockDrawer();
+    void openDrawer();
 }

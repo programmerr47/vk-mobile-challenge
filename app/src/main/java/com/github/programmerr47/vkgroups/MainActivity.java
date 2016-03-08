@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +25,7 @@ import com.vk.sdk.api.VKError;
 
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_UNLOCKED;
+import static android.view.Gravity.LEFT;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainActivityCallbacks {
@@ -131,6 +133,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void unlockDrawer() {
         drawerLayout.setDrawerLockMode(LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public void openDrawer() {
+        drawerLayout.openDrawer(LEFT);
     }
 
     private void init() {

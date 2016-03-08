@@ -112,6 +112,16 @@ public class MainFragment extends Fragment implements PagerListener, ViewPager.O
     }
 
     @Override
+    public void closePage() {
+        setCurrentPage(pages.size() - 2, true);
+    }
+
+    @Override
+    public void openDrawer() {
+        activityCallbacks.openDrawer();
+    }
+
+    @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }

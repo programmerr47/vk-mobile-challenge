@@ -18,8 +18,6 @@
     <string name="drawer_send">Send feedback</string>
 
     <!-- Groups page -->
-    <string name="page_my_communities">My groups</string>
-    <string name="page_friends_communities">Friends groups</string>
     <plurals name="friends">
         <item quantity="one">%1$d friend</item>
         <item quantity="other">%1$d friends</item>

@@ -6,4 +6,6 @@ package com.github.programmerr47.vkgroups.pager.pages;
  */
 public interface PagerListener {
     void openPage(Page newPage);
+    void closePage();
+    void openDrawer();
 }

@@ -1,7 +1,9 @@
 package com.github.programmerr47.vkgroups.pager.pages;
 
 import android.content.Context;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
@@ -26,6 +28,9 @@ public abstract class Page {
 
     protected boolean isTransitionAnimating;
     protected final List<Runnable> uiWorks = new ArrayList<>();
+    protected final UpClickListener upClickListener = new UpClickListener();
+
+    protected Toolbar toolbar;
 
     public View createView(Context context) {
         View originPageView = onCreateView(context);
@@ -39,7 +44,8 @@ public abstract class Page {
     public abstract View onCreateView(Context context);
 
     public void onViewCreated(View pageView) {
-
+        toolbar = (Toolbar) pageView.findViewById(R.id.toolbar);
+        prepareToolbar();
     }
 
     public void onResume() {
@@ -74,6 +80,11 @@ public abstract class Page {
 
     }
 
+    protected void prepareToolbar() {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_left_white_24dp);
+        toolbar.setNavigationOnClickListener(upClickListener);
+    }
+
     private View wrapPageView(Context context, View pageView) {
         LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         FrameLayout wrapperLayout = new FrameLayout(context);
@@ -97,6 +108,14 @@ public abstract class Page {
             }
 
             uiWorks.clear();
+        }
+    }
+
+    protected final class UpClickListener implements OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            pagerListener.closePage();
         }
     }
 }

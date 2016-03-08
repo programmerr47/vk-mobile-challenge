@@ -74,6 +74,7 @@ public class GroupDetailPage extends Page {
 
     @Override
     public void onViewCreated(View attachedView) {
+        super.onViewCreated(attachedView);
         groupImage = (ImageView) attachedView.findViewById(R.id.group_image);
         postListView = (RecyclerView) attachedView.findViewById(R.id.post_list);
 

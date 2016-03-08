@@ -35,7 +35,6 @@ import static com.github.programmerr47.vkgroups.utils.AndroidUtils.res;
  */
 public class InviteListPage extends Page implements InviteItem.InviteItemCallbacks {
 
-    private Toolbar toolbar;
     private AppBarLayout appBarLayout;
 
     private RecyclerView inviteListView;
@@ -56,10 +55,11 @@ public class InviteListPage extends Page implements InviteItem.InviteItemCallbac
 
     @Override
     public void onViewCreated(View pageView) {
+        super.onViewCreated(pageView);
         appBarLayout = (AppBarLayout) pageView.findViewById(R.id.appbar_layout);
-        toolbar = (Toolbar) pageView.findViewById(R.id.toolbar);
         inviteListView = (RecyclerView) pageView.findViewById(R.id.community_list);
 
+        toolbar.setTitle(R.string.drawer_invites);
         prepareItemsViews(pageView);
     }
 

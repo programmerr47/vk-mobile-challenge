@@ -31,7 +31,6 @@ import java.util.ArrayList;
  */
 public class RecommendationsPage extends Page {
 
-    private Toolbar toolbar;
     private AppBarLayout appBarLayout;
 
     private RecyclerView recommendListView;
@@ -52,10 +51,11 @@ public class RecommendationsPage extends Page {
 
     @Override
     public void onViewCreated(View pageView) {
+        super.onViewCreated(pageView);
         appBarLayout = (AppBarLayout) pageView.findViewById(R.id.appbar_layout);
-        toolbar = (Toolbar) pageView.findViewById(R.id.toolbar);
         recommendListView = (RecyclerView) pageView.findViewById(R.id.community_list);
 
+        toolbar.setTitle(R.string.drawer_recommendations);
         prepareItemsViews(pageView);
     }
 
